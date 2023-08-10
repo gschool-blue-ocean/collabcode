@@ -18,5 +18,5 @@ INSERT INTO chat (chat_sender_name, chat_time, chat_message)
 VALUES ('Frank J Fletcher', '10:35:00', 'Bro your name is really, really dumb');
 
 -- Seeding a runtime example
-INSERT INTO runtime (runtime_input, runtime_output)
-VALUES ('console.log("Hello world!")', 'Hello world!');
+INSERT INTO runtime (in_id runtime_input, runtime_output)
+VALUES (1, 'console.log("Hello world!")', 'Hello world!');
