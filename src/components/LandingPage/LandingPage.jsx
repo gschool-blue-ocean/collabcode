@@ -1,8 +1,8 @@
-import Header from './Header';
+import Header from '../Header';
 import Information from './Information';
-import Runtime from './Runtime';
+import Runtime from '../Runtime';
 
-import { InformationProvider } from '../context/InformationContext';
+import { InformationProvider } from '../../context/InformationContext';
 
 const LandingPage = () => {
   return (

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import InformationContext from '../context/InformationContext';
+import InformationContext from '../../context/InformationContext';
 
 const Information = () => {
   const data = useContext(InformationContext);
