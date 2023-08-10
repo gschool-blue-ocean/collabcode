@@ -7,7 +7,7 @@ const LandingPage = () => {
     <>
       <div
         id="landing-page-container"
-        className="w-full h-[100vh] flex flex-col items-center justify-center"
+        className="w-full flex flex-col items-center justify-center"
       >
         <Header />
         <Information />
