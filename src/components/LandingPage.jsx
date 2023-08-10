@@ -2,6 +2,8 @@ import Header from './Header';
 import Information from './Information';
 import Runtime from './Runtime';
 
+import { InformationProvider } from '../context/InformationContext';
+
 const LandingPage = () => {
   return (
     <>
@@ -10,7 +12,9 @@ const LandingPage = () => {
         className="w-full flex flex-col items-center justify-center"
       >
         <Header />
-        <Information />
+        <InformationProvider>
+          <Information />
+        </InformationProvider>
         <Runtime />
       </div>
     </>
