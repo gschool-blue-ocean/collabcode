@@ -47,6 +47,7 @@ CREATE TABLE chat (
 
 CREATE TABLE runtime (
     runtime_id SERIAL PRIMARY KEY,
+    in_id INT REFERENCES interviews(in_id),
     runtime_input TEXT,
     runtime_output TEXT
 );
