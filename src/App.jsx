@@ -1,9 +1,9 @@
-import './App.css';
+import LandingPage from './components/LandingPage';
 
 function App() {
   return (
     <>
-      <h1 className="text-red-400">Hello</h1>
+      <LandingPage />
     </>
   );
 }
