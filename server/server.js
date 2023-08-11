@@ -166,7 +166,7 @@ app.put(
         .status(400)
         .send('PUT request requires ad_email, ad_password, ad_name');
       return;
-    }
+
 
     // attempt pool query
     try {
@@ -190,6 +190,7 @@ app.put(
       return;
     }
   }
+
 );
 
 // DELETE ONE - secured by validating id
@@ -717,7 +718,9 @@ app.get(
         return;
       }
     }
+
   }
+
 );
 
 // GET ONE - secured by validating id
