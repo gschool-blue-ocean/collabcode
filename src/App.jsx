@@ -1,26 +1,31 @@
-import LandingPage from './components/LandingPage/LandingPage';
-import Header from './components/Header'; // Import your header component
+//MODULES BROUGHT IN
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-//Mock Components
-//Teacher
+//COMPONENTS BROUGHT IN
+import { AppLevelProvider } from './context/AppLevelContext';
+import LandingPage from './components/LandingPage/LandingPage';
+import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
-//Student
 import StudentPage from './components/StudentPage/StudentPage';
+
+
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Header /> 
-        <div className="content-container"> {/* Layout container */}
-          <Routes>
-            <Route exact path="/" element={<LandingPage />} />
-            <Route path="/teacher" element={<TeacherAdminPage />} />
-            <Route path="/student" element={<StudentPage />} />
-          </Routes>
+    <AppLevelProvider>
+      <Router>
+        <div>
+          <Header />
+          <div className="content-container">
+            <Routes>
+              <Route exact path="/" element={<LandingPage />} />
+              {/* //NEEDING THESE ROUTES TO CHANGE BASED OFF ID IN THE SIGNUP MODAL */}
+              <Route path="/teacher" element={<TeacherAdminPage />} />
+              <Route path="/student" element={<StudentPage />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AppLevelProvider>
   );
 }
 
