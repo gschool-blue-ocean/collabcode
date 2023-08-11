@@ -11,21 +11,24 @@ CREATE TABLE admins (
     ad_id SERIAL PRIMARY KEY,
     ad_email TEXT,
     ad_password TEXT,
-    ad_name TEXT
+    ad_name TEXT,
+    ad_refreshToken TEXT
 );
 
 CREATE TABLE teachers (
     ta_id SERIAL PRIMARY KEY,
     ta_email TEXT,
     ta_password TEXT,
-    ta_name TEXT
+    ta_name TEXT,
+    ta_refreshToken TEXT
 );
 
 CREATE TABLE students (
     st_id SERIAL PRIMARY KEY,
     st_email TEXT,
     st_password TEXT,
-    st_name TEXT
+    st_name TEXT,
+    st_refreshToken TEXT
 );
 
 CREATE TABLE interviews (
