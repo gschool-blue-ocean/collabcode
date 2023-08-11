@@ -181,29 +181,6 @@ app.put(
         }
 
     }
-
-    // attempt pool query
-    try {
-      const results = await pool.query(
-        "UPDATE admins SET ad_email = $1, ad_password = $2, ad_name = $3 WHERE ad_id = $4 RETURNING *",
-        [ad_email, ad_password, ad_name, id]
-      );
-      if (results.rowCount < 1) {
-        res.status(404).send("Resource not found");
-        return;
-      } else {
-        res.status(200).json(results.rows);
-        return;
-      }
-    } catch (error) {
-      // error handling
-      console.error(error.message);
-      res
-        .status(500)
-        .send("Server caught the following error: " + error.message);
-      return;
-    }
-  }
 );
 
 // DELETE ONE - secured by validating id
@@ -721,12 +698,7 @@ app.get(
         }
 
     }
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
+);
 
 // GET ONE - secured by validating id
 app.get("/interviews/:id", param("id").isInt(), async (req, res) => {
