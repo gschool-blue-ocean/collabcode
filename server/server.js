@@ -138,7 +138,7 @@ app.put(
         if (!validationResult(req).isEmpty) {
             res.status(400).send(
                 "Validator caught the following error(s): " +
-                alidationResult(req).array()
+                validationResult(req).array()
             ); return;
         }
 
