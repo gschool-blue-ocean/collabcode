@@ -1,14 +1,31 @@
-import {useState} from 'react'
+import { useState, useEffect } from 'react'
+import io from "socket.io-client";
 
 const Runtime = () => {
   const [input, setInput] = useState("");
-      const [output, setOutput] = useState('')
+  const [output, setOutput] = useState('')
+  
+  const socket = io(); // Connect to the WebSocket server
+  useEffect(() => {
+
+    
+    // Listen for updates from the server
+    socket.on('inputChange', (newInput) => {
+      setInput(newInput);
+    });
+
+    // Clean up the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
       //handle input text
       const handleChange = (e) => {
           //set input state to textarea value
           const rawInput = e.target.value
-          setInput(rawInput)
+        setInput(rawInput)
+         socket.emit("inputChange", rawInput);
       }
 
       //handle 'run' click even
@@ -40,31 +57,36 @@ const Runtime = () => {
 
   return (
     <>
-      <div id="runtime-container" className="w-full h-[80vh] flex">
+      <div id="runtime-container" className="w-full h-[80vh] flex justify-center">
         <div
           id="runtime-content"
-          className="h-full flex w-[80vw] flex-row items-center justify-center"
+          className="h-full flex w-[80vw] flex-col items-center justify-center"
         >
-          <div id="runtimeLeft" className="w-2/5 h-full flex flex-col">
-            <button id="runtimeSubmit" onClick={handleClick}>
+            <button id="runtimeSubmit" className='border-2' onClick={handleClick}>
               Run Code
-            </button>{" "}
+          </button>{" "}
+          <div id='runtimeBody' className='flex flex-row h-screen w-full justify-center'>
+
+          <div id="runtimeLeft" className="w-1/2 h-full flex flex-col">
             <textarea
-              id="runtimeInput"
+                id="runtimeInput"
+                className='h-full border-t-2 border-l-2
+                border-b-2'
               placeholder="//your code here"
               onChange={handleChange}
-            ></textarea>
+              ></textarea>
           </div>
 
           <div
             id="runtimeRight"
-            className="w-2/5 h-full flex flex-col bg-[#353839]"
-          >
+            className="w-1/2 h-full flex flex-col bg-[#353839]"
+            >
             <pre id="runtimeOutput" className="text-[#50d71e] overflow-y-scroll">
               {output}
             </pre>{" "}
           </div>
         </div>
+            </div>
       </div>
     </>
   );
