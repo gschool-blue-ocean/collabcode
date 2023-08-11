@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import pg from 'pg';
 import cors from 'cors';
 import { param, body, query, validationResult } from 'express-validator';
+import { Server } from 'socket.io'; // Import the Server class from socket.io
+
 
 // initialize app by invoking express
 const app = express();
@@ -1222,6 +1224,24 @@ app.delete(
         }
     }
 );
+
+const io = new Server(app);
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  
+  socket.on('inputChange', (newInput) => {
+  
+    io.emit('inputChange', newInput);
+  });
+
+  
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+});
+
 
 /*----- Listener -----*/
 app.listen(PORT, () => {
