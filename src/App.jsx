@@ -10,6 +10,8 @@ function App() {
     <>
       <LandingPage />
       <TeacherAdminPage />
+      {/* StudentPage */}
+      {/* InterviewPage */}
     </>
   );
 }
