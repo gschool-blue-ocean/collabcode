@@ -29,10 +29,6 @@ export const AppLevelProvider = ({ children }) => {
     getStudentData();
   }, []);
 
-  function handleChange(e) {
-    console.log(e.target.value)
-  }
-
   return (
     <AppLevelContext.Provider value={{ teachers, students, loginTeacher }}>
       {children}

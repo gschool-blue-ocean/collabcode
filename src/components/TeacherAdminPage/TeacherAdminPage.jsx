@@ -7,7 +7,7 @@ import { TeacherAdminPageProvider } from '../../context/TeacherAdminPageContext'
 
 const TeacherAdminPage = () => {
   const data = useContext(AppLevelContext);
-  console.log(data); //Bringing in the data of all the Teachers and students to the teacher component
+  // console.log(data); //Bringing in the data of all the Teachers and students to the teacher component
   return (
     <TeacherAdminPageProvider>
       <div id="teacher-content" className="flex">

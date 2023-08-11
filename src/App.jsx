@@ -7,6 +7,8 @@ import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
 import StudentPage from './components/StudentPage/StudentPage';
 
+
+
 function App() {
   return (
     <AppLevelProvider>
@@ -16,6 +18,7 @@ function App() {
           <div className="content-container">
             <Routes>
               <Route exact path="/" element={<LandingPage />} />
+              {/* //NEEDING THESE ROUTES TO CHANGE BASED OFF ID IN THE SIGNUP MODAL */}
               <Route path="/teacher" element={<TeacherAdminPage />} />
               <Route path="/student" element={<StudentPage />} />
             </Routes>

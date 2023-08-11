@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, useRef, createContext } from 'react';
 
 //NEED TO CHANGE URL TO SITE URL WHEN DEPLOYED
 const pageURL = 'http://localhost:8000';
