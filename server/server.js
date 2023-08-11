@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import express from 'express';
 import dotenv from 'dotenv';
 import pg from 'pg';
@@ -8,6 +9,10 @@ import jwtAuthRouter from '../server/Routes/jwtAuth.js';
 
 // initialize app by invoking express
 const app = express();
+
+//Clearing the Error for needing to create a http Server
+import http from 'http';
+const server = http.createServer(app);
 
 // configure environment variables
 dotenv.config();
@@ -1322,7 +1327,7 @@ app.delete('/runtime', param('id').isInt(), async (req, res) => {
   }
 });
 
-const io = new Server(app);
+const io = new Server(server);
 
 io.on('connection', (socket) => {
   console.log('A user connected');
