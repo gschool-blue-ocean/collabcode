@@ -8,8 +8,6 @@ const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
   const [interviews, setInterviews] = useState({});
-  const [teachers, setTeachers] = useState({});
-  const [students, setStudents] = useState({});
 
   //Getting Data for Teacher Component
   useEffect(() => {
@@ -19,24 +17,10 @@ export const TeacherAdminPageProvider = ({ children }) => {
       setInterviews(interviewsData);
     };
     getInterviewData();
-
-    const getTeacherData = async () => {
-      const teacherRes = await fetch(`${pageURL}/teachers`);
-      const teacherData = await teacherRes.json();
-      setTeachers(teacherData);
-    };
-    getTeacherData();
-
-    const getStudentData = async () => {
-      const studentRes = await fetch(`${pageURL}/students`);
-      const studentData = await studentRes.json();
-      setStudents(studentData);
-    };
-    getStudentData();
   }, []);
 
   return (
-    <TeacherAdminPageContext.Provider value={{ interviews, teachers, students }}>
+    <TeacherAdminPageContext.Provider value={{ interviews }}>
       {children}
     </TeacherAdminPageContext.Provider>
   );
