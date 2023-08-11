@@ -10,7 +10,7 @@ export const AppLevelProvider = ({ children }) => {
   const [teachers, setTeachers] = useState({});
   const [students, setStudents] = useState({});
 
-  const loginTeacher = useRef();
+  const [loginTeacher, setLoginTeacher] = useState({});
 
   //Getting Data for Teacher Component
   useEffect(() => {
@@ -30,7 +30,9 @@ export const AppLevelProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppLevelContext.Provider value={{ teachers, students, loginTeacher }}>
+    <AppLevelContext.Provider
+      value={{ teachers, students, loginTeacher, setLoginTeacher }}
+    >
       {children}
     </AppLevelContext.Provider>
   );

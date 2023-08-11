@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import InterviewList from './InterviewList';
 import Calendar from './Calendar';
 import PendingStudents from './PendingStudents';
