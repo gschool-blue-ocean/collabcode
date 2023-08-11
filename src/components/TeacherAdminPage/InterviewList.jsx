@@ -4,7 +4,7 @@ import TeacherAdminPageContext from '../../context/TeacherAdminPageContext';
 const InterviewList = () => {
   //THIS RETURNS ALL THE STUDENTS
   const data = useContext(TeacherAdminPageContext);
-  console.log(data);
+  console.log(data.interviews, data.teachers, data.students);
   //SCHEDULED STUDENTS
 
   return (
