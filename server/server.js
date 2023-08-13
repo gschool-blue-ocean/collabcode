@@ -2,13 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import pg from 'pg';
 import cors from 'cors';
-import { param, body, query, validationResult } from 'express-validator';
-import { Server } from 'socket.io'; // Import the Server class from socket.io
-import jwtAuthRouter from "../server/Routes/jwtAuth.js";
-
+import { param, body, validationResult } from 'express-validator';
+import http from 'http'
+import { Server } from 'socket.io'
 
 // initialize app by invoking express
 const app = express();
+app.use(cors('*'));
+
+
 
 // configure environment variables
 dotenv.config();
@@ -1307,22 +1309,7 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
   }
 });
 
-const io = new Server(app);
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
-
-  
-  socket.on('inputChange', (newInput) => {
-  
-    io.emit('inputChange', newInput);
-  });
-
-  
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
-});
 
 
 /*----- Listener -----*/
@@ -1334,3 +1321,6 @@ app.listen(PORT, () => {
     DATABASE_URL
   );
 });
+
+
+

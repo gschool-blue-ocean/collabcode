@@ -1,154 +1,131 @@
-import { useState, useEffect } from 'react'
-import io from "socket.io-client";
+import { useState, useRef } from "react";
+import Editor from "@monaco-editor/react";
+import { WebrtcProvider } from "y-webrtc";
+import * as Y from "yjs";
+import { MonacoBinding } from "y-monaco";
 
 const Runtime = () => {
+  //set refs for editor and console
+  const editorRef = useRef(null);
+  const outputRef = useRef(null);
+  //set states for global access
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState('')
-  
-  const socket = io(); // Connect to the WebSocket server
-  useEffect(() => {
+  const [outputType, setOutputType] = useState(null); 
 
-    
-    // Listen for updates from the server
-    socket.on('inputChange', (newInput) => {
-      setInput(newInput);
-    });
+  //connect to rtc room for input
+  const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
+    //init input 
+    const editorDoc = new Y.Doc();
+    //connect to live or start new connection with webrtc
+    const provider = new WebrtcProvider("interview-Room", editorDoc);
+    const type = editorDoc.getText("monaco");
+    //bind to monaco
+    const binding = new MonacoBinding(
+      type,
+      editorRef.current.getModel(),
+      new Set([editorRef.current]),
+      provider.awareness
+    );
+  };
 
-    // Clean up the socket connection when the component unmounts
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //connect to rtc room for output
+  const handleOutputDidMount = (output, monaco) => {
+    outputRef.current = output;
+    //init output
+    const outputDoc = new Y.Doc();
+    //connect or start new
+    const provider = new WebrtcProvider("interviewOutput", outputDoc);
+    const type = outputDoc.getText("output");
+    setOutputType(type);
+    //bind to output
+    const binding = new MonacoBinding(
+      type,
+      outputRef.current.getModel(),
+      new Set([outputRef.current]),
+      provider.awareness
+    );
+  };
 
-      //handle input text
-      const handleChange = (e) => {
-          //set input state to textarea value
-          const rawInput = e.target.value
-        setInput(rawInput)
-         socket.emit("inputChange", rawInput);
+  //evaluate input, result to output
+  const handleClick = () => {
+    try {
+      //console logs in array,console log each message
+      const consoleMessages = [];
+      const originalConsoleLog = console.log;
+      console.log = (message) => {
+        consoleMessages.push(message);
+        originalConsoleLog(message);
+      };
+//declare result
+      const result = eval(input);
+//build console log messages
+      const outputText = consoleMessages.join("\n") + "\n" + result;
+//update output ref
+      outputRef.current.getModel().setValue(outputText); 
+      if (outputType) {
+        outputType.delete(0, outputType.length);
+        outputType.insert(0, outputText); 
       }
+      //build error message to return
+    } catch (error) {
+      const errorOutput = "Error: " + error.message + "\n";
+      //update output ref
+      outputRef.current.getModel().setValue(errorOutput);
+      if (outputType) {
+        outputType.delete(0, outputType.length);
+        outputType.insert(0, errorOutput); // Update the shared Yjs document for the output
+      }
+    }
+  };
 
-      //handle 'run' click even
-   const handleClick = () => {
-     // Clear output
-     setOutput("");
-
-     try {
-       // Capture messages
-       const consoleMessages = [];
-       const originalConsoleLog = console.log;
-       console.log = (message) => {
-         consoleMessages.push(message);
-         originalConsoleLog(message);
-       };
-
-       // Evaluate input, capture result
-       const result = eval(input);
-
-       // Combine console.log messages and result, update the output state
-       setOutput(consoleMessages.join("\n") + "\n" + result);
-     } catch (error) {
-       // Handle error messages
-       setOutput((prevOutput) => prevOutput + "Error: " + error.message + "\n");
-     }
-   };
-
-
+//handle inputs
+  const handleChange = (e) => {
+    setInput(e);
+  };
 
   return (
     <>
-      <div id="runtime-container" className="w-full h-[80vh] flex justify-center">
+      <div
+        id="runtime-container"
+        className="w-full h-[80vh] flex justify-center"
+      >
         <div
           id="runtime-content"
           className="h-full flex w-[80vw] flex-col items-center justify-center"
         >
-            <button id="runtimeSubmit" className='border-2' onClick={handleClick}>
-              Run Code
-          </button>{" "}
-          <div id='runtimeBody' className='flex flex-row h-screen w-full justify-center'>
-
-          <div id="runtimeLeft" className="w-1/2 h-full flex flex-col">
-            <textarea
-                id="runtimeInput"
-                className='h-full border-t-2 border-l-2
-                border-b-2'
-              placeholder="//your code here"
-              onChange={handleChange}
-              ></textarea>
-          </div>
-
+          <button id="runtimeSubmit" className="border-2" onClick={handleClick}>
+            Run Code
+          </button>
           <div
-            id="runtimeRight"
-            className="w-1/2 h-full flex flex-col bg-[#353839]"
+            id="runtimeBody"
+            className="flex flex-row h-screen w-full justify-center"
+          >
+            <div id="runtimeLeft" className="w-1/2 h-full flex flex-col">
+              <Editor
+                height="100%"
+                width="100%"
+                theme="vs-dark"
+                onMount={handleEditorDidMount}
+                onChange={handleChange}
+              />
+            </div>
+            <div
+              id="runtimeRight"
+              className="w-1/2 h-full flex flex-col bg-[#353839]"
             >
-            <pre id="runtimeOutput" className="text-[#50d71e] overflow-y-scroll">
-              {output}
-            </pre>{" "}
+              <Editor
+                height="100%"
+                width="100%"
+                theme="vs-dark"
+                onMount={handleOutputDidMount}
+              />
+            </div>
           </div>
         </div>
-            </div>
       </div>
     </>
   );
 };
 
 export default Runtime;
-
-
-// import {useState} from 'react'
-
-
-// const Runtime = () => {
-//     const [input, setInput] = useState('')
-//     const [output, setOutput] = useState('')
-    
-
-//     //handle input text
-//     const handleChange = (e) => {
-//         //set input state to textarea value
-//         const rawInput = e.target.value
-//         setInput(rawInput)
-//         //clear output for clarity(only see relevant console messages)
-//         setOutput('')
-//     }
-
-//     //handle 'run' click even
-//     const handleClick = () => {
-//         //clear output to avoid duplicates
-//         setOutput("");
-//         //add console.log messages to output
-//             try {
-//               const originalConsoleLog = console.log;
-//               console.log = (message) => {
-//                 originalConsoleLog(message);
-//                 setOutput((prevOutput) => prevOutput + message + "\n");
-//               };
-                
-//                 //add result of eval to output
-//               const result = eval(input);
-//                 setOutput((prevOutput) => prevOutput + result + "\n");
-                
-//             } catch (error) {
-//                 //add error messages to output
-//               setOutput(
-//                 (prevOutput) => prevOutput + "Error: " + error.message + "\n"
-//               );
-//             }
-//     };
-
-    
-
-//   return (
-//     <>
-//       <div id="runtimeContainer">
-//         <div id="runtimeLeft">
-//           <button id="runtimeSubmit" onClick={handleClick}>Run Code</button>
-//           <textarea id="runtimeInput" placeholder='//your code here' onChange={handleChange}></textarea>
-//         </div>
-//               <pre id="runtimeOutput">{output}</pre>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Runtime;
