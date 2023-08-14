@@ -14,7 +14,6 @@ const app = express();
 app.use(cors('*'));
 
 //Clearing the Error for needing to create a http Server
-import http from "http";
 const server = http.createServer(app);
 
 // configure environment variables
