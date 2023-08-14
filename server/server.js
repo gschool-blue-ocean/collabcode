@@ -1,20 +1,15 @@
 /* eslint-disable no-undef */
-import http from "http";
 import express from "express";
 import dotenv from "dotenv";
 import pg from "pg";
 import cors from "cors";
 import { param, body, query, validationResult } from "express-validator";
-import { Server } from "socket.io"; // Import the Server class from socket.io
 import jwtAuthRouter from "../server/Routes/jwtAuth.js";
 import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
 app.use(cors('*'));
-
-//Clearing the Error for needing to create a http Server
-const server = http.createServer(app);
 
 // configure environment variables
 dotenv.config();
@@ -1339,4 +1334,6 @@ app.listen(PORT, () => {
     DATABASE_URL
   );
 });
+
+
 
