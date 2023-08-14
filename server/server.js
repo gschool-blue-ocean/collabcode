@@ -1,16 +1,21 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import pg from 'pg';
-import cors from 'cors';
-import { param, body, validationResult } from 'express-validator';
-import http from 'http'
-import { Server } from 'socket.io'
+/* eslint-disable no-undef */
+import http from "http";
+import express from "express";
+import dotenv from "dotenv";
+import pg from "pg";
+import cors from "cors";
+import { param, body, query, validationResult } from "express-validator";
+import { Server } from "socket.io"; // Import the Server class from socket.io
+import jwtAuthRouter from "../server/Routes/jwtAuth.js";
+import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
 app.use(cors('*'));
 
-
+//Clearing the Error for needing to create a http Server
+import http from "http";
+const server = http.createServer(app);
 
 // configure environment variables
 dotenv.config();
@@ -22,7 +27,7 @@ const { Pool } = pg;
 const pool = new Pool({ connectionString: DATABASE_URL });
 
 // middleware
-app.use(express.static("dist"), express.json(), cors());
+app.use(express.static("dist"), express.json(), cors(), cookieParser());
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
@@ -137,52 +142,57 @@ app.post(
 
 // PUT ONE - secured by validating id and sanitizing body
 app.put(
-
-    '/admins/:id',
-    param('id').isInt(),
-    body('ad_email').blacklist(';').escape(),
-    body('ad_password').blacklist(';').escape(),
-    body('ad_name').blacklist(';').escape(),
-    async (req, res) => {
-        // validation result
-        if (!validationResult(req).isEmpty) {
-            res.status(400).send(
-                "Validator caught the following error(s): " +
-                validationResult(req).array()
-            ); return;
-        }
-
-        // destruct required info
-        const { ad_email, ad_password, ad_name } = req.body;
-        const { id } = req.params;
-
-        // remove null values
-        if (!ad_email || !ad_password || !ad_name) {
-            res.status(400).send(
-                "PUT request requires ad_email, ad_password, ad_name"
-            ); return;
-        }
-
-        // attempt pool query
-        try {
-            const results = await pool.query(
-                'UPDATE admins SET ad_email = $1, ad_password = $2, ad_name = $3 WHERE ad_id = $4 RETURNING *',
-                [ad_email, ad_password, ad_name, id]
-            );
-            if (results.rowCount < 1) {
-                res.status(404).send('Resource not found'); return;
-            } else {
-                res.status(200).json(results.rows); return;
-            }
-        }
-
-        // error handling
-        catch (error) {
-            console.error(error.message);
-            res.status(500).send('Server caught the following error: ' + error.message); return;
-        }
-
+  "/admins/:id",
+  param("id").isInt(),
+  body("ad_email").blacklist(";").escape(),
+  body("ad_password").blacklist(";").escape(),
+  body("ad_name").blacklist(";").escape(),
+  async (req, res) => {
+    // validation result
+    if (!validationResult(req).isEmpty) {
+      res
+        .status(400)
+        .send(
+          "Validator caught the following error(s): " +
+            validationResult(req).array()
+        );
+      return;
     }
+
+    // destruct required info
+    const { ad_email, ad_password, ad_name } = req.body;
+    const { id } = req.params;
+
+    // remove null values
+    if (!ad_email || !ad_password || !ad_name) {
+      res
+        .status(400)
+        .send("PUT request requires ad_email, ad_password, ad_name");
+      return;
+    }
+
+    // attempt pool query
+    try {
+      const results = await pool.query(
+        "UPDATE admins SET ad_email = $1, ad_password = $2, ad_name = $3 WHERE ad_id = $4 RETURNING *",
+        [ad_email, ad_password, ad_name, id]
+      );
+      if (results.rowCount < 1) {
+        res.status(404).send("Resource not found");
+        return;
+      } else {
+        res.status(200).json(results.rows);
+        return;
+      }
+    } catch (error) {
+      // error handling
+      console.error(error.message);
+      res
+        .status(500)
+        .send("Server caught the following error: " + error.message);
+      return;
+    }
+  }
 );
 
 // DELETE ONE - secured by validating id
@@ -628,78 +638,89 @@ app.delete("/students/:id", param("id").isInt(), async (req, res) => {
 
 /*----- 'interviews' table routes -----*/
 
-
 // GET ALL - secured by sanitizing query
 app.get(
-    '/interviews',
-    query('ta_id').blacklist(';').escape(),
-    query('st_id').blacklist(';').escape(),
-    async (req, res) => {
-        // validation result
-        if (!validationResult(req).isEmpty) {
-            res.status(400).send(
-                "Validator caught the following error(s): " +
-                validationResult(req).array()
-            ); return;
-        }
-
-        // destruct teacher id and student id from query
-        const { ta_id, st_id } = req.query;
-        // if a teacher id exists, but not a student id, GET ALL interviews by teacher id
-        if (ta_id) {
-            try {
-                const results = await pool.query(
-                    'SELECT * FROM interviews WHERE ta_id = $1;',
-                    [ta_id]
-                );
-                if (results.rowCount < 1) {
-                    res.status(404).send('Resource not found'); return;
-                } else {
-                    res.status(200).json(results.rows); return;
-                }
-            }
-            catch (error) {
-                console.error(error.message);
-                res.status(500).send('Server caught the following error: ' + error.message); return;
-            }
-        }
-        // if a student id exists, but not a teacher id, GET ALL interviews by student id
-        else if (st_id) {
-            try {
-                const results = await pool.query(
-                    'SELECT * FROM interviews WHERE st_id = $1;',
-                    [st_id]
-                );
-                if (results.rowCount < 1) {
-                    res.status(404).send('Resource not found'); return;
-                } else {
-                    res.status(200).json(results.rows); return;
-                }
-            }
-            catch (error) {
-                console.error(error.message);
-                res.status(500).send('Server caught the following error: ' + error.message); return;
-            }
-        }
-        // if neither exist, GET ALL normally
-        else {
-            try {
-                const results = await pool.query(
-                    'SELECT * FROM interviews;'
-                );
-                if (results.rowCount < 1) {
-                    res.status(404).send('Resource not found'); return;
-                } else {
-                    res.status(200).json(results.rows); return;
-                }
-            }
-            catch (error) {
-                console.error(error.message);
-                res.status(500).send('Server caught the following error: ' + error.message); return;
-            }
-        }
-
+  "/interviews",
+  query("ta_id").blacklist(";").escape(),
+  query("st_id").blacklist(";").escape(),
+  async (req, res) => {
+    // validation result
+    if (!validationResult(req).isEmpty) {
+      res
+        .status(400)
+        .send(
+          "Validator caught the following error(s): " +
+            validationResult(req).array()
+        );
+      return;
     }
+
+    // destruct teacher id and student id from query
+    const { ta_id, st_id } = req.query;
+    // if a teacher id exists, but not a student id, GET ALL interviews by teacher id
+    if (ta_id) {
+      try {
+        const results = await pool.query(
+          "SELECT * FROM interviews WHERE ta_id = $1;",
+          [ta_id]
+        );
+        if (results.rowCount < 1) {
+          res.status(404).send("Resource not found");
+          return;
+        } else {
+          res.status(200).json(results.rows);
+          return;
+        }
+      } catch (error) {
+        console.error(error.message);
+        res
+          .status(500)
+          .send("Server caught the following error: " + error.message);
+        return;
+      }
+    }
+    // if a student id exists, but not a teacher id, GET ALL interviews by student id
+    else if (st_id) {
+      try {
+        const results = await pool.query(
+          "SELECT * FROM interviews WHERE st_id = $1;",
+          [st_id]
+        );
+        if (results.rowCount < 1) {
+          res.status(404).send("Resource not found");
+          return;
+        } else {
+          res.status(200).json(results.rows);
+          return;
+        }
+      } catch (error) {
+        console.error(error.message);
+        res
+          .status(500)
+          .send("Server caught the following error: " + error.message);
+        return;
+      }
+    }
+    // if neither exist, GET ALL normally
+    else {
+      try {
+        const results = await pool.query("SELECT * FROM interviews;");
+        if (results.rowCount < 1) {
+          res.status(404).send("Resource not found");
+          return;
+        } else {
+          res.status(200).json(results.rows);
+          return;
+        }
+      } catch (error) {
+        console.error(error.message);
+        res
+          .status(500)
+          .send("Server caught the following error: " + error.message);
+        return;
+      }
+    }
+  }
 );
 
 // GET ONE - secured by validating id
@@ -1308,8 +1329,6 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
     return;
   }
 });
-
-
 
 
 /*----- Listener -----*/

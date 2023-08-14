@@ -1,41 +1,29 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useRef, createContext } from 'react';
+import { useEffect, useState, useRef, createContext } from 'react';
+import AppLevelContext from './AppLevelContext';
 
-const students = [
-  {
-    student: 'Brayan Torres',
-    date: '2023-08-10',
-    time: '11:00AM',
-    status: 'Scheduled',
-  },
-  {
-    student: 'Bao Tran',
-    date: '2023-08-25',
-    time: '12:00PM',
-    status: 'Scheduled',
-  },
-  {
-    student: 'Matthew Hopper',
-    date: '2023-09-10',
-    time: '3:45PM',
-    status: 'Scheduled',
-  },
-  {
-    student: 'Dylan Gordon',
-    date: null,
-    time: null,
-    status: null,
-  },
-];
+//NEED TO CHANGE URL TO SITE URL WHEN DEPLOYED
 
+const pageURL = 'http://localhost:8000';
 const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
-  let interviewInfo = useRef(students);
-  interviewInfo = interviewInfo.current;
+  const [interviews, setInterviews] = useState({});
+  //Bring in the teacher selected
+
+  //Getting Data for Teacher Component
+  useEffect(() => {
+    const getInterviewData = async () => {
+      const interviewsRes = await fetch(`${pageURL}/interviews?ta_id=1`);
+      let interviewsData = await interviewsRes.json();
+      setInterviews(interviewsData);
+    };
+    getInterviewData();
+  }, []);
 
   return (
-    <TeacherAdminPageContext.Provider value={{ interviewInfo }}>
+    <TeacherAdminPageContext.Provider value={{ interviews }}>
       {children}
     </TeacherAdminPageContext.Provider>
   );
