@@ -37,7 +37,7 @@ const Header = () => {
           Home
         </a>
         <a
-          href="/"
+          href="/signin"
           className="text-lg md:text-xl lg:text-2xl font-medium bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md transition duration-300"
         >
           Login/SignUp
