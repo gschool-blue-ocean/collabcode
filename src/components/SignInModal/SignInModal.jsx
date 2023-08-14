@@ -8,7 +8,7 @@ const SignInModal = () => {
     }
 
     const SignInModal = () => (
-        <div id="SignInModal">
+        <div id="SignInModal" className="">
             This is the SignInModal component
             <div>
                 <form>
