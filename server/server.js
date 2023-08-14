@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
-import express from 'express';
-import dotenv from 'dotenv';
-import pg from 'pg';
-import cors from 'cors';
-import { param, body, query, validationResult } from 'express-validator';
-import jwtAuthRouter from '../server/Routes/jwtAuth.js';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import dotenv from "dotenv";
+import pg from "pg";
+import cors from "cors";
+import { param, body, query, validationResult } from "express-validator";
+import jwtAuthRouter from "../server/Routes/jwtAuth.js";
+import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
@@ -1333,3 +1333,6 @@ app.listen(PORT, () => {
     DATABASE_URL
   );
 });
+
+
+
