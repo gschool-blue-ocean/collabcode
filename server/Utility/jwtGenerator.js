@@ -18,7 +18,7 @@ const createRefreshToken = (id) => {
 };
 
 // sending the access token to the client
-const sendAccessToken = (_req, res, accesstoken) => {
+const sendAccessToken = (req, res, accesstoken) => {
   res.json({
     accesstoken,
     message: "Sign in Successful",
