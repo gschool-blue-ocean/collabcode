@@ -2,16 +2,30 @@ import bcrypt from "bcrypt";
 import createAccessToken from "../Utility/jwtGenerator.js";
 import express from "express";
 import pool from "../db.js";
+import pkg from "jsonwebtoken";
+import dotenv from "dotenv";
+import {
+  validStudentInfo,
+  validAdminInfo,
+  validTeacherInfo,
+} from "../middlewares/validInfo.js";
+import {
+  studentUser,
+  adminUser,
+  teacherUser,
+} from "../middlewares/protected.js";
+const { verify } = pkg;
 import {
   createRefreshToken,
   sendAccessToken,
   sendRefreshToken,
 } from "../Utility/jwtGenerator.js";
 
+dotenv.config();
 const router = express.Router();
 
 //register for admin account
-router.post("/register/admin", async (req, res) => {
+router.post("/register/admin", validAdminInfo, async (req, res) => {
   try {
     const { ad_email, ad_password, ad_name } = req.body;
 
@@ -43,7 +57,7 @@ router.post("/register/admin", async (req, res) => {
 });
 
 //register for teacher account
-router.post("/register/teacher", async (req, res) => {
+router.post("/register/teacher", validTeacherInfo, async (req, res) => {
   try {
     const { ta_email, ta_password, ta_name } = req.body;
 
@@ -76,7 +90,7 @@ router.post("/register/teacher", async (req, res) => {
 });
 
 // register student
-router.post("/register/student", async (req, res) => {
+router.post("/register/student", validStudentInfo, async (req, res) => {
   try {
     const { st_email, st_password, st_name } = req.body;
 
@@ -105,7 +119,7 @@ router.post("/register/student", async (req, res) => {
 });
 
 //sign in for admin
-router.post("/signIn/admin", async (req, res) => {
+router.post("/signIn/admin", validAdminInfo, async (req, res) => {
   try {
     const { ad_email, ad_password } = req.body;
 
@@ -128,9 +142,8 @@ router.post("/signIn/admin", async (req, res) => {
     //create a token if the password is correct
     //they use "const accessToken = createAccessToken(...)"
     //we need to create a token here
-    const accessToken = createAccessToken(user.rows[0]);
-    const refreshToken = createRefreshToken(user.rows[0]);
-
+    const accessToken = createAccessToken(user.rows[0].ad_id);
+    const refreshToken = createRefreshToken(user.rows[0].ad_id);
     //UPDATE owners SET age = 30 WHERE name = 'Jane';
     const insertToken = await pool.query(
       `UPDATE admins SET ad_refreshToken = $1 WHERE ad_email = $2;`,
@@ -144,7 +157,7 @@ router.post("/signIn/admin", async (req, res) => {
 });
 
 //sign in for teacher
-router.post("/signIn/teacher", async (req, res) => {
+router.post("/signIn/teacher", validTeacherInfo, async (req, res) => {
   try {
     const { ta_email, ta_password } = req.body;
 
@@ -168,8 +181,8 @@ router.post("/signIn/teacher", async (req, res) => {
     //create a token if the password is correct
     //they use "const accessToken = createAccessToken(...)"
     //we need to create a token here
-    const accessToken = createAccessToken(user.rows[0]);
-    const refreshToken = createRefreshToken(user.rows[0]);
+    const accessToken = createAccessToken(user.rows[0].ta_id);
+    const refreshToken = createRefreshToken(user.rows[0].ta_id);
 
     //UPDATE owners SET age = 30 WHERE name = 'Jane';
     const insertToken = await pool.query(
@@ -184,7 +197,7 @@ router.post("/signIn/teacher", async (req, res) => {
 });
 
 //sign in for student
-router.post("/signIn/student", async (req, res) => {
+router.post("/signIn/student", validStudentInfo, async (req, res) => {
   try {
     const { st_email, st_password } = req.body;
 
@@ -208,9 +221,8 @@ router.post("/signIn/student", async (req, res) => {
     //create a token if the password is correct
     //they use "const accessToken = createAccessToken(...)"
     //we need to create a token here
-    const accessToken = createAccessToken(user.rows[0]);
-    const refreshToken = createRefreshToken(user.rows[0]);
-
+    const accessToken = createAccessToken(user.rows[0].st_id);
+    const refreshToken = createRefreshToken(user.rows[0].st_id);
     //UPDATE owners SET age = 30 WHERE name = 'Jane';
     const insertToken = await pool.query(
       `UPDATE students SET st_refreshToken = $1 WHERE st_email = $2;`,
@@ -222,10 +234,290 @@ router.post("/signIn/student", async (req, res) => {
     res.status(500).send("Error signing in...");
   }
 });
-//Sign out request??
-router.post("/logout", (_req, res) => {
-  res.clearCookie("refreshToken").send("logged out successfully");
-  // res.send("Logged out successfully");
+
+//Sign out request
+router.post("/logout", (req, res) => {
+  res.clearCookie("refreshtoken");
+  return res.json({
+    message: "Logged out successfully! 🤗",
+    type: "success",
+  });
+});
+
+// Refresh Token request for student
+router.post("/refresh_token/student", async (req, res) => {
+  try {
+    const { refreshtoken } = req.cookies;
+    // if we don't have a refresh token, return error
+    if (!refreshtoken)
+      return res.status(500).json({
+        message: "No refresh token! 🤔",
+        type: "error",
+      });
+    // if we have a refresh token, you have to verify it
+    let id;
+    try {
+      id = verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET).id;
+    } catch (error) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is invalid, return error
+    if (!id)
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    // if the refresh token is valid, check if the user exists
+    const user = await pool.query("SELECT * FROM students WHERE st_id = $1;", [
+      id,
+    ]);
+    // if the user doesn't exist, return error
+    if (!user)
+      return res.status(500).json({
+        message: "User doesn't exist! 😢",
+        type: "error",
+      });
+    // if the user exists, check if the refresh token is correct. return error if it is incorrect.
+    if (user.rows[0].st_refreshtoken !== refreshtoken) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is correct, create the new tokens
+    const accessToken = createAccessToken(user.rows[0].st_id);
+    const refreshToken = createRefreshToken(user.rows[0].st_id);
+    // update the refresh token in the database
+    const insertToken = await pool.query(
+      `UPDATE students SET st_refreshToken = $1 WHERE st_email = $2;`,
+      [refreshToken, user.rows[0].st_email]
+    );
+    // send the new tokes as response
+    sendRefreshToken(res, refreshToken);
+
+    return res.json({
+      message: "Refreshed successfully! 🤗",
+      type: "success",
+      accessToken,
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error refreshing token!",
+      error,
+    });
+  }
+});
+
+// Refresh Token request for teacher
+router.post("/refresh_token/teacher", async (req, res) => {
+  try {
+    const { refreshtoken } = req.cookies;
+    // if we don't have a refresh token, return error
+    if (!refreshtoken)
+      return res.status(500).json({
+        message: "No refresh token! 🤔",
+        type: "error",
+      });
+    // if we have a refresh token, you have to verify it
+    let id;
+    try {
+      id = verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET).id;
+    } catch (error) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is invalid, return error
+    if (!id)
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    // if the refresh token is valid, check if the user exists
+    const user = await pool.query("SELECT * FROM teachers WHERE ta_id = $1;", [
+      id,
+    ]);
+    // if the user doesn't exist, return error
+    if (!user)
+      return res.status(500).json({
+        message: "User doesn't exist! 😢",
+        type: "error",
+      });
+    // if the user exists, check if the refresh token is correct. return error if it is incorrect.
+    if (user.rows[0].ta_refreshtoken !== refreshtoken) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is correct, create the new tokens
+    const accessToken = createAccessToken(user.rows[0].ta_id);
+    const refreshToken = createRefreshToken(user.rows[0].ta_id);
+    // update the refresh token in the database
+    const insertToken = await pool.query(
+      `UPDATE teachers SET ta_refreshToken = $1 WHERE ta_email = $2;`,
+      [refreshToken, user.rows[0].ta_email]
+    );
+    // send the new tokes as response
+    sendRefreshToken(res, refreshToken);
+
+    return res.json({
+      message: "Refreshed successfully! 🤗",
+      type: "success",
+      accessToken,
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error refreshing token!",
+      error,
+    });
+  }
+});
+
+// Refresh Token request for admin
+router.post("/refresh_token/admin", async (req, res) => {
+  try {
+    const { refreshtoken } = req.cookies;
+    // if we don't have a refresh token, return error
+    if (!refreshtoken)
+      return res.status(500).json({
+        message: "No refresh token! 🤔",
+        type: "error",
+      });
+    // if we have a refresh token, you have to verify it
+    let id;
+    try {
+      id = verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET).id;
+    } catch (error) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is invalid, return error
+    if (!id)
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    // if the refresh token is valid, check if the user exists
+    const user = await pool.query("SELECT * FROM admins WHERE ad_id = $1;", [
+      id,
+    ]);
+    // if the user doesn't exist, return error
+    if (!user)
+      return res.status(500).json({
+        message: "User doesn't exist! 😢",
+        type: "error",
+      });
+    // if the user exists, check if the refresh token is correct. return error if it is incorrect.
+    if (user.rows[0].ad_refreshtoken !== refreshtoken) {
+      return res.status(500).json({
+        message: "Invalid refresh token!",
+        type: "error",
+      });
+    }
+    // if the refresh token is correct, create the new tokens
+    const accessToken = createAccessToken(user.rows[0].ad_id);
+    const refreshToken = createRefreshToken(user.rows[0].ad_id);
+    // update the refresh token in the database
+    const insertToken = await pool.query(
+      `UPDATE admins SET ad_refreshToken = $1 WHERE ad_email = $2;`,
+      [refreshToken, user.rows[0].ad_email]
+    );
+    // send the new tokes as response
+    sendRefreshToken(res, refreshToken);
+
+    return res.json({
+      message: "Refreshed successfully! 🤗",
+      type: "success",
+      accessToken,
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error refreshing token!",
+      error,
+    });
+  }
+});
+
+router.get("/protected/student", studentUser, async (req, res) => {
+  try {
+    // if user exists in the request, send the data
+    if (req.user) {
+      return res.json({
+        message: "You are logged in! 🤗",
+        type: "success",
+        user: req.user,
+      });
+    }
+    // if user doesn't exist, return error
+    return res.status(500).json({
+      message: "You are not logged in! 😢",
+      type: "error",
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error getting protected route!",
+      error,
+    });
+  }
+});
+
+router.get("/protected/admin", adminUser, async (req, res) => {
+  try {
+    // if user exists in the request, send the data
+    if (req.user) {
+      return res.json({
+        message: "You are logged in! 🤗",
+        type: "success",
+        user: req.user,
+      });
+    }
+    // if user doesn't exist, return error
+    return res.status(500).json({
+      message: "You are not logged in! 😢",
+      type: "error",
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error getting protected route!",
+      error,
+    });
+  }
+});
+
+router.get("/protected/teacher", teacherUser, async (req, res) => {
+  try {
+    // if user exists in the request, send the data
+    if (req.user) {
+      return res.json({
+        message: "You are logged in! 🤗",
+        type: "success",
+        user: req.user,
+      });
+    }
+    // if user doesn't exist, return error
+    return res.status(500).json({
+      message: "You are not logged in! 😢",
+      type: "error",
+    });
+  } catch (error) {
+    res.status(500).json({
+      type: "error",
+      message: "Error getting protected route!",
+      error,
+    });
+  }
 });
 
 export default router;
