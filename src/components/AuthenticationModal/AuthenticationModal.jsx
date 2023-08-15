@@ -4,15 +4,14 @@ import SignUpModal from "./SignUpModal";
 import SignInModal from "./SignInModal";
 
 const AuthenticationModal = () => {
-    const { signIn } = useContext(AuthenticationModalContext)
+  const { signIn } = useContext(AuthenticationModalContext);
 
-    if (signIn) {
-        return <SignInModal />;
-    } else {
-        return <SignUpModal />;
-    }
-
-
-}
+  if (signIn) {
+    return <SignInModal />;
+  } else {
+    return <SignUpModal />;
+  }
+  
+};
 
 export default AuthenticationModal;

@@ -6,29 +6,33 @@ import { AuthenticationModalProvider } from './context/AuthenticationModalContex
 import LandingPage from './components/LandingPage/LandingPage';
 import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
+import StudentPage from './components/StudentPage/StudentPage';
+import InterviewPage from './components/InterviewPage/InterviewPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
-
 
 
 function App() {
   return (
     <AppLevelProvider>
       <AuthenticationModalProvider>
-      <Router>
-        <div>
-          <Header />
-          <div className="content-container">
-            <Routes>
-              <Route exact path="/" element={<LandingPage />} />
-              
-              <Route path="/signIn" element={<AuthenticationModal />} />
-              
-              <Route path="/api/auth/signIn/teacher" element={<TeacherAdminPage />} />
-              <Route path="/student" element={<StudentPage />} />
-            </Routes>
+        <Router>
+          <div>
+            <Header />
+            <div className="content-container">
+              <Routes>
+                <Route exact path="/" element={<LandingPage />} />
+
+                <Route path="/signIn" element={<AuthenticationModal />} />
+
+                <Route
+                  path="/api/auth/signIn/teacher"
+                  element={<TeacherAdminPage />}
+                />
+                <Route path="/student" element={<StudentPage />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
       </AuthenticationModalProvider>
     </AppLevelProvider>
   );

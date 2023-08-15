@@ -7,8 +7,7 @@ import AppLevelContext from '../../context/AppLevelContext';
 import { TeacherAdminPageProvider } from '../../context/TeacherAdminPageContext';
 
 const TeacherAdminPage = () => {
-  const { loginTeacher, setLoginTeacher } = useContext(AppLevelContext);
-  console.log(loginTeacher);
+
   return (
     <TeacherAdminPageProvider>
       <div id="teacher-content" className="flex">

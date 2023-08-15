@@ -1,21 +1,22 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState, createContext } from 'react';
+import { useState, createContext } from "react";
 
 
 const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
+
   const [loginAdmin, setLoginAdmin] = useState(false);
   const [loginStudent, setLoginStudent] = useState(false);
   const [userData, setUserData] = useState({});
   const [accountType, setAccountType] = useState('');
 
-  const toggleTeacher = () => {
-    setLoginTeacher(!loginTeacher)
-  }
 
+  const toggleTeacher = () => {
+    setLoginTeacher(!loginTeacher);
+  };
   const toggleAdmin = () => {
     setLoginAdmin(!loginAdmin)
   }
@@ -86,16 +87,21 @@ export const AppLevelProvider = ({ children }) => {
              }
           }
           }       
-      } catch (error) {
-          console.error(error.message)
-      }
-  }
+} catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <AppLevelContext.Provider
       value={{
-        loginTeacher, setLoginTeacher, handleSignin, setAccountType
-       }}
+        loginTeacher,
+        setLoginTeacher,
+        handleSignin,
+        userData,
+        setAccountType
+      }}
+
     >
       {children}
     </AppLevelContext.Provider>

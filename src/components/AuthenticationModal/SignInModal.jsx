@@ -1,47 +1,52 @@
 import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import AuthenticationModalContext from "../../context/AuthenticationModalContext";
 import AppLevelContext from "../../context/AppLevelContext"
 import DropDown from "./Dropdown";
 
 
+
 const SignInModal = () => {
-    const [signInInputs, setSignInInputs] = useState({
-        signInEmail: '',
-        signInPassword: ''
-    })
+  const [signInInputs, setSignInInputs] = useState({
+    signInEmail: "",
+    signInPassword: "",
+  });
 
-    const { handleSignin} = useContext(AppLevelContext)
+  const { handleSignin, loginTeacher, setLoginTeacher, userData } =
+    useContext(AppLevelContext);
+  const { toggleSignInState } = useContext(AuthenticationModalContext);
 
-    const { toggleSignInState } = useContext(AuthenticationModalContext)
+  const { signInEmail, signInPassword } = signInInputs;
 
-    const { signInEmail, signInPassword } = signInInputs;
+  const handleChange = (e) => {
+    setSignInInputs({
+      ...signInInputs,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const handleChange = (e) => {
-        setSignInInputs({
-            ...signInInputs,
-            [e.target.name] : e.target.value
-        })
-    }
+  if (loginTeacher === true && userData.type === "success") {
+    return <Navigate to="/api/auth/signIn/teacher" />;
+  }
 
-    return (
-        <>
-                <div
-            id="SignInModal"
-            style={{
-                'backgroundImage': 'linear-gradient(90deg, #ffa500b0, #ffc0cbc9)',
-                'minHeight': '640px',
-                'padding': '2% 0'
-            }}
+  return (
+    <>
+      <div
+        id="SignInModal"
+        style={{
+          backgroundImage: "linear-gradient(90deg, #ffa500b0, #ffc0cbc9)",
+          minHeight: "640px",
+          padding: "2% 0",
+        }}
+      >
+        <div
+          className="m-auto bg-white p-5"
+          style={{
+            maxWidth: "800px",
+            borderRadius: "20px",
+            boxShadow: "3px 4px 17px #00000026",
+          }}
         >
-            <div
-                className="m-auto bg-white p-5"
-                style={{
-                    'maxWidth': '800px',
-                    'borderRadius': '20px',
-                    'boxShadow': '3px 4px 17px #00000026'
-                }}
-            >
-                
                 <form
                     className="text-3xl p-6 flex flex-col"
                 >
@@ -88,8 +93,9 @@ const SignInModal = () => {
                 </button>
             </div>
         </div>
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 
 export default SignInModal;

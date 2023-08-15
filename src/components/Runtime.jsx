@@ -1,26 +1,20 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 
 const Runtime = () => {
-  //set refs for editor and console
   const editorRef = useRef(null);
   const outputRef = useRef(null);
-  //set states for global access
   const [input, setInput] = useState("");
-  const [outputType, setOutputType] = useState(null); 
+  const [outputType, setOutputType] = useState(null);
 
-  //connect to rtc room for input
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
-    //init input 
     const editorDoc = new Y.Doc();
-    //connect to live or start new connection with webrtc
     const provider = new WebrtcProvider("interview-Room", editorDoc);
     const type = editorDoc.getText("monaco");
-    //bind to monaco
     const binding = new MonacoBinding(
       type,
       editorRef.current.getModel(),
@@ -29,16 +23,12 @@ const Runtime = () => {
     );
   };
 
-  //connect to rtc room for output
   const handleOutputDidMount = (output, monaco) => {
     outputRef.current = output;
-    //init output
     const outputDoc = new Y.Doc();
-    //connect or start new
     const provider = new WebrtcProvider("interviewOutput", outputDoc);
     const type = outputDoc.getText("output");
     setOutputType(type);
-    //bind to output
     const binding = new MonacoBinding(
       type,
       outputRef.current.getModel(),
@@ -47,39 +37,36 @@ const Runtime = () => {
     );
   };
 
-  //evaluate input, result to output
   const handleClick = () => {
     try {
-      //console logs in array,console log each message
       const consoleMessages = [];
       const originalConsoleLog = console.log;
       console.log = (message) => {
         consoleMessages.push(message);
         originalConsoleLog(message);
       };
-//declare result
+
       const result = eval(input);
-//build console log messages
+
       const outputText = consoleMessages.join("\n") + "\n" + result;
-//update output ref
-      outputRef.current.getModel().setValue(outputText); 
+
+      outputRef.current.getModel().setValue(outputText);
       if (outputType) {
         outputType.delete(0, outputType.length);
-        outputType.insert(0, outputText); 
+        outputType.insert(0, outputText);
       }
-      //build error message to return
     } catch (error) {
       const errorOutput = "Error: " + error.message + "\n";
-      //update output ref
       outputRef.current.getModel().setValue(errorOutput);
       if (outputType) {
         outputType.delete(0, outputType.length);
-        outputType.insert(0, errorOutput); // Update the shared Yjs document for the output
+        outputType.insert(0, errorOutput);
       }
+
+      console.error("An error occurred:", error);
     }
   };
 
-//handle inputs
   const handleChange = (e) => {
     setInput(e);
   };
@@ -88,7 +75,7 @@ const Runtime = () => {
     <>
       <div
         id="runtime-container"
-        className="w-full h-[80vh] flex justify-center"
+        className="w-4/5 h-[80vh] flex justify-center"
       >
         <div
           id="runtime-content"
