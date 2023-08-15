@@ -12,28 +12,28 @@ import InterviewPage from './components/InterviewPage/InterviewPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
 
 
-
-
 function App() {
   return (
     <AppLevelProvider>
       <AuthenticationModalProvider>
-      <Router>
-        <div>
-          <Header />
-          <div className="content-container">
-            <Routes>
-              <Route exact path="/" element={<LandingPage />} />
-              
-              <Route path="/signIn" element={<AuthenticationModal />} />
-              
-              <Route path="/api/auth/signIn/teacher" element={<TeacherAdminPage />} />
-              <Route path="/student" element={<StudentPage />} />
-              <Route path="/interview" element={<InterviewPage />} />
-            </Routes>
+        <Router>
+          <div>
+            <Header />
+            <div className="content-container">
+              <Routes>
+                <Route exact path="/" element={<LandingPage />} />
+
+                <Route path="/signIn" element={<AuthenticationModal />} />
+
+                <Route
+                  path="/api/auth/signIn/teacher"
+                  element={<TeacherAdminPage />}
+                />
+                <Route path="/student" element={<StudentPage />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
       </AuthenticationModalProvider>
     </AppLevelProvider>
   );
