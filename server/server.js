@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 
 // initialize app by invoking express
 const app = express();
-app.use(cors('*'));
+app.use(cors({ origin: '*' }));
 
 // configure environment variables
 dotenv.config();
