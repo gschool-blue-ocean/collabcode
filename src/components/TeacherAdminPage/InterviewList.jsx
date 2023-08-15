@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from 'react';
+import AppLevelContext from '../../context/AppLevelContext';
 import TeacherAdminPageContext from '../../context/TeacherAdminPageContext';
 
 const InterviewList = () => {
-  const interviews = useContext(TeacherAdminPageContext);
-  console.log(interviews); //Bringing in the interviews Data for that specific teacher
+  const data = useContext(AppLevelContext);
+  const { interviews } = useContext(TeacherAdminPageContext);
 
   return (
     <div id="interview-list-container" className="w-[50vw] h-[60vh]">

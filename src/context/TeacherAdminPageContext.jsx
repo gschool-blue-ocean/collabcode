@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useRef, createContext } from 'react';
-import AppLevelContext from './AppLevelContext';
+import { useEffect, useState, createContext } from 'react';
 
 //NEED TO CHANGE URL TO SITE URL WHEN DEPLOYED
 
