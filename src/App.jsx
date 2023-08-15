@@ -1,5 +1,5 @@
 //MODULES BROUGHT IN
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 //COMPONENTS BROUGHT IN
 import { AppLevelProvider } from './context/AppLevelContext';
 import { AuthenticationModalProvider } from './context/AuthenticationModalContext';
