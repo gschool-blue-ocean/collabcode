@@ -7,7 +7,6 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
 import StudentPage from './components/StudentPage/StudentPage';
-import SignInModal from './components/SignInModal/SignInModal';
 import InterviewPage from './components/InterviewPage/InterviewPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
 
