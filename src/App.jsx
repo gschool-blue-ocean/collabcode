@@ -22,7 +22,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<LandingPage />} />
               
-              <Route path="/signin" element={<AuthenticationModal />} />
+              <Route path="/signIn" element={<AuthenticationModal />} />
               
               <Route path="/api/auth/signIn/teacher" element={<TeacherAdminPage />} />
               <Route path="/student" element={<StudentPage />} />
