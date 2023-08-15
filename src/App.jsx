@@ -7,6 +7,7 @@ import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
 import StudentPage from './components/StudentPage/StudentPage';
 import SignInModal from './components/SignInModal/SignInModal';
+import InterviewPage from './components/InterviewPage/InterviewPage';
 
 
 
@@ -22,6 +23,7 @@ function App() {
               <Route path="/signin" element={<SignInModal />} />
               <Route path="/teacher" element={<TeacherAdminPage />} />
               <Route path="/student" element={<StudentPage />} />
+              <Route path="/interview" element={<InterviewPage />} />
             </Routes>
           </div>
         </div>
