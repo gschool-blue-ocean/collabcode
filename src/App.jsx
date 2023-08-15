@@ -6,7 +6,6 @@ import { AuthenticationModalProvider } from './context/AuthenticationModalContex
 import LandingPage from './components/LandingPage/LandingPage';
 import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
-import StudentPage from './components/StudentPage/StudentPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
 
 
