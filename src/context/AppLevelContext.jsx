@@ -1,37 +1,68 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState, useRef, useEffect, createContext } from 'react';
+import { useState, createContext } from 'react';
 //NEED TO CHANGE URL TO SITE URL WHEN DEPLOYED
 const pageURL = 'http://localhost:8000';
 
 const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
-  const [teachers, setTeachers] = useState({});
-  const [students, setStudents] = useState({});
+  const [loginTeacher, setLoginTeacher] = useState(false);
 
-  const [loginTeacher, setLoginTeacher] = useState({});
+  const toggleTeacher = () => {
+    setLoginTeacher(!loginTeacher)
+  }
 
   //Getting Data for Teacher Component
-  useEffect(() => {
-    const getTeacherData = async () => {
-      const teacherRes = await fetch(`${pageURL}/teachers`);
-      const teacherData = await teacherRes.json();
-      setTeachers(teacherData);
-    };
-    getTeacherData();
+    const handleSignin = async (e) => {
+      e.preventDefault();
+      try {
+          const body = {signInEmail, signInPassword}
+          
+          const response = await fetch('https://collab-code.onrender.com/api/auth/signIn/teacher', {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify(
+                body.signInEmail.value,
+                body.signInPassword.value
+                )
+          })
+          
+          if(response.status != 200) {
+              console.log(response.statusText);
+          } else {
+              const data = await response.json()
+              console.log(data);
 
-    const getStudentData = async () => {
-      const studentRes = await fetch(`${pageURL}/students`);
-      const studentData = await studentRes.json();
-      setStudents(studentData);
-    };
-    getStudentData();
-  }, []);
+              const responseUserData = await fetch('https://collab-code.onrender.com/api/auth/protected/teacher', {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "token": data.token
+              }
+              
+          })
+
+          if(responseUserData.status != 200) {
+              console.log("Got an error getting the user object it is " + responseUserData.statusText)
+          } else {
+              const userData = await responseUserData.json();
+              console.log(userData);
+              toggleTeacher()
+          }
+          }       
+      } catch (error) {
+          console.error(error.message)
+      }
+  }
 
   return (
     <AppLevelContext.Provider
-      value={{ teachers, students, loginTeacher, setLoginTeacher }}
+      value={{
+        loginTeacher, setLoginTeacher, handleSignin
+       }}
     >
       {children}
     </AppLevelContext.Provider>
