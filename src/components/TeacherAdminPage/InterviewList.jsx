@@ -6,7 +6,6 @@ import TeacherAdminPageContext from '../../context/TeacherAdminPageContext';
 const InterviewList = () => {
   const data = useContext(AppLevelContext);
   const { interviews } = useContext(TeacherAdminPageContext);
-  console.log(interviews); //Bringing in the interviews Data for that specific teacher
 
   return (
     <div id="interview-list-container" className="w-[50vw] h-[60vh]">
