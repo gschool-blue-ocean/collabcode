@@ -7,7 +7,10 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Header from './components/Header';
 import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
 import StudentPage from './components/StudentPage/StudentPage';
+import SignInModal from './components/SignInModal/SignInModal';
+import InterviewPage from './components/InterviewPage/InterviewPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
+
 
 
 
@@ -26,6 +29,7 @@ function App() {
               
               <Route path="/api/auth/signIn/teacher" element={<TeacherAdminPage />} />
               <Route path="/student" element={<StudentPage />} />
+              <Route path="/interview" element={<InterviewPage />} />
             </Routes>
           </div>
         </div>
