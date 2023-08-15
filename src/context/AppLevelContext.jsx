@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, createContext } from "react";
 
+
 const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
@@ -45,7 +46,6 @@ export const AppLevelProvider = ({ children }) => {
         console.log(response.statusText);
       } else {
         const data = await response.json();
-        console.log(data);
         //interpolate the role into the string
         const responseUserData = await fetch(
           "https://collab-code.onrender.com/api/auth/protected/teacher",
@@ -58,16 +58,19 @@ export const AppLevelProvider = ({ children }) => {
           }
         );
 
-        if (responseUserData.status != 200) {
+        if (responseUserData.status !== 200) {
           console.log(
             "Got an error getting the user object it is " +
               responseUserData.statusText
           );
         } else {
           const teacherData = await responseUserData.json();
-          setUserData(teacherData.value);
+          setUserData(teacherData);
           alert(teacherData.message);
           toggleTeacher();
+          // if (teacherData.type === "success") {
+          //   <Navigate to="/api/auth/signIn/teacher" replace={true} />;
+          // }
         }
       }
     } catch (error) {
@@ -81,6 +84,7 @@ export const AppLevelProvider = ({ children }) => {
         loginTeacher,
         setLoginTeacher,
         handleSignin,
+        userData,
       }}
     >
       {children}

@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import AuthenticationModalContext from "../../context/AuthenticationModalContext";
 import AppLevelContext from "../../context/AppLevelContext";
 
@@ -8,7 +9,8 @@ const SignInModal = () => {
     signInPassword: "",
   });
 
-  const { handleSignin } = useContext(AppLevelContext);
+  const { handleSignin, loginTeacher, setLoginTeacher, userData } =
+    useContext(AppLevelContext);
   const { toggleSignInState } = useContext(AuthenticationModalContext);
 
   const { signInEmail, signInPassword } = signInInputs;
@@ -19,6 +21,10 @@ const SignInModal = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (loginTeacher === true && userData.type === "success") {
+    return <Navigate to="/api/auth/signIn/teacher" />;
+  }
 
   return (
     <>
