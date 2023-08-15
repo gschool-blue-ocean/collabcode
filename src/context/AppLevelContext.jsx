@@ -68,9 +68,6 @@ export const AppLevelProvider = ({ children }) => {
           setUserData(teacherData);
           alert(teacherData.message);
           toggleTeacher();
-          // if (teacherData.type === "success") {
-          //   <Navigate to="/api/auth/signIn/teacher" replace={true} />;
-          // }
         }
       }
     } catch (error) {
