@@ -1,16 +1,6 @@
 //MODULES BROUGHT IN
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 //COMPONENTS BROUGHT IN
-<<<<<<< HEAD
-import { AppLevelProvider } from "./context/AppLevelContext";
-import { AuthenticationModalProvider } from "./context/AuthenticationModalContext";
-import LandingPage from "./components/LandingPage/LandingPage";
-import Header from "./components/Header";
-import TeacherAdminPage from "./components/TeacherAdminPage/TeacherAdminPage";
-import StudentPage from "./components/StudentPage/StudentPage";
-import InterviewPage from "./components/InterviewPage/InterviewPage";
-import AuthenticationModal from "./components/AuthenticationModal/AuthenticationModal";
-=======
 import { AppLevelProvider } from './context/AppLevelContext';
 import { AuthenticationModalProvider } from './context/AuthenticationModalContext';
 import LandingPage from './components/LandingPage/LandingPage';
@@ -20,7 +10,6 @@ import StudentPage from './components/StudentPage/StudentPage';
 import InterviewPage from './components/InterviewPage/InterviewPage';
 import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
 
->>>>>>> cbf01d0065c4f414f61a92340ed819ae47f4cac6
 
 function App() {
   return (
