@@ -24,8 +24,8 @@ export const AppLevelProvider = ({ children }) => {
       e.preventDefault();
       try {
         //Role ie(admin, teacher, student)
-          const body_email = body.signInEmail.value;
-          const body_password = body.signInPassword.value;
+          const body_email = signInEmail.value;
+          const body_password = signInPassword.value;
 
           const verify = {
             //if role === admin 
