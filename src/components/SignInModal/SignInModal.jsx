@@ -7,7 +7,6 @@ const SignInModal = () => {
     setSignIn(!signIn);
   };
 
-  //Authication Path is localhost:8500/api/auth/signIn/[INSERT ROLE HERE]
   const SignInModal = () => (
     <div id="SignInModal">
       This is the SignInModal component
@@ -30,8 +29,7 @@ const SignInModal = () => {
       </div>
     </div>
   );
-
-  //Authication Path is localhost:8500/api/auth/register/[INSERT ROLE HERE]
+  
   const SignUpModal = () => (
     <div id="SignUpModal">
       This is the SignUpModal component

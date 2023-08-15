@@ -8,8 +8,6 @@ import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
 import StudentPage from './components/StudentPage/StudentPage';
 import SignInModal from './components/SignInModal/SignInModal';
 
-
-
 function App() {
   return (
     <AppLevelProvider>
@@ -19,7 +17,7 @@ function App() {
           <div className="content-container">
             <Routes>
               <Route exact path="/" element={<LandingPage />} />
-              <Route path="/signin" element={<SignInModal />} />
+              <Route path="/signIn" element={<SignInModal />} />
               <Route path="/teacher" element={<TeacherAdminPage />} />
               <Route path="/student" element={<StudentPage />} />
             </Routes>
