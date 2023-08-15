@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import AuthenticationModalContext from "../../context/AuthenticationModalContext";
 import AppLevelContext from "../../context/AppLevelContext"
+import DropDown from "./Dropdown";
 
 
 const SignInModal = () => {
@@ -40,9 +41,11 @@ const SignInModal = () => {
                     'boxShadow': '3px 4px 17px #00000026'
                 }}
             >
+                
                 <form
                     className="text-3xl p-6 flex flex-col"
                 >
+                    <DropDown/>
                     <label htmlFor="signin-email" className="pt-4">Email: </label>
                     <input
                         type="email"

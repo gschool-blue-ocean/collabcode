@@ -7,33 +7,48 @@ const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
-  const [userData, setUserData] = useState({})
+  const [loginAdmin, setLoginAdmin] = useState(false);
+  const [loginStudent, setLoginStudent] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [accountType, setAccountType] = useState('');
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher)
   }
 
-  //Getting Data for Teacher Component
+  const toggleAdmin = () => {
+    setLoginAdmin(!loginAdmin)
+  }
 
-  //Selection to pick the role of who is signing in
-    //Use role as parameter to fill in which request is being authenticated
-
-
+  const toggleStudent = () => {
+    setLoginStudent(!loginStudent)
+  }
 
     const handleSignin = async (e) => {
       e.preventDefault();
+      const role = accountType;
+      let verify = {};
       try {
-        //Role ie(admin, teacher, student)
           const body_email = signInEmail.value;
           const body_password = signInPassword.value;
-
-          const verify = {
-            //if role === admin 
+          if (role === 'teacher') {
+           verify = {
             ta_email : body_email,
             ta_password: body_password
           }
+        } else if (role === 'admin') {
+           verify = {
+            ad_email : body_email,
+            ad_password: body_password
+          }
+        } else if (role === 'student') {
+           verify = {
+            st_email : body_email,
+            st_password: body_password
+          }
+        }
           //interpolate the role into the string
-          const response = await fetch('https://collab-code.onrender.com/api/auth/signIn/teacher', {
+          const response = await fetch(`https://collab-code.onrender.com/api/auth/signIn/${role}`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json"
@@ -47,9 +62,8 @@ export const AppLevelProvider = ({ children }) => {
               console.log(response.statusText);
           } else {
               const data = await response.json()
-              console.log(data);
               //interpolate the role into the string
-              const responseUserData = await fetch('https://collab-code.onrender.com/api/auth/protected/teacher', {
+              const responseUserData = await fetch(`https://collab-code.onrender.com/api/auth/protected/${role}`, {
               method: "GET",
               headers: {
                   "Content-Type": "application/json",
@@ -60,10 +74,16 @@ export const AppLevelProvider = ({ children }) => {
           if(responseUserData.status != 200) {
               console.log("Got an error getting the user object it is " + responseUserData.statusText)
           } else {
-              const teacherData = await responseUserData.json();
-              setUserData(teacherData.value)
-              alert(teacherData.message)
-              toggleTeacher()
+              const Data2 = await responseUserData.json();
+              setUserData(Data2.value)
+              alert(Data2.message)
+              if (role === 'teacher') {
+                toggleTeacher();
+             } else if (role === 'admin') {
+                toggleAdmin();
+             } else if (role === 'student') {
+                toggleStudent();
+             }
           }
           }       
       } catch (error) {
@@ -74,7 +94,7 @@ export const AppLevelProvider = ({ children }) => {
   return (
     <AppLevelContext.Provider
       value={{
-        loginTeacher, setLoginTeacher, handleSignin
+        loginTeacher, setLoginTeacher, handleSignin, setAccountType
        }}
     >
       {children}
