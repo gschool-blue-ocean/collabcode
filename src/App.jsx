@@ -1,16 +1,14 @@
 //MODULES BROUGHT IN
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 //COMPONENTS BROUGHT IN
-import { AppLevelProvider } from './context/AppLevelContext';
-import { AuthenticationModalProvider } from './context/AuthenticationModalContext';
-import LandingPage from './components/LandingPage/LandingPage';
-import Header from './components/Header';
-import TeacherAdminPage from './components/TeacherAdminPage/TeacherAdminPage';
-import StudentPage from './components/StudentPage/StudentPage';
-import SignInModal from './components/SignInModal/SignInModal';
-import InterviewPage from './components/InterviewPage/InterviewPage';
-import AuthenticationModal from './components/AuthenticationModal/AuthenticationModal';
-
+import { AppLevelProvider } from "./context/AppLevelContext";
+import { AuthenticationModalProvider } from "./context/AuthenticationModalContext";
+import LandingPage from "./components/LandingPage/LandingPage";
+import Header from "./components/Header";
+import TeacherAdminPage from "./components/TeacherAdminPage/TeacherAdminPage";
+import StudentPage from "./components/StudentPage/StudentPage";
+import InterviewPage from "./components/InterviewPage/InterviewPage";
+import AuthenticationModal from "./components/AuthenticationModal/AuthenticationModal";
 
 function App() {
   return (
