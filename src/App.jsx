@@ -29,6 +29,7 @@ function App() {
                   element={<TeacherAdminPage />}
                 />
                 <Route path="/student" element={<StudentPage />} />
+                <Route path="/interview" element={<InterviewPage />} />
               </Routes>
             </div>
           </div>
