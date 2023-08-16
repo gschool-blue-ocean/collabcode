@@ -1,93 +1,99 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useState, createContext } from "react";
-
 
 const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
-
   const [loginAdmin, setLoginAdmin] = useState(false);
   const [loginStudent, setLoginStudent] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [accountType, setAccountType] = useState('');
 
+  const [userData, setUserData] = useState({});
+  const [accountType, setAccountType] = useState("");
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
   };
   const toggleAdmin = () => {
-    setLoginAdmin(!loginAdmin)
-  }
+    setLoginAdmin(!loginAdmin);
+  };
 
   const toggleStudent = () => {
-    setLoginStudent(!loginStudent)
-  }
+    setLoginStudent(!loginStudent);
+  };
 
-    const handleSignin = async (e) => {
-      e.preventDefault();
-      const role = accountType;
-      let verify = {};
-      try {
-          const body_email = signInEmail.value;
-          const body_password = signInPassword.value;
-          if (role === 'teacher') {
-           verify = {
-            ta_email : body_email,
-            ta_password: body_password
+  const handleSignin = async (e) => {
+    e.preventDefault();
+    const role = accountType;
+    let verify = {};
+    try {
+      const body_email = signInEmail.value;
+      const body_password = signInPassword.value;
+      if (role === "teacher") {
+        verify = {
+          ta_email: body_email,
+          ta_password: body_password,
+        };
+      } else if (role === "admin") {
+        verify = {
+          ad_email: body_email,
+          ad_password: body_password,
+        };
+      } else if (role === "student") {
+        verify = {
+          st_email: body_email,
+          st_password: body_password,
+        };
+      }
+      //interpolate the role into the string
+      const response = await fetch(
+        `https://collab-code.onrender.com/api/auth/signIn/${role}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(verify),
+        }
+      );
+
+      if (response.status != 200) {
+        console.log(response.statusText);
+      } else {
+        const data = await response.json();
+        //interpolate the role into the string
+        const responseUserData = await fetch(
+          `https://collab-code.onrender.com/api/auth/protected/${role}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              token: data.accesstoken,
+            },
           }
-        } else if (role === 'admin') {
-           verify = {
-            ad_email : body_email,
-            ad_password: body_password
-          }
-        } else if (role === 'student') {
-           verify = {
-            st_email : body_email,
-            st_password: body_password
+        );
+
+        if (responseUserData.status != 200) {
+          console.log(
+            "Got an error getting the user object it is " +
+              responseUserData.statusText
+          );
+        } else {
+          const Data2 = await responseUserData.json();
+          setUserData(Data2);
+          alert(Data2.message);
+          if (role === "teacher") {
+            toggleTeacher();
+          } else if (role === "admin") {
+            toggleAdmin();
+          } else if (role === "student") {
+            toggleStudent();
           }
         }
-          //interpolate the role into the string
-          const response = await fetch(`https://collab-code.onrender.com/api/auth/signIn/${role}`, {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify(
-                verify
-                )
-          })
-          
-          if(response.status != 200) {
-              console.log(response.statusText);
-          } else {
-              const data = await response.json()
-              //interpolate the role into the string
-              const responseUserData = await fetch(`https://collab-code.onrender.com/api/auth/protected/${role}`, {
-              method: "GET",
-              headers: {
-                  "Content-Type": "application/json",
-                  "token": data.accesstoken
-              }
-          })
-
-          if(responseUserData.status != 200) {
-              console.log("Got an error getting the user object it is " + responseUserData.statusText)
-          } else {
-              const Data2 = await responseUserData.json();
-              setUserData(Data2.value)
-              alert(Data2.message)
-              if (role === 'teacher') {
-                toggleTeacher();
-             } else if (role === 'admin') {
-                toggleAdmin();
-             } else if (role === 'student') {
-                toggleStudent();
-             }
-          }
-          }       
-} catch (error) {
+      }
+    } catch (error) {
       console.error(error.message);
     }
   };
@@ -97,11 +103,12 @@ export const AppLevelProvider = ({ children }) => {
       value={{
         loginTeacher,
         setLoginTeacher,
+        loginStudent,
+        setLoginStudent,
         handleSignin,
         userData,
-        setAccountType
+        setAccountType,
       }}
-
     >
       {children}
     </AppLevelContext.Provider>
