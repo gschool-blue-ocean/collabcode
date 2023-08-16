@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import AuthenticationModalContext from "../../context/AuthenticationModalContext";
 import DropDown from "./Dropdown";
 import AppLevelContext from "../../context/AppLevelContext";
@@ -12,7 +13,7 @@ const SignUpModal = () => {
     teacherCode: ""
   });
 
-  const { handleAcctCreation } = useContext(AppLevelContext)
+  const { handleAcctCreation, loginTeacher, loginStudent, userData } = useContext(AppLevelContext)
 
   const { toggleSignInState, modalRole } = useContext(
     AuthenticationModalContext
@@ -26,6 +27,15 @@ const SignUpModal = () => {
     });
   };
 
+  if (loginTeacher === true && userData.type === "success") {
+    return <Navigate to="/api/auth/signIn/teacher" />;
+  }
+  
+    //REROUTE TO THE STUDENT PAGE
+  if (loginStudent === true && userData.type === "success") {
+    return <Navigate to="/api/auth/signIn/student" />;
+  }
+
   if (modalRole === "teacher") {
     return (
       <>
@@ -33,7 +43,7 @@ const SignUpModal = () => {
           id="SignUpModal"
           style={{
             backgroundImage: "linear-gradient(90deg, #ffa500b0, #ffc0cbc9)",
-            minHeight: "640px",
+            minHeight: "100vh",
             padding: "2% 0",
           }}
         >
@@ -150,7 +160,7 @@ const SignUpModal = () => {
           id="SignUpModal"
           style={{
             backgroundImage: "linear-gradient(90deg, #ffa500b0, #ffc0cbc9)",
-            minHeight: "640px",
+            minHeight: "100vh",
             padding: "2% 0",
           }}
         >

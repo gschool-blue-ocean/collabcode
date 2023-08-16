@@ -41,8 +41,8 @@ const SignInModal = () => {
           id="SignInModal"
           style={{
             backgroundImage: "linear-gradient(90deg, #ffa500b0, #ffc0cbc9)",
-            minHeight: "640px",
-            padding: "2% 0",
+            minHeight: "100vh",
+            padding: "7% 0",
           }}
         >
           <div
@@ -53,7 +53,7 @@ const SignInModal = () => {
               boxShadow: "3px 4px 17px #00000026",
             }}
           >
-            <form className="text-3xl p-6 flex flex-col">
+            <form className="text-3xl p-6 flex flex-col ">
               <DropDown />
               <h1>Teacher Login</h1>
               <label htmlFor="signin-email" className="pt-4">
@@ -110,8 +110,8 @@ const SignInModal = () => {
           id="SignInModal"
           style={{
             backgroundImage: "linear-gradient(90deg, #ffa500b0, #ffc0cbc9)",
-            minHeight: "640px",
-            padding: "2% 0",
+            minHeight: "100vh",
+            padding: "7% 0",
           }}
         >
           <div

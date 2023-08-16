@@ -11,7 +11,7 @@ export const AppLevelProvider = ({ children }) => {
   const [loginStudent, setLoginStudent] = useState(false);
 
   const [userData, setUserData] = useState({});
-  const [accountType, setAccountType] = useState("");
+  const [accountType, setAccountType] = useState("teacher");
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
@@ -104,8 +104,8 @@ const handleAcctCreation = async (e) => {
     const body_email = signUpEmail.value;
     const body_password = signUpPassword.value;
     const body_name = signUpName.value;
-    if (role === "teacher") {
-      const body_code = signUpCode.value;
+    if (role === "teacher" ) {
+      const body_code = teacherCode.value;
       verify = {
         ta_email: body_email,
         ta_password: body_password,
