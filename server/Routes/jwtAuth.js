@@ -59,7 +59,11 @@ router.post("/register/admin", validAdminInfo, async (req, res) => {
 //register for teacher account
 router.post("/register/teacher", validTeacherInfo, async (req, res) => {
   try {
-    const { ta_email, ta_password, ta_name } = req.body;
+    const { ta_email, ta_password, ta_name, ta_code } = req.body;
+
+    if (ta_code !== process.env.TEACHER_CODE) {
+      return res.status(400).send("Incorrect Teacher code ...");
+    }
 
     const user = await pool.query(
       `SELECT * FROM teachers WHERE ta_email = $1;`,

@@ -6,6 +6,15 @@ const AuthenticationModalContext = createContext();
 
 export const AuthenticationModalProvider = ({ children }) => {
     const [signIn, setSignIn] = useState(true);
+    const [modalRole, setModalRole] = useState('teacher');
+
+    const teacherModal = () => {
+        setModalRole("teacher");
+    }
+
+    const studentModal = () => {
+        setModalRole("student");
+    }
 
     const toggleSignInState = () => {
         setSignIn(!signIn);
@@ -14,7 +23,10 @@ export const AuthenticationModalProvider = ({ children }) => {
     return (
         <AuthenticationModalContext.Provider value={{
             signIn,
-            toggleSignInState
+            toggleSignInState,
+            modalRole,
+            teacherModal,
+            studentModal
         }}>
             {children}
         </AuthenticationModalContext.Provider>

@@ -23,7 +23,7 @@ function App() {
                 <Route exact path="/" element={<LandingPage />} />
 
                 <Route path="/signIn" element={<AuthenticationModal />} />
-
+                <Route path="/interview" element={<InterviewPage/>}/>
                 <Route
                   path="/api/auth/signIn/teacher"
                   element={<TeacherAdminPage />}
