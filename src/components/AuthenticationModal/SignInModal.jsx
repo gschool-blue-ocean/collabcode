@@ -23,6 +23,7 @@ const SignInModal = () => {
     });
   };
 
+  console.log(userData);
   if (loginTeacher === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/teacher" />;
   }
