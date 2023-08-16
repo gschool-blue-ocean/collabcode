@@ -11,7 +11,7 @@ export const AppLevelProvider = ({ children }) => {
   const [loginStudent, setLoginStudent] = useState(false);
 
   const [userData, setUserData] = useState({});
-  const [accountType, setAccountType] = useState("");
+  const [accountType, setAccountType] = useState("teacher");
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
@@ -100,12 +100,10 @@ export const AppLevelProvider = ({ children }) => {
     e.preventDefault();
     const role = accountType;
     let verify = {};
-
     try {
       const body_email = signUpEmail.value;
       const body_password = signUpPassword.value;
       const body_name = signUpName.value;
-
       if (role === "teacher") {
         const body_code = teacherCode.value;
         verify = {

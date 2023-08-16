@@ -54,7 +54,7 @@ const SignInModal = () => {
               boxShadow: "3px 4px 17px #00000026",
             }}
           >
-            <form className="text-3xl p-6 flex flex-col">
+            <form className="text-3xl p-6 flex flex-col ">
               <DropDown />
               <h1>Teacher Login</h1>
               <label htmlFor="signin-email" className="pt-4">
