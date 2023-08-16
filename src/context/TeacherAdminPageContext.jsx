@@ -1,28 +1,28 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, createContext } from "react";
 
 //NEED TO CHANGE URL TO SITE URL WHEN DEPLOYED
 
-const pageURL = 'http://localhost:8000';
+const pageURL = "http://localhost:8000";
 const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
-  const [interviews, setInterviews] = useState({});
-  //Bring in the teacher selected
+  const [pendingStudents, setPendingStudents] = useState([]);
 
-  //Getting Data for Teacher Component
   useEffect(() => {
-    const getInterviewData = async () => {
-      const interviewsRes = await fetch(`${pageURL}/interviews?ta_id=1`);
-      let interviewsData = await interviewsRes.json();
-      setInterviews(interviewsData);
+    const getStudents = async () => {
+      const studentRes = await fetch(
+        "https://collab-code.onrender.com/students"
+      );
+      const studentData = await studentRes.json();
+      setPendingStudents(studentData);
     };
-    getInterviewData();
+    getStudents();
   }, []);
 
   return (
-    <TeacherAdminPageContext.Provider value={{ interviews }}>
+    <TeacherAdminPageContext.Provider value={{ pendingStudents, setPendingStudents }}>
       {children}
     </TeacherAdminPageContext.Provider>
   );

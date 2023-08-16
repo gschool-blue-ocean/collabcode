@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import {  createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
 const AuthenticationModalContext = createContext();
 
@@ -16,10 +16,10 @@ export const AuthenticationModalProvider = ({ children }) => {
         setModalRole("student");
     }
 
-    const toggleSignInState = () => {
-        setSignIn(!signIn);
-    }
-
+  const toggleSignInState = () => {
+    setSignIn(!signIn);
+  };
+  
     return (
         <AuthenticationModalContext.Provider value={{
             signIn,

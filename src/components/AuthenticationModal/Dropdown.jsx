@@ -2,10 +2,6 @@ import AppLevelContext from '../../context/AppLevelContext'
 import { useContext } from 'react';
 import AuthenticationModalContext from '../../context/AuthenticationModalContext';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 const DropDown = () => {
     const { setAccountType } = useContext(AppLevelContext);
     const { teacherModal, studentModal } = useContext(AuthenticationModalContext)

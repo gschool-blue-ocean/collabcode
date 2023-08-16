@@ -1,29 +1,28 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useState, createContext } from "react";
-
 
 const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
-
   const [loginAdmin, setLoginAdmin] = useState(false);
   const [loginStudent, setLoginStudent] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [accountType, setAccountType] = useState('');
 
+  const [userData, setUserData] = useState({});
+  const [accountType, setAccountType] = useState("");
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
   };
   const toggleAdmin = () => {
-    setLoginAdmin(!loginAdmin)
-  }
+    setLoginAdmin(!loginAdmin);
+  };
 
   const toggleStudent = () => {
-    setLoginStudent(!loginStudent)
-  }
+    setLoginStudent(!loginStudent);
+  };
 
     const handleSignin = async (e) => {
       e.preventDefault();
@@ -179,6 +178,7 @@ const handleAcctCreation = async (e) => {
           }
         }
       }
+
     }
   } catch (error) {
     console.error(error.message);
@@ -190,12 +190,13 @@ const handleAcctCreation = async (e) => {
       value={{
         loginTeacher,
         setLoginTeacher,
+        loginStudent,
+        setLoginStudent,
         handleSignin,
         userData,
         setAccountType,
         handleAcctCreation
       }}
-
     >
       {children}
     </AppLevelContext.Provider>
