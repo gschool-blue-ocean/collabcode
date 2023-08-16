@@ -1,37 +1,43 @@
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { useContext } from 'react'
-import AppLevelContext from '../../context/AppLevelContext'
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useContext } from "react";
+import AppLevelContext from "../../context/AppLevelContext";
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 const DropDown = () => {
-    const { setAccountType } = useContext(AppLevelContext);
+  const { setAccountType } = useContext(AppLevelContext);
 
-    const setToAdmin = () => {
-        setAccountType('admin')
-    };
+  const setToAdmin = () => {
+    setAccountType("admin");
+  };
 
-    const setToTeacher = () => {
-        setAccountType('teacher')
-    }
+  const setToTeacher = () => {
+    setAccountType("teacher");
+  };
 
-    const setToStudent = () => {
-        setAccountType('student')
-    }
+  const setToStudent = () => {
+    setAccountType("student");
+  };
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" style={{
-                            'borderRadius': '10px',
-                            'boxShadow': '0px 0px 3px 0px inset'
-                        }}>
+        <Menu.Button
+          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          style={{
+            borderRadius: "10px",
+            boxShadow: "0px 0px 3px 0px inset",
+          }}
+        >
           Account Type
-          <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronDownIcon
+            className="-mr-1 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
         </Menu.Button>
       </div>
 
@@ -51,8 +57,8 @@ const DropDown = () => {
                 <a
                   href="#"
                   className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
                   )}
                   onClick={setToAdmin}
                 >
@@ -65,8 +71,8 @@ const DropDown = () => {
                 <a
                   href="#"
                   className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
                   )}
                   onClick={setToTeacher}
                 >
@@ -79,8 +85,8 @@ const DropDown = () => {
                 <a
                   href="#"
                   className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
                   )}
                   onClick={setToStudent}
                 >
@@ -92,7 +98,7 @@ const DropDown = () => {
         </Menu.Items>
       </Transition>
     </Menu>
-  )
-}
+  );
+};
 
 export default DropDown;
