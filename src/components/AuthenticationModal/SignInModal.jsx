@@ -13,7 +13,6 @@ const SignInModal = () => {
   const { handleSignin, loginTeacher, loginStudent, userData } =
     useContext(AppLevelContext);
   const { toggleSignInState } = useContext(AuthenticationModalContext);
-
   const { signInEmail, signInPassword } = signInInputs;
 
   const handleChange = (e) => {
@@ -23,10 +22,13 @@ const SignInModal = () => {
     });
   };
 
+  //REROUTE TO THE TEACHER PAGE
   if (loginTeacher === true && userData.type === "success") {
+    //RUN THE FETCH CALL HERE AND UPDATE THE STATE FOR THE TEACHER COMPONENT
     return <Navigate to="/api/auth/signIn/teacher" />;
   }
 
+  //REROUTE TO THE STUDENT PAGE
   if (loginStudent === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/student" />;
   }

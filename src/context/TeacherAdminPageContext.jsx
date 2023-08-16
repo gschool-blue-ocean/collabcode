@@ -8,21 +8,21 @@ const pageURL = "http://localhost:8000";
 const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
-  const [interviews, setInterviews] = useState({});
-  //Bring in the teacher selected
+  const [pending, setPending] = useState([]);
 
-  //Getting Data for Teacher Component
-  // useEffect(() => {
-  //   const getInterviewData = async () => {
-  //     const interviewsRes = await fetch(`${pageURL}/interviews?ta_id=1`);
-  //     let interviewsData = await interviewsRes.json();
-  //     setInterviews(interviewsData);
-  //   };
-  //   getInterviewData();
-  // }, []);
+  useEffect(() => {
+    const getStudents = async () => {
+      const studentRes = await fetch(
+        "https://collab-code.onrender.com/students"
+      );
+      const studentData = await studentRes.json();
+      setPending(studentData);
+    };
+    getStudents();
+  }, []);
 
   return (
-    <TeacherAdminPageContext.Provider value={{ interviews }}>
+    <TeacherAdminPageContext.Provider value={{ pending, setPending }}>
       {children}
     </TeacherAdminPageContext.Provider>
   );

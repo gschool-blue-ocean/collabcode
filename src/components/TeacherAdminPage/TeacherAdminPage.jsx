@@ -1,13 +1,10 @@
 /* eslint-disable no-unused-vars */
-import InterviewList from './InterviewList';
-import Scheduled from './Scheduled';
-import PendingStudents from './PendingStudents';
-import { useContext } from 'react';
-import AppLevelContext from '../../context/AppLevelContext';
-import { TeacherAdminPageProvider } from '../../context/TeacherAdminPageContext';
+import InterviewList from "./InterviewList";
+import Scheduled from "./Scheduled";
+import PendingStudents from "./PendingStudents";
+import { TeacherAdminPageProvider } from "../../context/TeacherAdminPageContext";
 
 const TeacherAdminPage = () => {
-
   return (
     <TeacherAdminPageProvider>
       <div id="teacher-content" className="flex">
