@@ -4,7 +4,7 @@ import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const PendingStudents = () => {
-  const { pending } = useContext(TeacherAdminPageContext);
+  const { pendingStudents } = useContext(TeacherAdminPageContext);
 
   return (
     <>
@@ -18,17 +18,12 @@ const PendingStudents = () => {
         >
           <select className="text-[1.5rem]" name="students" id="students">
             <option value="">Select A Student</option>
-            {pending.length !== 0
-              ? pending.map(
-                  (elem, index) => (
-                    console.log(elem),
-                    (
-                      <option value={elem.st_id} key={index}>
-                        {elem.st_name}
-                      </option>
-                    )
-                  )
-                )
+            {pendingStudents.length !== 0
+              ? pendingStudents.map((elem, index) => (
+                  <option value={elem.st_id} key={index}>
+                    {elem.st_name}
+                  </option>
+                ))
               : console.log("There are no students")}
           </select>
           <input type="text" className="" placeholder="Date" />

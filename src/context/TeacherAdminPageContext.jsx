@@ -8,7 +8,7 @@ const pageURL = "http://localhost:8000";
 const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
-  const [pending, setPending] = useState([]);
+  const [pendingStudents, setPendingStudents] = useState([]);
 
   useEffect(() => {
     const getStudents = async () => {
@@ -16,13 +16,13 @@ export const TeacherAdminPageProvider = ({ children }) => {
         "https://collab-code.onrender.com/students"
       );
       const studentData = await studentRes.json();
-      setPending(studentData);
+      setPendingStudents(studentData);
     };
     getStudents();
   }, []);
 
   return (
-    <TeacherAdminPageContext.Provider value={{ pending, setPending }}>
+    <TeacherAdminPageContext.Provider value={{ pendingStudents, setPendingStudents }}>
       {children}
     </TeacherAdminPageContext.Provider>
   );
