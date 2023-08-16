@@ -1,104 +1,28 @@
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useContext } from "react";
-import AppLevelContext from "../../context/AppLevelContext";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import AppLevelContext from '../../context/AppLevelContext'
+import { useContext } from 'react';
+import AuthenticationModalContext from '../../context/AuthenticationModalContext';
 
 const DropDown = () => {
-  const { setAccountType } = useContext(AppLevelContext);
+    const { setAccountType } = useContext(AppLevelContext);
+    const { teacherModal, studentModal } = useContext(AuthenticationModalContext)
+    const setToTeacher = (e) => {
+      e.preventDefault()
+        setAccountType('teacher')
+        teacherModal()
+    }
 
-  const setToAdmin = () => {
-    setAccountType("admin");
-  };
-
-  const setToTeacher = () => {
-    setAccountType("teacher");
-  };
-
-  const setToStudent = () => {
-    setAccountType("student");
-  };
+    const setToStudent = (e) => {
+      e.preventDefault()
+        setAccountType('student')
+        studentModal()
+    }
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button
-          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          style={{
-            borderRadius: "10px",
-            boxShadow: "0px 0px 3px 0px inset",
-          }}
-        >
-          Account Type
-          <ChevronDownIcon
-            className="-mr-1 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </Menu.Button>
-      </div>
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    "block px-4 py-2 text-sm"
-                  )}
-                  onClick={setToAdmin}
-                >
-                  admin
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    "block px-4 py-2 text-sm"
-                  )}
-                  onClick={setToTeacher}
-                >
-                  teacher
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    "block px-4 py-2 text-sm"
-                  )}
-                  onClick={setToStudent}
-                >
-                  student
-                </a>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  );
-};
+    <div className="text-3xl p-6 flex flex-row">
+    <button onClick={(e) => setToTeacher(e)} className='text-lg md:text-xl lg:text-2xl font-medium bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md transition duration-300 w-24 m-auto mt-4'>Teacher</button>
+    <button onClick={(e) => setToStudent(e)} className='text-lg md:text-xl lg:text-2xl font-medium bg-orange-500 hover:bg-orange-400 text-white py-2 px-4 rounded-md transition duration-300 w-24 m-auto mt-4'>Student</button>
+    </div>
+  )
+}
 
 export default DropDown;
