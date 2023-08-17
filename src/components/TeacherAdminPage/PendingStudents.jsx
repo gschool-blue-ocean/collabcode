@@ -24,7 +24,7 @@ const PendingStudents = () => {
                     {elem.st_name}
                   </option>
                 ))
-              : console.log("There are no students")}
+              : console.log("Students are loading")}
           </select>
           <input type="text" className="" placeholder="Date" />
           <input type="text" className="" placeholder="Time" />

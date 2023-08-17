@@ -10,7 +10,8 @@ const SignInModal = () => {
     signInPassword: "",
   });
 
-  const { handleSignin, loginTeacher,loginStudent, userData } = useContext(AppLevelContext);
+  const { handleSignin, loginTeacher, loginStudent, userData } =
+    useContext(AppLevelContext);
   const { toggleSignInState, modalRole } = useContext(
     AuthenticationModalContext
   );
@@ -28,8 +29,8 @@ const SignInModal = () => {
   if (loginTeacher === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/teacher" />;
   }
-  
-    //REROUTE TO THE STUDENT PAGE
+
+  //REROUTE TO THE STUDENT PAGE
   if (loginStudent === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/student" />;
   }
