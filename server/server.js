@@ -6,12 +6,14 @@ import cors from "cors";
 import { param, body, query, validationResult } from "express-validator";
 import jwtAuthRouter from "../server/Routes/jwtAuth.js";
 import cookieParser from "cookie-parser";
+import http from "http";
 // import ws from 'ws'
 import { WebSocketServer } from "ws";
 
 // initialize app by invoking express
 const app = express();
 app.use(cors({ origin: "*" }));
+const server = http.createServer(app);
 
 // configure environment variables
 dotenv.config();
@@ -1327,7 +1329,7 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
   }
 });
 
-const wss = new WebSocketServer({ app });
+const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
   ws.on("error", console.error);
