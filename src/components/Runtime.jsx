@@ -25,6 +25,12 @@ const Runtime = () => {
     console.log(`[message] Data received from server: ${e.data}`);
   };
 
+  //listen for incoming messages
+  ws.addEventListener("message", (event) => {
+    const message = event.data;
+    console.log("Received message from server:", message);
+  });
+
   // when the connection is lost
   socket.onclose = (e) => {
     if (e.wasClean) {
