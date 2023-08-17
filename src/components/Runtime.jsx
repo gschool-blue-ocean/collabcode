@@ -12,7 +12,7 @@ const Runtime = () => {
   let input = "";
 
   //let socket = new WebSocket(`ws://localhost:8001/`);
-  let socket = new WebSocket('ws:https://collab-code.onrender.com/');
+  let socket = new WebSocket('wss:https://collab-code.onrender.com/');
 
   // when the connection is established
   socket.onopen = (e) => {
