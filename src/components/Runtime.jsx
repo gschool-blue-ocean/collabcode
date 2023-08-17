@@ -12,11 +12,12 @@ const Runtime = () => {
   let input = "";
 
   //let socket = new WebSocket(`ws://localhost:8001/`);
-  let socket = new WebSocket('wss://collab-code.onrender.com/');
+  let socket = new WebSocket('wss://collab-code.onrender.com/socket');
 
   // when the connection is established
   socket.onopen = (e) => {
     console.log("[open] Connection established");
+    socket.send("Connection opened");
   };
 
   // when receiving some data from the server

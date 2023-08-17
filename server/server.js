@@ -1340,6 +1340,10 @@ wss.on("connection", function connection(ws) {
   ws.send("This was sent from the websocket server");
 });
 
+app.get("/socket", (req, res) => {
+  console.log(req);
+});
+
 /*----- Listener -----*/
 server.listen(PORT, () => {
   console.log(
