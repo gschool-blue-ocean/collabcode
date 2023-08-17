@@ -45,7 +45,6 @@ const Runtime = () => {
     input = e;
     console.log("data to be sent via socket:", input);
     socket.send(input);
-    console.log(socket.send(input));
   };
 
   return (

@@ -1333,15 +1333,11 @@ const wss = new WebSocketServer({ server });
 wss.on("connection", function connection(ws) {
   ws.on("error", console.error);
 
-  ws.on("message", function incoming(message) {
-    console.log("received: $s", message);
+  ws.on("message", function message(data) {
+    console.log("received: $s", data);
   });
 
   ws.send("This was sent from the websocket server");
-});
-
-app.get("/socket", (req, res) => {
-  console.log(req);
 });
 
 /*----- Listener -----*/
