@@ -1333,9 +1333,19 @@ const wss = new WebSocketServer({ server });
 wss.on("connection", function connection(ws) {
   ws.on("error", console.error);
 
-  ws.on("message", function message(data) {
-    console.log("received: $s", data);
-  });
+  // ws.on("message", function message(data) {
+  //   console.log("received: $s", data);
+  // });
+
+  // using onmessage instead of on('message')
+  ws.onmessage = (e) => {
+    console.log("ws.onmessage received:", e.data);
+  }
+
+  // using wss.on('message')
+  wss.on('message', (data) => {
+    console.log("wss.on('message') received:", data);
+  })
 
   ws.send("This was sent from the websocket server");
 });
