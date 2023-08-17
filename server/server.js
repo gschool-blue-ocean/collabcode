@@ -1327,9 +1327,7 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
   }
 });
 
-const wss = new WebSocketServer({ port: WSS_PORT }, () => {
-  console.log("Server running, listening on port:", WSS_PORT);
-});
+const wss = new WebSocketServer({ app });
 
 wss.on("connection", (ws) => {
   ws.on("error", console.error);
