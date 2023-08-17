@@ -12,13 +12,11 @@ import { WebSocketServer } from "ws";
 
 // initialize app by invoking express
 const app = express();
-app.use(cors({ origin: "*" }));
 const server = http.createServer(app);
 
 // configure environment variables
 dotenv.config();
 const PORT = process.env.PORT || 8000;
-const WSS_PORT = process.env.WSS_PORT || 8001;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 // initialize data pool
@@ -26,10 +24,11 @@ const { Pool } = pg;
 const pool = new Pool({ connectionString: DATABASE_URL });
 
 // middleware
-app.use(express.static("dist"), express.json(), cors(), cookieParser());
+app.use(express.static("dist"), express.json(), cors({ origin: "*" }), cookieParser());
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
+
 /*----- 'admins' table routes -----*/
 
 // GET ALL - secured by not reading request object
@@ -1331,16 +1330,18 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
 
 const wss = new WebSocketServer({ server });
 
-wss.on("connection", (ws) => {
+wss.on("connection", function connection(ws) {
   ws.on("error", console.error);
 
-  ws.on("message", (data) => {
-    console.log("received: $s", data);
+  ws.on("message", function incoming(message) {
+    console.log("received: $s", message);
   });
+
+  ws.send("This was sent from the websocket server");
 });
 
 /*----- Listener -----*/
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(
     "Server running on port",
     PORT,
