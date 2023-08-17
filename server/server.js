@@ -10,15 +10,11 @@ import cookieParser from "cookie-parser";
 // initialize app by invoking express
 const app = express();
 const corsOptions = {
-  origin: [
-    "https://collab-code-static.onrender.com/",
-    "https://collab-code.onrender.com/",
-    "http://localhost:5173",
-  ], // You can specify the allowed origins here
-  credentials: true, // This is important for allowing credentials
+  origin: "*", // You can specify the allowed origins here
+  // credentials: true, // This is important for allowing credentials
 };
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: "*" }));
 
 // configure environment variables
 dotenv.config();
