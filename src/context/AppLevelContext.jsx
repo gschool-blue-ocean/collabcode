@@ -9,13 +9,13 @@ export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
   const [loginAdmin, setLoginAdmin] = useState(false);
   const [loginStudent, setLoginStudent] = useState(false);
-
   const [userData, setUserData] = useState({});
   const [accountType, setAccountType] = useState("teacher");
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
   };
+
   const toggleAdmin = () => {
     setLoginAdmin(!loginAdmin);
   };

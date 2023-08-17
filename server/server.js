@@ -1,15 +1,24 @@
 /* eslint-disable no-undef */
-import express from 'express';
-import dotenv from 'dotenv';
-import pg from 'pg';
-import cors from 'cors';
-import { param, body, query, validationResult } from 'express-validator';
-import jwtAuthRouter from '../server/Routes/jwtAuth.js';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import dotenv from "dotenv";
+import pg from "pg";
+import cors from "cors";
+import { param, body, query, validationResult } from "express-validator";
+import jwtAuthRouter from "../server/Routes/jwtAuth.js";
+import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
-app.use(cors({ origin: '*' }));
+const corsOptions = {
+  origin: [
+    "https://collab-code-static.onrender.com/",
+    "https://collab-code.onrender.com/",
+    "http://localhost:5173",
+  ], // You can specify the allowed origins here
+  credentials: true, // This is important for allowing credentials
+};
+
+app.use(cors(corsOptions));
 
 // configure environment variables
 dotenv.config();
@@ -21,7 +30,12 @@ const { Pool } = pg;
 const pool = new Pool({ connectionString: DATABASE_URL });
 
 // middleware
-app.use(express.static('dist'), express.json(), cors(), cookieParser());
+app.use(
+  express.static("dist"),
+  express.json(),
+  cors(corsOptions),
+  cookieParser()
+);
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
@@ -52,7 +66,7 @@ app.get("/admins/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -93,7 +107,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -106,7 +120,7 @@ app.post(
     if (!ad_email || !ad_password || !ad_name) {
       res
         .status(400)
-        .send('PUT request requires ad_email, ad_password, ad_name');
+        .send("PUT request requires ad_email, ad_password, ad_name");
       return;
     }
 
@@ -128,7 +142,7 @@ app.post(
       console.error(error.message);
       res
         .status(500)
-        .send('Server caught the following error: ' + error.message);
+        .send("Server caught the following error: " + error.message);
       return;
     }
   }
@@ -147,7 +161,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -196,7 +210,7 @@ app.delete("/admins/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -253,7 +267,7 @@ app.get("/teachers/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -295,7 +309,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -349,7 +363,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -398,7 +412,7 @@ app.delete("/teachers/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -455,7 +469,7 @@ app.get("/students/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -497,7 +511,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -551,7 +565,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -600,7 +614,7 @@ app.delete("/students/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -643,7 +657,7 @@ app.get(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -724,7 +738,7 @@ app.get("/interviews/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -769,7 +783,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -835,7 +849,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -893,7 +907,7 @@ app.delete("/interviews/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -950,7 +964,7 @@ app.get("/chat/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -991,7 +1005,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -1047,7 +1061,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -1096,7 +1110,7 @@ app.delete("/chat/:id", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -1153,7 +1167,7 @@ app.get("/runtime", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
@@ -1195,7 +1209,7 @@ app.post(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -1247,7 +1261,7 @@ app.put(
       res
         .status(400)
         .send(
-          'Validator caught the following error(s): ' +
+          "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
@@ -1294,7 +1308,7 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
     res
       .status(400)
       .send(
-        'Validator caught the following error(s): ' +
+        "Validator caught the following error(s): " +
           validationResult(req).array()
       );
     return;
