@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import InformationContext from '../../context/InformationContext';
+import { useContext } from "react";
+import InformationContext from "../../context/InformationContext";
 
 const Information = () => {
   const data = useContext(InformationContext);
 
   return (
     <>
-      <div id="information-container" className="w-full h-[80vh]">
+      <div id="information-container" className="w-full h-[90vh]">
         <div
           id="information-text"
           className="w-full h-full flex flex-col items-center justify-center"
