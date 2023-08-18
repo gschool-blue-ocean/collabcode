@@ -18,8 +18,9 @@ const corsOptions = {
   credentials: true, // This is important for allowing credentials
 };
 
+
 //middleware for the local environment
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // configure environment variables
 dotenv.config();
@@ -34,9 +35,18 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 app.use(
   express.static("dist"),
   express.json(),
-  cors(corsOptions),
+  // cors(corsOptions),
   cookieParser()
 );
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://collab-code-static.onrender.com');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);

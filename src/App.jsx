@@ -31,7 +31,7 @@ function App() {
 
             {/* STUDENT PAGE */}
             <Route path="/api/auth/signIn/student" element={<StudentPage />} />
-            
+
             {/* INTERVIEW PAGE */}
             <Route path="/interview" element={<InterviewPage />} />
           </Routes>
