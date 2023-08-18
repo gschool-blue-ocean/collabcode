@@ -1,74 +1,64 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 
 const Runtime = () => {
+  //   //set refs for editor and console
   const editorRef = useRef(null);
   const outputRef = useRef(null);
-  const [input, setInput] = useState("");
-  const [outputType, setOutputType] = useState(null);
+  //   //set states for global access
+  const [input, setInput] = useState('');
+  const [socket, setSocket] = useState({});
 
-  const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-    const editorDoc = new Y.Doc();
-    const provider = new WebrtcProvider("interview-Room", editorDoc);
-    const type = editorDoc.getText("monaco");
-    const binding = new MonacoBinding(
-      type,
-      editorRef.current.getModel(),
-      new Set([editorRef.current]),
-      provider.awareness
-    );
-  };
-
-  const handleOutputDidMount = (output, monaco) => {
-    outputRef.current = output;
-    const outputDoc = new Y.Doc();
-    const provider = new WebrtcProvider("interviewOutput", outputDoc);
-    const type = outputDoc.getText("output");
-    setOutputType(type);
-    const binding = new MonacoBinding(
-      type,
-      outputRef.current.getModel(),
-      new Set([outputRef.current]),
-      provider.awareness
-    );
-  };
-
-  const handleClick = () => {
+  const establishConnection = () => {
     try {
-      const consoleMessages = [];
-      const originalConsoleLog = console.log;
-      console.log = (message) => {
-        consoleMessages.push(message);
-        originalConsoleLog(message);
+      // let newSocket = new WebSocket(`ws://localhost:8000/`);
+      let newSocket = new WebSocket(`wss://collab-code.onrender.com/socket`);
+
+      // when the connection is established
+      newSocket.onopen = (e) => {
+        console.log("[socket] Connection established");
+        socket.send("Connection opened");
       };
 
-      const result = eval(input);
+      //listen for incoming messages
+      newSocket.onmessage = (e) => {
+        // debug
+        console.log("[socket] Received:", e.data);
+        setInput(e.data);
+      };
 
-      const outputText = consoleMessages.join("\n") + "\n" + result;
+      // when the connection is lost
+      newSocket.onclose = (e) => {
+        if (e.wasClean) {
+          console.log(
+            `[socket] Connection closed cleanly, code=${e.code} reason=${e.reason}`
+          );
+        } else {
+          console.log("[socket] Connection died");
+        }
+      };
 
-      outputRef.current.getModel().setValue(outputText);
-      if (outputType) {
-        outputType.delete(0, outputType.length);
-        outputType.insert(0, outputText);
-      }
-    } catch (error) {
-      const errorOutput = "Error: " + error.message + "\n";
-      outputRef.current.getModel().setValue(errorOutput);
-      if (outputType) {
-        outputType.delete(0, outputType.length);
-        outputType.insert(0, errorOutput);
-      }
+      newSocket.onerror = (error) => {
+        console.log('[socket] Error:', error.message);
+      };
 
-      console.error("An error occurred:", error);
+      setSocket(newSocket);
     }
-  };
+    catch (err) {
+      console.error(err.message);
+    }
+  }
 
+  useEffect(() => { establishConnection() }, []);
+
+  //handle inputs
   const handleChange = (e) => {
-    setInput(e);
+    // debug
+    // console.log("[socket] Sending:", e);
+    socket.send(e);
   };
 
   return (
@@ -81,7 +71,7 @@ const Runtime = () => {
           id="runtime-content"
           className="h-[80vh] flex w-[80vw] flex-col items-center justify-center"
         >
-          <button id="runtimeSubmit" className="border-2" onClick={handleClick}>
+          <button id="runtimeSubmit" className="border-2">
             Run Code
           </button>
           <div
@@ -93,20 +83,15 @@ const Runtime = () => {
                 height="100%"
                 width="100%"
                 theme="vs-dark"
-                onMount={handleEditorDidMount}
                 onChange={handleChange}
+                value={input}
               />
             </div>
             <div
               id="runtimeRight"
               className="w-1/2 h-full flex flex-col bg-[#353839]"
             >
-              <Editor
-                height="100%"
-                width="100%"
-                theme="vs-dark"
-                onMount={handleOutputDidMount}
-              />
+              <Editor height="100%" width="100%" theme="vs-dark" />
             </div>
           </div>
         </div>
