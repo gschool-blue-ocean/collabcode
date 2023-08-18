@@ -1369,20 +1369,18 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
   }
 });
 
+// define web socket server as our running http server
 const wss = new WebSocketServer({ server });
 
+// on connection with a client
 wss.on("connection", function connection(ws) {
-  ws.on("error", (err) => {
-    console.error('[server] Error:', err);
-  });
+  // if there's an error, log it
+  ws.on("error", (err) => console.error('[server] Error:', err));
 
-  ws.addEventListener('message', (e) => {
-    // on receive, broadcast message to all clients
-    wss.clients.forEach((client) => {
-      client.send(e.data);
-    });
-  })
+  // upon receipt of a message, broadcast that message to all clients
+  ws.addEventListener('message', (e) => wss.clients.forEach((client) => client.send(e.data)));
 
+  // upon connection, send to the connected client "console.log('hello world!');" as default
   ws.send("console.log('hello world!');")
 });
 
