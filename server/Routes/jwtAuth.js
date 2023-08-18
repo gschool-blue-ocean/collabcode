@@ -461,7 +461,7 @@ router.get("/protected/student", studentUser, async (req, res) => {
   try {
     // if user exists in the request, send the data
     if (req.user) {
-      return res.status(200).json({
+      return res.json({
         message: "You are logged in! 🤗",
         type: "success",
         user: req.user,
