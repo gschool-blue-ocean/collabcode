@@ -9,10 +9,6 @@ import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
-const corsOptions = {
-  origin: "*", // You can specify the allowed origins here
-  // credentials: true, // This is important for allowing credentials
-};
 
 app.use(cors({ origin: "*" }));
 
@@ -29,7 +25,7 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 app.use(
   express.static("dist"),
   express.json(),
-  cors(corsOptions),
+  cors({ origin: "*" }),
   cookieParser()
 );
 
