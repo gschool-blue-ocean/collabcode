@@ -22,7 +22,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
       try {
         // Using the refresh token to get an access token
         const verifyRefresh = await fetch(
-          "https://localhost:8000/api/auth/refresh_token/teacher",
+          "https://collabcode.onrender.com/api/auth/refresh_token/teacher",
           {
             method: "POST",
             headers: {
@@ -40,7 +40,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
         } else {
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
-            "https://localhost:8000/api/auth/protected/teacher",
+            "https://collabcode.onrender.com/api/auth/protected/teacher",
             {
               method: "GET",
               headers: {

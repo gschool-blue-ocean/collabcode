@@ -15,7 +15,7 @@ import {
 //IMPORTING PROTECTED FROM PROTECTED
 import {
   studentUser,
-  adminUser,
+  // adminUser,
   teacherUser,
 } from "../middlewares/protected.js";
 //IMPORTING TOKEN CREATION
@@ -241,7 +241,7 @@ router.post("/signIn/student", validStudentInfo, async (req, res) => {
   }
 });
 
-//Sign out request HMMMMMMM MAYBE FOCUSING ON THE LAST FUNCTION BECAUSE WE NEED CLIENT SIDE DATA
+//Sign out request TEST THIS OUT THROUGH THE APPLICATION TAB
 router.post("/logout", (req, res) => {
   //Shouldn't we take a request object to log out the user?
   res.clearCookie("refreshtoken");
@@ -289,6 +289,7 @@ router.post("/refresh_token/student", async (req, res) => {
       });
     // if the user exists, check if the refresh token is correct. return error if it is incorrect.
     if (user.rows[0].st_refreshtoken !== refreshtoken) {
+      
       return res.status(500).json({
         message: "Invalid refresh token!",
         type: "error",
@@ -480,29 +481,29 @@ router.get("/protected/student", studentUser, async (req, res) => {
   }
 });
 
-router.get("/protected/admin", adminUser, async (req, res) => {
-  try {
-    // if user exists in the request, send the data
-    if (req.user) {
-      return res.json({
-        message: "You are logged in! 🤗",
-        type: "success",
-        user: req.user,
-      });
-    }
-    // if user doesn't exist, return error
-    return res.status(500).json({
-      message: "You are not logged in! 😢",
-      type: "error",
-    });
-  } catch (error) {
-    res.status(500).json({
-      type: "error",
-      message: "Error getting protected route!",
-      error,
-    });
-  }
-});
+// router.get("/protected/admin", adminUser, async (req, res) => {
+//   try {
+//     // if user exists in the request, send the data
+//     if (req.user) {
+//       return res.json({
+//         message: "You are logged in! 🤗",
+//         type: "success",
+//         user: req.user,
+//       });
+//     }
+//     // if user doesn't exist, return error
+//     return res.status(500).json({
+//       message: "You are not logged in! 😢",
+//       type: "error",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       type: "error",
+//       message: "Error getting protected route!",
+//       error,
+//     });
+//   }
+// });
 
 router.get("/protected/teacher", teacherUser, async (req, res) => {
   try {

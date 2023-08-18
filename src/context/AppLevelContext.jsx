@@ -39,7 +39,7 @@ export const AppLevelProvider = ({ children }) => {
       }
       //interpolate the role into the string
       const response = await fetch(
-        `https://localhost:8000/api/auth/signIn/${role}`,
+        `https://collab-code.onrender.com/api/auth/signIn/${role}`,
         {
           method: "POST",
           headers: {
@@ -57,7 +57,7 @@ export const AppLevelProvider = ({ children }) => {
         const data = await response.json();
         //interpolate the role into the string
         const responseUserData = await fetch(
-          `https://localhost:8000/api/auth/protected/${role}`,
+          `https://collab-code.onrender.com/api/auth/protected/${role}`,
           {
             method: "GET",
             headers: {
@@ -115,7 +115,7 @@ export const AppLevelProvider = ({ children }) => {
         };
       }
       const response = await fetch(
-        `https://localhost:8000/api/auth/register/${role}`,
+        `https://collab-code.onrender.com/api/auth/register/${role}`,
         {
           method: "POST",
           headers: {
@@ -130,7 +130,7 @@ export const AppLevelProvider = ({ children }) => {
         );
       } else {
         const SignInResponse = await fetch(
-          `https://localhost:8000/api/auth/signIn/${role}`,
+          `https://collab-code.onrender.com/api/auth/signIn/${role}`,
           {
             method: "POST",
             headers: {
@@ -148,7 +148,7 @@ export const AppLevelProvider = ({ children }) => {
           const data = await SignInResponse.json();
           //interpolate the role into the string
           const responseUserData = await fetch(
-            `https://localhost:8000/api/auth/protected/${role}`,
+            `https://collab-code.onrender.com/api/auth/protected/${role}`,
             {
               method: "GET",
               headers: {
