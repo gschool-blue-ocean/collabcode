@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
-
+// ALLOW CORS FOR LOCAL DEVELOPMENT
 app.use(cors({ origin: "*" }));
 
 // configure environment variables
