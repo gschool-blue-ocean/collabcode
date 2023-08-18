@@ -3,18 +3,21 @@ import createAccessToken from "../Utility/jwtGenerator.js";
 import express from "express";
 import pool from "../db.js";
 import pkg from "jsonwebtoken";
+const { verify } = pkg; 
 import dotenv from "dotenv";
+//IMPORTING MIDDLEWARE FOR VALIDATION
 import {
   validStudentInfo,
   validAdminInfo,
   validTeacherInfo,
 } from "../middlewares/validInfo.js";
+//IMPORTING PROTECTED FROM PROTECTED
 import {
   studentUser,
   adminUser,
   teacherUser,
 } from "../middlewares/protected.js";
-const { verify } = pkg;
+//IMPORTING TOKEN CREATION
 import {
   createRefreshToken,
   sendAccessToken,
@@ -24,42 +27,44 @@ import {
 dotenv.config();
 const router = express.Router();
 
-//register for admin account
-router.post("/register/admin", validAdminInfo, async (req, res) => {
-  try {
-    const { ad_email, ad_password, ad_name } = req.body;
+// //register for admin account
+// router.post("/register/admin", validAdminInfo, async (req, res) => {
+//   try {
+//     const { ad_email, ad_password, ad_name } = req.body;
 
-    const user = await pool.query("SELECT * FROM admins WHERE ad_email = $1;", [
-      ad_email,
-    ]);
+//     const user = await pool.query("SELECT * FROM admins WHERE ad_email = $1;", [
+//       ad_email,
+//     ]);
 
-    if (user.rows.length !== 0) {
-      res.status(402).send("Admin already exists");
-    }
+//     if (user.rows.length !== 0) {
+//       res.status(402).send("Admin already exists");
+//     }
 
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const bycryptPassWord = await bcrypt.hash(ad_password, salt);
+//     const saltRounds = 10;
+//     const salt = await bcrypt.genSalt(saltRounds);
+//     const bycryptPassWord = await bcrypt.hash(ad_password, salt);
 
-    const newUser = await pool.query(
-      "INSERT INTO admins(ad_email, ad_password, ad_name) VALUES ($1, $2, $3) RETURNING *",
-      [ad_email, bycryptPassWord, ad_name]
-    );
+//     const newUser = await pool.query(
+//       "INSERT INTO admins(ad_email, ad_password, ad_name) VALUES ($1, $2, $3) RETURNING *",
+//       [ad_email, bycryptPassWord, ad_name]
+//     );
 
-    res.status(200).json({
-      message: "Admin account created successfully!",
-      type: "success",
-    });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("server error...");
-  }
-});
+//     res.status(200).json({
+//       message: "Admin account created successfully!",
+//       type: "success",
+//     });
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).send("server error...");
+//   }
+// });
 
 //register for teacher account
 router.post("/register/teacher", validTeacherInfo, async (req, res) => {
   try {
-    const { ta_email, ta_password, ta_name, ta_code } = req.body;
+    const { ta_email, ta_password, ta_name, ta_code } = req.body; 
+    //POST in postman under  http://localhost:8000/api/auth/register/teacher
+    //THEN VERIFY under http://localhost:8000/teachers NOTE refreshToken is null
 
     if (ta_code !== process.env.TEACHER_CODE) {
       return res.status(400).send("Incorrect Teacher code ...");
@@ -78,11 +83,10 @@ router.post("/register/teacher", validTeacherInfo, async (req, res) => {
     const salt = await bcrypt.genSalt(saltRounds);
     const bycryptPassWord = await bcrypt.hash(ta_password, salt);
 
-    const newUser = await pool.query(
+    await pool.query(
       "INSERT INTO teachers(ta_email, ta_password, ta_name) VALUES ($1, $2, $3) RETURNING *",
       [ta_email, bycryptPassWord, ta_name]
     );
-
     res.status(200).json({
       message: "teacher account created successfully!",
       type: "success",
