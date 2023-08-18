@@ -13,14 +13,17 @@ const corsOptions = {
   origin: [
     "https://collab-code-static.onrender.com",
     "https://collab-code.onrender.com",
+    "https://collabcode.onrender.com/api/auth/refresh_token/teacher",
+    "https://collab-code.onrender.com/api/auth/protected/teacher",
     "http://localhost:5173",
+    "https://collab-code.onrender.com/api/auth/protected/student"
   ], // You can specify the allowed origins here
   credentials: true, // This is important for allowing credentials
 };
 
 
 //middleware for the local environment
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // configure environment variables
 dotenv.config();
@@ -35,17 +38,10 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 app.use(
   express.static("dist"),
   express.json(),
-  // cors(corsOptions),
+  cors(corsOptions),
   cookieParser()
 );
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://collab-code-static.onrender.com');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
 
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
