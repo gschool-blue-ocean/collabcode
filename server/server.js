@@ -1336,9 +1336,10 @@ wss.on("connection", function connection(ws) {
   });
 
   ws.addEventListener('message', (e) => {
-    // debug
-    console.log('[server] Received:', e.data)
-    ws.send(e.data);
+    // on receive, broadcast message to all clients
+    wss.clients.forEach((client) => {
+      client.send(e.data);
+    });
   })
 
   ws.send("console.log('hello world!');")
