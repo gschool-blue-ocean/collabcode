@@ -43,8 +43,8 @@ const InterviewList = () => {
           <div id="list-item-container" key={index} className="w-full h-[50vh]">
             <div className="w-full h-full flex flex-col justify-center items-center m-[10px]">
               <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
-              <h1>{elem.in_date.slice("T")}</h1>
-              <h1>{elem.in_time}</h1>
+              <h1>{elem.in_date.split("T")[0]}</h1>
+              <h1>{elem.in_time.split(":")[0]}:{elem.in_time.split(":")[1]}</h1>
             </div>
           </div>
         ))}
