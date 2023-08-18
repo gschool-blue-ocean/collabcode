@@ -4,7 +4,7 @@ import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const InterviewList = () => {
-  const { userData } = useContext(AppLevelContext);
+
 
   return (
     <div id="interview-list-container" className="w-[50vw] h-[60vh]">
