@@ -1331,23 +1331,17 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
 const wss = new WebSocketServer({ server });
 
 wss.on("connection", function connection(ws) {
-  ws.on("error", console.error);
+  ws.on("error", (err) => {
+    console.error('[server] Error:', err);
+  });
 
-  // ws.on("message", function message(data) {
-  //   console.log("received: $s", data);
-  // });
-
-  // using onmessage instead of on('message')
-  ws.onmessage = (e) => {
-    console.log("ws.onmessage received:", e.data);
-  }
-
-  // using wss.on('message')
-  wss.on('message', (data) => {
-    console.log("wss.on('message') received:", data);
+  ws.addEventListener('message', (e) => {
+    // debug
+    console.log('[server] Received:', e.data)
+    ws.send(e.data);
   })
 
-  ws.send("This was sent from the websocket server");
+  ws.send("console.log('hello world!');")
 });
 
 /*----- Listener -----*/

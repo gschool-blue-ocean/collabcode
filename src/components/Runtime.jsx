@@ -9,48 +9,56 @@ const Runtime = () => {
   const editorRef = useRef(null);
   const outputRef = useRef(null);
   //   //set states for global access
-  let input = "";
+  const [input, setInput] = useState('');
+  const [socket, setSocket] = useState({});
 
-  //let socket = new WebSocket(`ws://localhost:8001/`);
-  let socket = new WebSocket('wss://collab-code.onrender.com/socket');
+  const establishConnection = () => {
+    try {
+      let newSocket = new WebSocket(`ws://localhost:8000/`);
+      // let newSocket = new WebSocket(`wss://collab-code.onrender.com/socket`);
 
-  // when the connection is established
-  socket.onopen = (e) => {
-    console.log("[open] Connection established");
-    socket.send("Connection opened");
-  };
+      // when the connection is established
+      newSocket.onopen = (e) => {
+        console.log("[socket] Connection established");
+        socket.send("Connection opened");
+      };
 
-  // when receiving some data from the server
-  socket.onmessage = (e) => {
-    console.log(`[message] Data received from server: ${e.data}`);
-  };
+      //listen for incoming messages
+      newSocket.onmessage = (e) => {
+        // debug
+        console.log("[socket] Received:", e.data);
+        setInput(e.data);
+      };
 
-  //listen for incoming messages
-  ws.addEventListener("message", (event) => {
-    const message = event.data;
-    console.log("Received message from server:", message);
-  });
+      // when the connection is lost
+      newSocket.onclose = (e) => {
+        if (e.wasClean) {
+          console.log(
+            `[socket] Connection closed cleanly, code=${e.code} reason=${e.reason}`
+          );
+        } else {
+          console.log("[socket] Connection died");
+        }
+      };
 
-  // when the connection is lost
-  socket.onclose = (e) => {
-    if (e.wasClean) {
-      console.log(
-        `[close] Connection closed cleanly, code=${e.code} reason=${e.reason}`
-      );
-    } else {
-      console.log("[close] Connection died");
+      newSocket.onerror = (error) => {
+        console.log('[socket] Error:', error.message);
+      };
+
+      setSocket(newSocket);
     }
-  };
+    catch (err) {
+      console.error(err.message);
+    }
+  }
 
-  socket.onerror = (error) => {
-    console.log(`[error]`);
-  };
+  useEffect(() => { establishConnection() }, []);
 
   //handle inputs
   const handleChange = (e) => {
-    input = e;
-    console.log("data to be sent via socket:", input);
-    socket.send(input);
+    // debug
+    // console.log("[socket] Sending:", e);
+    socket.send(e);
   };
 
   return (
@@ -76,6 +84,7 @@ const Runtime = () => {
                 width="100%"
                 theme="vs-dark"
                 onChange={handleChange}
+                value={input}
               />
             </div>
             <div
