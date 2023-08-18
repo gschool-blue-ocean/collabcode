@@ -221,7 +221,6 @@ router.post("/signIn/student", validStudentInfo, async (req, res) => {
       student.rows[0].st_password,
       async (err, result) => {
         if (result) {
-          console.log(result);
           const accessToken = createAccessToken(student.rows[0].st_id);
           const refreshToken = createRefreshToken(student.rows[0].st_id);
           await pool.query(
