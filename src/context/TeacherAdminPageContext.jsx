@@ -10,13 +10,16 @@ export const TeacherAdminPageProvider = ({ children }) => {
   //Displays the Students in the Drop Down
   useEffect(() => {
     const getStudents = async () => {
-      const studentRes = await fetch("/students");
+      const studentRes = await fetch(
+        "https://collab-code.onrender.com/students"
+      );
       const studentData = await studentRes.json();
       setPendingStudents(studentData);
     };
     getStudents();
   }, []);
 
+  
   useEffect(() => {
     const getTeacherData = async () => {
       try {

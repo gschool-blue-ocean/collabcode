@@ -9,8 +9,16 @@ import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
-
-app.use(cors({ origin: "*" }));
+const corsOptions = {
+  origin: [
+    "https://collab-code-static.onrender.com/",
+    "https://collab-code.onrender.com/",
+    "http://localhost:5173",
+  ], // You can specify the allowed origins here
+  credentials: true, // This is important for allowing credentials
+};
+//middleware for the local environment
+app.use(cors(corsOptions));
 
 // configure environment variables
 dotenv.config();
@@ -21,11 +29,11 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const { Pool } = pg;
 const pool = new Pool({ connectionString: DATABASE_URL });
 
-// middleware
+// middleware live environment
 app.use(
   express.static("dist"),
   express.json(),
-  cors({ origin: "*" }),
+  cors(corsOptions),
   cookieParser()
 );
 
