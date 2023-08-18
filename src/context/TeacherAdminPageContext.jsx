@@ -20,8 +20,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
     };
     getStudents();
   }, []);
-
-  // useEffect(() => {
   //   const getTeacherData = async () => {
   //     try {
   //       // Using the refresh token to get an access token

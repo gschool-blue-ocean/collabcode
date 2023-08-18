@@ -45,9 +45,6 @@ const PendingStudents = () => {
           body: JSON.stringify(formObj),
         }
       );
-      if (response.ok) {
-        currentForm.reset();
-      }
     } catch (error) {
       console.log(error);
     }
