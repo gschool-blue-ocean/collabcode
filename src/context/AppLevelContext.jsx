@@ -37,6 +37,7 @@ export const AppLevelProvider = ({ children }) => {
           st_password: body_password,
         };
       }
+
       //interpolate the role into the string
       const response = await fetch(
         `https://collab-code.onrender.com/api/auth/signIn/${role}`,
@@ -55,7 +56,6 @@ export const AppLevelProvider = ({ children }) => {
         );
       } else {
         const { accesstoken } = await response.json();
-        console.log(accesstoken);
         //interpolate the role into the string
         const responseUserData = await fetch(
           `https://collab-code.onrender.com/api/auth/protected/${role}`,
@@ -63,11 +63,12 @@ export const AppLevelProvider = ({ children }) => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              token: "accesstoken.accesstoken",
+              token: accesstoken,
             },
           }
         );
 
+        console.log(responseUserData);
         if (responseUserData.status != 200) {
           console.log(
             "Got an error getting the user object it is " +

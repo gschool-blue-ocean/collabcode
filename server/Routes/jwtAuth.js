@@ -456,11 +456,12 @@ router.post("/refresh_token/teacher", async (req, res) => {
 // });
 
 router.get("/protected/student", studentUser, async (req, res) => {
-  console.log(studentUser);
+
   try {
     // if user exists in the request, send the data
+    console.log(studentUser);
     if (req.user) {
-      return res.status(200).json({
+      return res.json({
         message: "You are logged in! 🤗",
         type: "success",
         user: req.user,
