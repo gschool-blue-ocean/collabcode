@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -6,16 +6,16 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
-         //scrollY is the number of pixels that the document is currently scrolled vertically
+        //scrollY is the number of pixels that the document is currently scrolled vertically
         setIsSticky(true);
       } else {
         setIsSticky(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -23,7 +23,7 @@ const Header = () => {
     <header
       id="Navbar"
       className={`flex h-20 md:h-2 lg:h-28 w-full items-center justify-between mt-0 px-8 lg:px-16 ${
-        isSticky ? 'fixed top-0 bg-white shadow-md' : ''
+        isSticky ? "fixed top-0 bg-white shadow-md" : ""
       }`} // the header will be fixed to the top of the screen when the user scrolls past the landing page
     >
       <a href="/" className="text-4xl md:text-3xl lg:text-4xl font-semibold">

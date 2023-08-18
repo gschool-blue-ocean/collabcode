@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 import jsonwebtoken from "jsonwebtoken";
-import dotenv from "dotenv";
 const { sign } = jsonwebtoken;
+import dotenv from "dotenv";
 dotenv.config();
 
 // signing the access token
@@ -29,7 +30,7 @@ const sendAccessToken = (req, res, accesstoken) => {
 // sending the refresh token to the client as a cookie
 const sendRefreshToken = (res, refreshtoken) => {
   res.cookie("refreshtoken", refreshtoken, {
-    hhtpOnly: true,
+    httpOnly: true,
   });
 };
 

@@ -15,25 +15,26 @@ function App() {
     <AppLevelProvider>
       <AuthenticationModalProvider>
         <Router>
-          <div>
-            <Header />
-            <div className="content-container">
-              <Routes>
-                <Route exact path="/" element={<LandingPage />} />
+          <Header />
+          <Routes>
+            {/* HOME PATH */}
+            <Route exact path="/" element={<LandingPage />} />
 
-                <Route path="/signIn" element={<AuthenticationModal />} />
-                <Route path="/interview" element={<InterviewPage/>}/>
-                <Route
-                  path="/api/auth/signIn/teacher"
-                  element={<TeacherAdminPage />}
-                />
-                <Route
-                  path="/api/auth/signIn/student"
-                  element={<StudentPage />}
-                />
-              </Routes>
-            </div>
-          </div>
+            {/* AUTHENTICATION PATH */}
+            <Route path="/signIn" element={<AuthenticationModal />} />
+
+            {/* TEACHER PAGE */}
+            <Route
+              path="/api/auth/signIn/teacher"
+              element={<TeacherAdminPage />}
+            />
+
+            {/* STUDENT PAGE */}
+            <Route path="/api/auth/signIn/student" element={<StudentPage />} />
+
+            {/* INTERVIEW PAGE */}
+            <Route path="/interview" element={<InterviewPage />} />
+          </Routes>
         </Router>
       </AuthenticationModalProvider>
     </AppLevelProvider>
