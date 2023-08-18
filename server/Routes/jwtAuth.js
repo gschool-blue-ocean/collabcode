@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import bcrypt from "bcrypt";
 import createAccessToken from "../Utility/jwtGenerator.js";
 import express from "express";
@@ -222,8 +221,9 @@ router.post("/signIn/student", validStudentInfo, async (req, res) => {
       student.rows[0].st_password,
       async (err, result) => {
         if (result) {
-          const accessToken = createAccessToken(student.rows[0].ta_id);
-          const refreshToken = createRefreshToken(student.rows[0].ta_id);
+          console.log(result);
+          const accessToken = createAccessToken(student.rows[0].st_id);
+          const refreshToken = createRefreshToken(student.rows[0].st_id);
           await pool.query(
             `UPDATE students SET st_refreshToken = $1 WHERE st_email = $2;`,
             [refreshToken, st_email]
@@ -289,7 +289,6 @@ router.post("/refresh_token/student", async (req, res) => {
       });
     // if the user exists, check if the refresh token is correct. return error if it is incorrect.
     if (user.rows[0].st_refreshtoken !== refreshtoken) {
-      
       return res.status(500).json({
         message: "Invalid refresh token!",
         type: "error",

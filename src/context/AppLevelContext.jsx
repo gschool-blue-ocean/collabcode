@@ -54,7 +54,8 @@ export const AppLevelProvider = ({ children }) => {
           "Error signing in, Please verify Role email and password are correct."
         );
       } else {
-        const data = await response.json();
+        const { accesstoken } = await response.json();
+        console.log(accesstoken);
         //interpolate the role into the string
         const responseUserData = await fetch(
           `https://collab-code.onrender.com/api/auth/protected/${role}`,
@@ -62,7 +63,7 @@ export const AppLevelProvider = ({ children }) => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              token: data.accesstoken,
+              token: "accesstoken.accesstoken",
             },
           }
         );
