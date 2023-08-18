@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
@@ -22,9 +22,35 @@ const PendingStudents = () => {
     });
   };
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(formInputs, userData);
+
+    try {
+      const formObj = {
+        ta_id: userData.user.ta_id,
+        st_id: Number(formInputs.students),
+        in_date: formInputs.date,
+        in_time: formInputs.time,
+        in_completed: false,
+        in_comments: null,
+      };
+      //Send the formObj back
+      const response = await fetch(
+        "https://collab-code.onrender.com/interviews",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formObj),
+        }
+      );
+      if (response.ok) {
+        currentForm.reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

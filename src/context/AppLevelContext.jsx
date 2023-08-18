@@ -68,11 +68,9 @@ export const AppLevelProvider = ({ children }) => {
           }
         );
 
-        console.log(responseUserData);
         if (responseUserData.status != 200) {
           console.log(
-            "Got an error getting the user object it is " +
-              responseUserData.statusText
+            "Got an error getting the user object it is " + responseUserData
           );
         } else {
           const Data2 = await responseUserData.json();
