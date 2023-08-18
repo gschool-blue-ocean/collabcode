@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 
 // initialize app by invoking express
 const app = express();
-// ALLOW CORS FOR LOCAL DEVELOPMENT
+
 app.use(cors({ origin: "*" }));
 
 // configure environment variables
@@ -21,7 +21,7 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const { Pool } = pg;
 const pool = new Pool({ connectionString: DATABASE_URL });
 
-// middleware for deployment
+// middleware
 app.use(
   express.static("dist"),
   express.json(),
@@ -31,7 +31,6 @@ app.use(
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
-
 // /*----- 'admins' table routes -----*/
 
 // // GET ALL - secured by not reading request object
@@ -234,6 +233,7 @@ app.use("/api/auth", jwtAuthRouter);
 // });
 
 /*----- 'teachers' table routes -----*/
+
 // GET ALL - secured by not reading request object
 app.get("/teachers", async (req, res) => {
   try {
@@ -247,7 +247,7 @@ app.get("/teachers", async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).send(`Server caught the following error: ${error.message}`);
+    res.status(500).send("Server caught the following error: " + error.message);
     return;
   }
 });
@@ -284,9 +284,7 @@ app.get("/teachers/:id", param("id").isInt(), async (req, res) => {
   } catch (error) {
     // error handling
     console.error(error.message);
-    res
-      .status(500)
-      .send(`Server caught the following error: + ${error.message}`);
+    res.status(500).send("Server caught the following error: " + error.message);
     return;
   }
 });
@@ -1334,8 +1332,5 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
 
 /*----- Listener -----*/
 app.listen(PORT, () => {
-  console.log(
-    "API Server running on port",
-    PORT
-  );
+  console.log("API Server running on port", PORT);
 });
