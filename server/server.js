@@ -11,12 +11,13 @@ import cookieParser from "cookie-parser";
 const app = express();
 const corsOptions = {
   origin: [
-    "https://collab-code-static.onrender.com/",
-    "https://collab-code.onrender.com/",
+    "https://collab-code-static.onrender.com",
+    "https://collab-code.onrender.com",
     "http://localhost:5173",
   ], // You can specify the allowed origins here
   credentials: true, // This is important for allowing credentials
 };
+
 //middleware for the local environment
 app.use(cors(corsOptions));
 
