@@ -19,15 +19,13 @@ const corsOptions = {
     "https://collabcode.onrender.com/api/auth/refresh_token/teacher",
     "https://collab-code.onrender.com/api/auth/protected/teacher",
     "http://localhost:5173",
-    "https://collab-code.onrender.com/api/auth/protected/student"
+    "https://collab-code.onrender.com/api/auth/protected/student",
   ], // You can specify the allowed origins here
   credentials: true, // This is important for allowing credentials
 };
 
-
 //middleware for the local environment
 app.use(cors(corsOptions));
-
 // configure environment variables
 dotenv.config();
 const PORT = process.env.PORT || 8000;
