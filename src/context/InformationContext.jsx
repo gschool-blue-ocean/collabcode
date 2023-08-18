@@ -1,24 +1,21 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { useState, useRef, createContext } from 'react';
+import { useRef, createContext } from "react";
 
 const infoObj = {
-  title: 'Welcome to Collab Code!',
-  desc: 'An online collaborative experience to conduct structured interview amongst developers of all levels',
-  image: 'https://blogs.perficient.com/files/iStock-1363276581-600x400.jpg'
+  title: "Welcome to Collab Code!",
+  desc: "An online collaborative experience to conduct structured interview amongst developers of all levels",
+  image: "https://blogs.perficient.com/files/iStock-1363276581-600x400.jpg",
 };
 
-//Create Context
 const InformationContext = createContext();
 
-//Create The Provider
 export const InformationProvider = ({ children }) => {
-  //States and reference go here
+  //STATES
   let textObj = useRef(infoObj);
   textObj = textObj.current;
+  //FUNCTIONS
 
-  //Functions that need to be run
-  //Return the provider with children and properties to be passed down
+  //RETURNED PROPERTIES
   return (
     <InformationContext.Provider value={{ textObj }}>
       {children}

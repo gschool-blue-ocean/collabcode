@@ -1,19 +1,9 @@
 -- Resets all the tables 
-
 DROP TABLE IF EXISTS runtime;
 DROP TABLE IF EXISTS chat;
 DROP TABLE IF EXISTS interviews;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS teachers;
-DROP TABLE IF EXISTS admins;
-
-CREATE TABLE admins (
-    ad_id SERIAL PRIMARY KEY,
-    ad_email TEXT,
-    ad_password TEXT,
-    ad_name TEXT,
-    ad_refreshToken TEXT
-);
 
 CREATE TABLE teachers (
     ta_id SERIAL PRIMARY KEY,

@@ -7,17 +7,12 @@ const AppLevelContext = createContext();
 
 export const AppLevelProvider = ({ children }) => {
   const [loginTeacher, setLoginTeacher] = useState(false);
-  const [loginAdmin, setLoginAdmin] = useState(false);
   const [loginStudent, setLoginStudent] = useState(false);
   const [userData, setUserData] = useState({});
-  const [accountType, setAccountType] = useState("teacher");
+  const [accountType, setAccountType] = useState("teacher"); //Default state is teacher
 
   const toggleTeacher = () => {
     setLoginTeacher(!loginTeacher);
-  };
-
-  const toggleAdmin = () => {
-    setLoginAdmin(!loginAdmin);
   };
 
   const toggleStudent = () => {
@@ -54,7 +49,7 @@ export const AppLevelProvider = ({ children }) => {
         }
       );
 
-      if (response.status != 200) {
+      if (response.status !== 200) {
         alert(
           "Error signing in, Please verify Role email and password are correct."
         );

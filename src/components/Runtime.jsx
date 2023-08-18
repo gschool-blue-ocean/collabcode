@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
@@ -75,11 +75,11 @@ const Runtime = () => {
     <>
       <div
         id="runtime-container"
-        className="w-4/5 h-[80vh] flex justify-center"
+        className="w-full h-[90vh] flex justify-center"
       >
         <div
           id="runtime-content"
-          className="h-full flex w-[80vw] flex-col items-center justify-center"
+          className="h-[80vh] flex w-[80vw] flex-col items-center justify-center"
         >
           <button id="runtimeSubmit" className="border-2" onClick={handleClick}>
             Run Code
