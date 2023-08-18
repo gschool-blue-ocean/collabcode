@@ -222,8 +222,8 @@ router.post("/signIn/student", validStudentInfo, async (req, res) => {
       student.rows[0].st_password,
       async (err, result) => {
         if (result) {
-          const accessToken = createAccessToken(student.rows[0].ta_id);
-          const refreshToken = createRefreshToken(student.rows[0].ta_id);
+          const accessToken = createAccessToken(student.rows[0].st_id);
+          const refreshToken = createRefreshToken(student.rows[0].st_id);
           await pool.query(
             `UPDATE students SET st_refreshToken = $1 WHERE st_email = $2;`,
             [refreshToken, st_email]
