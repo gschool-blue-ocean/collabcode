@@ -1332,5 +1332,5 @@ app.delete("/runtime", param("id").isInt(), async (req, res) => {
 
 /*----- Listener -----*/
 app.listen(PORT, () => {
-  console.log("API Server running on port", PORT);
+  console.log("API/JWT Server running on port", PORT);
 });
