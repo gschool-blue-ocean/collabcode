@@ -45,7 +45,7 @@ app.use(
   cookieParser()
 );
 
-
+const server = http.createServer(app);
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
@@ -1388,10 +1388,5 @@ wss.on("connection", function connection(ws) {
 
 /*----- Listener -----*/
 server.listen(PORT, () => {
-  console.log(
-    "Server running on port",
-    PORT,
-    "with connection URL",
-    DATABASE_URL
-  );
+  console.log("API/JWT and WebSocket server running, port:", PORT);
 });
