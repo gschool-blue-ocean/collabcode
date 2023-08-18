@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import bcrypt from "bcrypt";
 import createAccessToken from "../Utility/jwtGenerator.js";
 import express from "express";

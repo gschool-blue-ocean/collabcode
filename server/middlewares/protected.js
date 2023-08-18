@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import pkg from "jsonwebtoken";
 import dotenv from "dotenv";
 import pool from "../db.js";
