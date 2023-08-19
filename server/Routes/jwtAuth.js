@@ -455,7 +455,6 @@ router.post("/refresh_token/teacher", async (req, res) => {
 // });
 
 router.get("/protected/student", studentUser, async (req, res) => {
-
   try {
     // if user exists in the request, send the data
     console.log(studentUser);

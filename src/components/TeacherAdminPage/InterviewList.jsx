@@ -25,28 +25,22 @@ const InterviewList = () => {
     getInterviews();
   }, [userData.user.ta_id]);
 
-  console.log(interviews, pendingStudents);
-
   return (
-    <div
-      id="interview-list-container"
-      className="w-[50vw] h-[80vh] overflow-hidden"
-    >
+    <div id="interview-list-container" className="w-[50vw] h-[60vh]">
       <div
         id="interview-list-items"
         className="w-full h-full flex flex-col justify-center items-center"
       >
         <h1 className="text-[4rem]">Scheduled Interviews</h1>
         {interviews.map((elem, index) => (
-          <div
-            key={index}
-            className="w-full h-full flex flex-col justify-center items-center m-[10px]"
-          >
-            <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
-            <h1>{elem.in_date.split("T")[0]}</h1>
-            <h1>
-              {elem.in_time.split(":")[0]}:{elem.in_time.split(":")[1]}
-            </h1>
+          <div id="list-item-container" key={index} className="w-full h-[50vh]">
+            <div className="w-full h-full flex flex-col justify-center items-center m-[10px]">
+              <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
+              <h1>{elem.in_date.split("T")[0]}</h1>
+              <h1>
+                {elem.in_time.split(":")[0]}: {elem.in_time.split(":")[0]}
+              </h1>
+            </div>
           </div>
         ))}
       </div>
