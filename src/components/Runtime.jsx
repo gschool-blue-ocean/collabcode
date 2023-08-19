@@ -48,7 +48,26 @@ const Runtime = () => {
   const handleChange = (e) => socket.send(e);
 
   // on 'run code' click, set the output to the (evaluated) input
-  const handleRun = (e) => {}
+  const handleRun = (e) => {
+    try {
+      const consoleMessages = [];
+      const originalConsoleLog = console.log;
+      console.log = (message) => {
+        consoleMessages.push(message);
+        originalConsoleLog(message);
+      };
+
+      const result = eval(input);
+
+      const outputText = consoleMessages.join("\n") + "\n" + result;
+
+      setOutput(outputText)
+      
+    } catch (error) {
+      const errorOutput = "Error: " + error.message + "\n";
+      setOutput(errorOutput)
+    }
+  }
 
   return (
     <>
