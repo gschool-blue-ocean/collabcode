@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import bcrypt from "bcrypt";
 import createAccessToken from "../Utility/jwtGenerator.js";
 import express from "express";
@@ -289,7 +288,6 @@ router.post("/refresh_token/student", async (req, res) => {
       });
     // if the user exists, check if the refresh token is correct. return error if it is incorrect.
     if (user.rows[0].st_refreshtoken !== refreshtoken) {
-      
       return res.status(500).json({
         message: "Invalid refresh token!",
         type: "error",
@@ -457,9 +455,10 @@ router.post("/refresh_token/teacher", async (req, res) => {
 // });
 
 router.get("/protected/student", studentUser, async (req, res) => {
-  console.log(studentUser);
+
   try {
     // if user exists in the request, send the data
+    console.log(studentUser);
     if (req.user) {
       return res.json({
         message: "You are logged in! 🤗",
