@@ -20,47 +20,51 @@ export const TeacherAdminPageProvider = ({ children }) => {
     };
     getStudents();
   }, []);
-  //   const getTeacherData = async () => {
-  //     try {
-  //       // Using the refresh token to get an access token
-  //       const verifyRefresh = await fetch(
-  //         "https://collabcode.onrender.com/api/auth/refresh_token/teacher",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           credentials: "include",
-  //         }
-  //       );
 
-  //       const verifyRefreshData = await verifyRefresh.json();
-  //       console.log(verifyRefreshData);
+  useEffect(() => {
+    const getTeacherData = async () => {
+      try {
+        // Using the refresh token to get an access token
+        const verifyRefresh = await fetch(
+          "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
-  //       if (verifyRefreshData.status !== 200) {
-  //         alert("Error refreshing token...");
-  //       } else {
-  //         // Using the refreshed access token to fetch protected data
-  //         const verifyAccess = await fetch(
-  //           "https://collabcode.onrender.com/api/auth/protected/teacher",
-  //           {
-  //             method: "GET",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Token: verifyRefreshData.accessToken, // Corrected header name
-  //             },
-  //           }
-  //         );
+        const verifyRefreshData = await verifyRefresh.json();
+        console.log(verifyRefreshData);
 
-  //         const verifyAccessData = await verifyAccess.json();
-  //         console.log(verifyAccessData); // User Information
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred:", error);
-  //     }
-  //   };
+        if (verifyRefreshData.status !== 200) {
+          alert("Error refreshing token...");
+        } else {
+          // Using the refreshed access token to fetch protected data
+          const verifyAccess = await fetch(
+            "https://collab-code.onrender.com/api/auth/protected/teacher",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Token: verifyRefreshData.accessToken, // Corrected header name
+              },
+            }
+          );
 
-  //   getTeacherData();
+          const verifyAccessData = await verifyAccess.json();
+          console.log(verifyAccessData); // User Information
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    };
+
+    getTeacherData();
+  }, [])
+ 
   // }, []);
 
   return (
