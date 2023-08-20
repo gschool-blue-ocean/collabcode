@@ -8,7 +8,7 @@ const TeacherAdminPageContext = createContext();
 export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
-  const [userCookies, setUserCookies] = useState({});
+  const [interviews, setInterviews] = useState([]);
   //Displays the Students in the Drop Down
   useEffect(() => {
     const getStudents = async () => {
@@ -69,8 +69,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
         setPendingStudents,
         currentStudent,
         setCurrentStudent,
-        userCookies,
-        setUserCookies,
+        interviews,
+        setInterviews,
       }}
     >
       {children}

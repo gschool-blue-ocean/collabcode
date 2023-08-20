@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const InterviewList = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents } = useContext(TeacherAdminPageContext);
-  const [interviews, setInterviews] = useState([]);
+  const { pendingStudents, setInterviews, interviews } = useContext(
+    TeacherAdminPageContext
+  );
 
   useEffect(() => {
     const getInterviews = async () => {
@@ -23,7 +24,7 @@ const InterviewList = () => {
       setInterviews(interviewsData);
     };
     getInterviews();
-  }, [userData.user.ta_id]);
+  }, [userData.user.ta_id, setInterviews]);
 
   return (
     <div id="interview-list-container" className="w-[50vw] h-[60vh]">

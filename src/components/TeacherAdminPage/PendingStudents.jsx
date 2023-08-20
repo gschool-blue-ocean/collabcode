@@ -5,12 +5,11 @@ import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const PendingStudents = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents } = useContext(TeacherAdminPageContext);
+  const { pendingStudents, interviews } = useContext(TeacherAdminPageContext);
+  console.log(interviews);
+  console.log(pendingStudents);
 
-  const [formInputs, setFormInputs] = useState({
-    date: "",
-    time: "",
-  });
+  const [formInputs, setFormInputs] = useState({});
 
   const { date, time } = formInputs;
 
@@ -18,7 +17,7 @@ const PendingStudents = () => {
     const { name, value } = e.target;
     setFormInputs({
       ...formInputs,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -26,7 +25,7 @@ const PendingStudents = () => {
     event.preventDefault();
 
     try {
-      const formObj = {
+      let formObj = {
         ta_id: userData.user.ta_id,
         st_id: Number(formInputs.students),
         in_date: formInputs.date,
@@ -45,6 +44,14 @@ const PendingStudents = () => {
           body: JSON.stringify(formObj),
         }
       );
+      //If the response is successful
+      if (response.status === 200) {
+        //Remove Student from List if there is a scheuled interview
+        //Needing to add column into the students table to complete this
+        //Reset the Form Data
+        setFormInputs({});
+      }
+      console.log;
     } catch (error) {
       console.log(error);
     }
@@ -67,13 +74,17 @@ const PendingStudents = () => {
             onChange={handleChange}
           >
             <option value="">Select A Student</option>
-            {pendingStudents.length !== 0
-              ? pendingStudents.map((elem, index) => (
-                  <option value={elem.st_id} key={index}>
-                    {elem.st_name}
-                  </option>
-                ))
-              : console.log("Students are loading")}
+            {pendingStudents.length !== 0 ? (
+              pendingStudents.map((elem, index) => (
+                <option value={elem.st_id} key={index}>
+                  {elem.st_name}
+                </option>
+              ))
+            ) : (
+              <option value="" key="">
+                Loading Students
+              </option>
+            )}
           </select>
           <input
             type="date"
