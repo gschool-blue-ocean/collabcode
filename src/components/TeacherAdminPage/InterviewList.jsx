@@ -25,8 +25,6 @@ const InterviewList = () => {
     getInterviews();
   }, []);
 
-  console.log(interviews, pendingStudents);
-
   return (
     <div id="interview-list-container" className="w-[50vw] h-[60vh]">
       <div
