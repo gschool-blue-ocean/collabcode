@@ -22,7 +22,6 @@ const PendingStudents = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     try {
       const formObj = {
         ta_id: currentTeacher.user.ta_id,
@@ -30,7 +29,7 @@ const PendingStudents = () => {
         in_date: formInputs.date,
         in_time: formInputs.time,
         in_completed: false,
-        in_comments: null,
+        st_scheduled: true
       };
       //Send the formObj back
       const response = await fetch(
@@ -45,8 +44,15 @@ const PendingStudents = () => {
       );
       //If the response is successful
       if (response.status === 200) {
-        //Remove Student from List if there is a scheuled interview
-        //Needing to add column into the students table to complete this
+        await fetch(`https://collab-code.onrender.com/students/${formObj.st_id}`, 
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formObj.st_scheduled),
+        }) 
+        
         //Reset the Form Data
         setFormInputs({});
       }
@@ -73,7 +79,7 @@ const PendingStudents = () => {
             onChange={handleChange}
           >
             <option value="">Select A Student</option>
-            {pendingStudents.length !== 0 ? (
+            {pendingStudents.st_scheduled !== false ? (
               pendingStudents.map((elem, index) => (
                 <option value={elem.st_id} key={index}>
                   {elem.st_name}
