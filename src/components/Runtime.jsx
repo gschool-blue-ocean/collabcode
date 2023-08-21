@@ -61,11 +61,11 @@ const Runtime = () => {
 
       const outputText = consoleMessages.join("\n") + "\n" + result;
 
-      setOutput(outputText)
-      
+      setOutput(outputText);
+
     } catch (error) {
       const errorOutput = "Error: " + error.message + "\n";
-      setOutput(errorOutput)
+      setOutput(errorOutput);
     }
   }
 
