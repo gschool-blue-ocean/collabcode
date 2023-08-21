@@ -114,6 +114,7 @@ export const AppLevelProvider = ({ children }) => {
           st_email: body_email,
           st_password: body_password,
           st_name: body_name,
+          st_scheduled: false
         };
       }
       const response = await fetch(

@@ -27,38 +27,6 @@ import {
 dotenv.config();
 const router = express.Router();
 
-// //register for admin account
-// router.post("/register/admin", validAdminInfo, async (req, res) => {
-//   try {
-//     const { ad_email, ad_password, ad_name } = req.body;
-
-//     const user = await pool.query("SELECT * FROM admins WHERE ad_email = $1;", [
-//       ad_email,
-//     ]);
-
-//     if (user.rows.length !== 0) {
-//       res.status(402).send("Admin already exists");
-//     }
-
-//     const saltRounds = 10;
-//     const salt = await bcrypt.genSalt(saltRounds);
-//     const bycryptPassWord = await bcrypt.hash(ad_password, salt);
-
-//     const newUser = await pool.query(
-//       "INSERT INTO admins(ad_email, ad_password, ad_name) VALUES ($1, $2, $3) RETURNING *",
-//       [ad_email, bycryptPassWord, ad_name]
-//     );
-
-//     res.status(200).json({
-//       message: "Admin account created successfully!",
-//       type: "success",
-//     });
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("server error...");
-//   }
-// });
-
 //register for teacher account SUCCESSFUL
 router.post("/register/teacher", validTeacherInfo, async (req, res) => {
   try {
@@ -100,7 +68,7 @@ router.post("/register/teacher", validTeacherInfo, async (req, res) => {
 // register student SUCCESSFUL
 router.post("/register/student", validStudentInfo, async (req, res) => {
   try {
-    const { st_email, st_password, st_name } = req.body;
+    const { st_email, st_password, st_name, st_scheduled } = req.body;
 
     const newStudent = await pool.query(
       `SELECT * FROM students WHERE st_email = $1;`,
@@ -116,8 +84,8 @@ router.post("/register/student", validStudentInfo, async (req, res) => {
     const bycryptPassWord = await bcrypt.hash(st_password, salt);
 
     await pool.query(
-      "INSERT INTO students(st_email, st_password, st_name) VALUES ($1, $2, $3) RETURNING *",
-      [st_email, bycryptPassWord, st_name]
+      "INSERT INTO students(st_email, st_password, st_name, st_scheduled) VALUES ($1, $2, $3, $4) RETURNING *",
+      [st_email, bycryptPassWord, st_name, st_scheduled]
     );
 
     res.status(200).json({
@@ -129,44 +97,6 @@ router.post("/register/student", validStudentInfo, async (req, res) => {
     res.status(500).send("server error...");
   }
 });
-
-// //sign in for admin
-// router.post("/signIn/admin", validAdminInfo, async (req, res) => {
-//   try {
-//     const { ad_email, ad_password } = req.body;
-
-//     const user = await pool.query("SELECT * FROM admins WHERE ad_email = $1;", [
-//       ad_email,
-//     ]);
-
-//     if (user.rows.length < 1) {
-//       return res.status(404).send("User not found...");
-//     }
-
-//     const validPassword = await bcrypt.compare(
-//       ad_password,
-//       user.rows[0].ad_password
-//     );
-
-//     if (!validPassword) {
-//       res.status(500).send("Incorrect password");
-//     }
-//     //create a token if the password is correct
-//     //they use "const accessToken = createAccessToken(...)"
-//     //we need to create a token here
-//     const accessToken = createAccessToken(user.rows[0].ad_id);
-//     const refreshToken = createRefreshToken(user.rows[0].ad_id);
-//     //UPDATE owners SET age = 30 WHERE name = 'Jane';
-//     const insertToken = await pool.query(
-//       `UPDATE admins SET ad_refreshToken = $1 WHERE ad_email = $2;`,
-//       [refreshToken, ad_email]
-//     );
-//     sendRefreshToken(res, refreshToken);
-//     sendAccessToken(req, res, accessToken);
-//   } catch (error) {
-//     res.status(500).send("Error signing in...");
-//   }
-// });
 
 //sign in for teacher SUCCESSFUL
 router.post("/signIn/teacher", validTeacherInfo, async (req, res) => {
