@@ -46,44 +46,44 @@ const InterviewDetails = () => {
     interviewDate.setUTCMinutes(interviewTime.getUTCMinutes());
     interviewDate.setUTCSeconds(interviewTime.getUTCSeconds());
     if (currentDate.getTime() === interviewDate.getTime()) {
-    return (
+      return (
         <div
-        id="interview-details-container"
-        className="flex flex-col justify-center items-center h-[20rem]"
-      >
-        <div
-          id="interview-details"
-          className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          id="interview-details-container"
+          className="flex flex-col justify-center items-center h-[20rem]"
         >
-          <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[0].in_date}</h1>
-          <h1>Time: {interviews[0].in_time}</h1>
-          <h1>Instuctor: {interviews[0].ta_id}</h1>
-          <button className="p-0.5 border rounded-lg border-black mb-[1rem] hover:bg-[#faa161] cursor-cell">
-            Join Room
-          </button>
+          <div
+            id="interview-details"
+            className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          >
+            <h1 className="font-semibold">Interview Details</h1>
+            <h1>Date: {interviews[0].in_date}</h1>
+            <h1>Time: {interviews[0].in_time}</h1>
+            <h1>Instuctor: {interviews[0].ta_id}</h1>
+            <button className="p-0.5 border rounded-lg border-black mb-[1rem] hover:bg-[#faa161] cursor-cell">
+              Join Room
+            </button>
+          </div>
         </div>
-      </div>
-    )
-  } else  {
-    return (
-      <div
-        id="interview-details-container"
-        className="flex flex-col justify-center items-center h-[20rem]"
-      >
+      )
+    } else {
+      return (
         <div
-          id="interview-details"
-          className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          id="interview-details-container"
+          className="flex flex-col justify-center items-center h-[20rem]"
         >
-          <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[0].in_date}</h1>
-          <h1>Time: {interviews[0].in_time}</h1>
-          <h1>Instuctor: {interviews[0].ta_id}</h1>
+          <div
+            id="interview-details"
+            className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          >
+            <h1 className="font-semibold">Interview Details</h1>
+            <h1>Date: {interviews[0].in_date}</h1>
+            <h1>Time: {interviews[0].in_time}</h1>
+            <h1>Instuctor: {interviews[0].ta_id}</h1>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
-}
 };
 
 export default InterviewDetails;
