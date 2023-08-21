@@ -42,20 +42,19 @@ const PendingStudents = () => {
         }
       );
       //If the response is successful
-      if (response.status === 200) {
+      if (response.status === 201) {
         await fetch(`https://collab-code.onrender.com/students/${formObj.st_id}`, 
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formObj.st_scheduled),
+          body: JSON.stringify({st_scheduled: formObj.st_scheduled}),
         }) 
         
         //Reset the Form Data
         setFormInputs({});
       }
-      console.log;
     } catch (error) {
       console.log(error);
     }
@@ -78,17 +77,15 @@ const PendingStudents = () => {
             onChange={handleChange}
           >
             <option value="">Select A Student</option>
-            {pendingStudents.st_scheduled !== false ? (
-              pendingStudents.map((elem, index) => (
+            {pendingStudents.map((elem, index) => (
+              (elem.st_scheduled === false) ? (
                 <option value={elem.st_id} key={index}>
                   {elem.st_name}
                 </option>
-              ))
-            ) : (
-              <option value="" key="">
-                Loading Students
-              </option>
-            )}
+              ) : (
+                console.log(`${elem.st_name} is scheduled already`)
+              )
+            ))}
           </select>
           <input
             type="date"
