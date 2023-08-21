@@ -77,18 +77,6 @@ const PendingStudents = () => {
             onChange={handleChange}
           >
             <option value="">Select A Student</option>
-            {/* {pendingStudents.st_scheduled !== false ? (
-              pendingStudents.map((elem, index) => (
-                <option value={elem.st_id} key={index}>
-                  {elem.st_name}
-                </option>
-              ))
-            ) : (
-              <option value="" key="">
-                Loading Students
-              </option>
-            )} */}
-
             {pendingStudents.map((elem, index) => (
               (elem.st_scheduled === false) ? (
                 <option value={elem.st_id} key={index}>

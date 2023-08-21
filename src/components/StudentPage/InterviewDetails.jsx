@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import InterviewDetailContext from "../../context/InterviewDetailsContext";
 
+
 const InterviewDetails = () => {
   const { currentStudent } = useContext(InterviewDetailContext);
   const [interviews, setInterviews] = useState([]);
+  const [teaching, setTeaching] = useState([]);
   const currentDate = new Date()
 
   useEffect(() => {
@@ -19,11 +21,27 @@ const InterviewDetails = () => {
       );
       const interviewsData = await interviewsRes.json();
       setInterviews(interviewsData);
+        
     };
     getInterviews();
   }, [currentStudent]);
 
-  if (interviews.length === 0) {
+  useEffect(() => {
+    const getTeachersInfo = async () => {
+      const interviewingTeacher = await fetch(`https://collab-code.onrender.com/teachers/${interviews[0].ta_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const interviewingTeacherData = await interviewingTeacher.json();
+        setTeaching(interviewingTeacherData);
+    }
+    getTeachersInfo()
+  }, [interviews])
+
+  if (interviews.length === 0 || teaching.length === 0) {
+    console.log(interviews, teaching)
     return (
       <div
         id="interview-details-container"
@@ -56,9 +74,9 @@ const InterviewDetails = () => {
           className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
         >
           <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[0].in_date}</h1>
+          <h1>Date: {interviews[0].in_date.split("T")[0]}</h1>
           <h1>Time: {interviews[0].in_time}</h1>
-          <h1>Instuctor: {interviews[0].ta_id}</h1>
+          <h1>Instuctor: {teaching[0].ta_name}</h1>
           <button className="p-0.5 border rounded-lg border-black mb-[1rem] hover:bg-[#faa161] cursor-cell">
             Join Room
           </button>
@@ -76,9 +94,9 @@ const InterviewDetails = () => {
           className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
         >
           <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[0].in_date}</h1>
-          <h1>Time: {interviews[0].in_time}</h1>
-          <h1>Instuctor: {interviews[0].ta_id}</h1>
+          <h1>Date: {interviews[0].in_date.split("T")[0]}</h1>
+          <h1>Time: {interviews[0].in_time.split(":")[0]}:{interviews[0].in_time.split(":")[1]}</h1>
+          <h1>Instuctor: {teaching[0].ta_name}</h1>
         </div>
       </div>
     );
