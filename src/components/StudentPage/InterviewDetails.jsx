@@ -41,7 +41,6 @@ const InterviewDetails = () => {
   }, [interviews])
 
   if (interviews.length === 0 || teaching.length === 0) {
-    console.log(interviews, teaching)
     return (
       <div
         id="interview-details-container"
@@ -63,15 +62,16 @@ const InterviewDetails = () => {
     interviewDate.setUTCHours(interviewTime.getUTCHours());
     interviewDate.setUTCMinutes(interviewTime.getUTCMinutes());
     interviewDate.setUTCSeconds(interviewTime.getUTCSeconds());
+
     if (currentDate.getTime() === interviewDate.getTime()) {
     return (
         <div
         id="interview-details-container"
-        className="flex flex-col justify-center items-center h-[20rem]"
+        className="flex justify-center items-center h-[80vh] w-full"
       >
         <div
           id="interview-details"
-          className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          className="w-[20rem] h-[20rem] border rounded-lg border-black flex flex-col justify-center items-center cursor-p"
         >
           <h1 className="font-semibold">Interview Details</h1>
           <h1>Date: {interviews[0].in_date.split("T")[0]}</h1>
@@ -87,17 +87,19 @@ const InterviewDetails = () => {
     return (
       <div
         id="interview-details-container"
-        className="flex flex-col justify-center items-center h-[20rem]"
+        className="flex justify-center items-center h-[80vh] w-full"
       >
+      <a href="/interviewStudent">
         <div
           id="interview-details"
-          className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
+          className="w-[20rem] h-[20rem] border rounded-lg border-black flex flex-col justify-center items-center cursor-p"
         >
           <h1 className="font-semibold">Interview Details</h1>
           <h1>Date: {interviews[0].in_date.split("T")[0]}</h1>
           <h1>Time: {interviews[0].in_time.split(":")[0]}:{interviews[0].in_time.split(":")[1]}</h1>
           <h1>Instuctor: {teaching[0].ta_name}</h1>
         </div>
+      </a>
       </div>
     );
   }
