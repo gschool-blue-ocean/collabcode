@@ -47,6 +47,7 @@ export const AppLevelProvider = ({ children }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(verify),
+          credentials: 'include',
         }
       );
 
