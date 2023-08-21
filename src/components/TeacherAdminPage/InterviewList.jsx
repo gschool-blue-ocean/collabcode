@@ -26,6 +26,7 @@ const InterviewList = () => {
   }, [currentTeacher]);
 
 
+
   return (
     <div
       id="interview-list-container"
@@ -34,10 +35,11 @@ const InterviewList = () => {
       <h1 className="text-[4rem]">Scheduled Interviews</h1>
       <div
         id="list-item-container"
-        className="w-full h-full overflow-scroll mt-20 flex flex-col items-center"
+        className="w-full h-full overflow-scroll flex flex-col items-center justify-center"
       >
         {interviews.map((elem, index) => (
-          <div id="list-item" key={index} className="w-1/2">
+          <a href="/interview" className="w-[30vw]">
+          <div id="list-item" key={index} className="w-full">
             <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
               <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
               <h1>{elem.in_date.split("T")[0]}</h1>
@@ -46,6 +48,7 @@ const InterviewList = () => {
               </h1>
             </div>
           </div>
+          </a>
         ))}
       </div>
     </div>
