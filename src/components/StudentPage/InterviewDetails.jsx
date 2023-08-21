@@ -38,8 +38,8 @@ const InterviewDetails = () => {
       </div>
     );
   } else {
-    const interviewDate = new Date(interviews[2].in_date);
-    const interviewTime = new Date(interviews[2].in_time);
+    const interviewDate = new Date(interviews[0].in_date);
+    const interviewTime = new Date(interviews[0].in_time);
 
     // Adjust the time portion based on the interviewTime object
     interviewDate.setUTCHours(interviewTime.getUTCHours());
@@ -56,9 +56,9 @@ const InterviewDetails = () => {
           className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
         >
           <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[2].in_date}</h1>
-          <h1>Time: {interviews[2].in_time}</h1>
-          <h1>Instuctor: {interviews[2].ta_id}</h1>
+          <h1>Date: {interviews[0].in_date}</h1>
+          <h1>Time: {interviews[0].in_time}</h1>
+          <h1>Instuctor: {interviews[0].ta_id}</h1>
           <button className="p-0.5 border rounded-lg border-black mb-[1rem] hover:bg-[#faa161] cursor-cell">
             Join Room
           </button>
@@ -76,9 +76,9 @@ const InterviewDetails = () => {
           className="w-[20rem] h-[15rem] border rounded-lg border-black flex flex-col justify-center items-center"
         >
           <h1 className="font-semibold">Interview Details</h1>
-          <h1>Date: {interviews[2].in_date}</h1>
-          <h1>Time: {interviews[2].in_time}</h1>
-          <h1>Instuctor: {interviews[2].ta_id}</h1>
+          <h1>Date: {interviews[0].in_date}</h1>
+          <h1>Time: {interviews[0].in_time}</h1>
+          <h1>Instuctor: {interviews[0].ta_id}</h1>
         </div>
       </div>
     );

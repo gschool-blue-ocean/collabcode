@@ -9,8 +9,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
   const [currentTeacher, setCurrentTeacher] = useState({});
-  
-  //Displays the Students in the Drop Down
+
+  //LOADS ALL THE STUDENTS FROM THE DATABASE
   useEffect(() => {
     const getStudents = async () => {
       const studentRes = await fetch(
@@ -20,7 +20,12 @@ export const TeacherAdminPageProvider = ({ children }) => {
       setPendingStudents(studentData);
     };
 
-    const getTeachers = async () => {
+    getStudents();
+  }, []);
+
+  //VERIFIES THE TEACHER REFRESH TOKENS FROM THE COOKIES IN THE BROWSER
+  useEffect(() => {
+    const getTeacherData = async () => {
       try {
         // Using the refresh token to get an access token
         const verifyRefresh = await fetch(
@@ -35,6 +40,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
         );
 
         const verifyRefreshData = await verifyRefresh.json();
+
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
             "https://collab-code.onrender.com/api/auth/protected/teacher",
@@ -42,25 +48,19 @@ export const TeacherAdminPageProvider = ({ children }) => {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                token: verifyRefreshData.accessToken, // Corrected header name
+                Token: verifyRefreshData.accessToken, // Corrected header name
               },
             }
           );
-          if (verifyAccess.status !== 200) {
-            const errorData = await verifyAccess.json();
-            console.log("Error fetching protected data:", errorData);
-          } else {
-            const verifyAccessData = await verifyAccess.json();
-            setCurrentTeacher(verifyAccessData)
-          }
+          const verifyAccessData = await verifyAccess.json();
+          setCurrentTeacher(verifyAccessData);
       } catch (error) {
         console.error("An error occurred:", error);
       }
     };
 
-    getTeachers();
-    getStudents();
-  }, []);
+    getTeacherData();
+  }, [])
 
   return (
     <TeacherAdminPageContext.Provider
