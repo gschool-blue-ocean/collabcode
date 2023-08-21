@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const InterviewList = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents } = useContext(TeacherAdminPageContext);
-  const [interviews, setInterviews] = useState([]);
+  const { pendingStudents, setInterviews, interviews } = useContext(
+    TeacherAdminPageContext
+  );
 
   useEffect(() => {
     const getInterviews = async () => {
@@ -23,26 +24,26 @@ const InterviewList = () => {
       setInterviews(interviewsData);
     };
     getInterviews();
-  }, []);
+  }, [userData.user.ta_id, setInterviews]);
 
   return (
-    <div id="interview-list-container" className="w-[50vw] h-[60vh]">
+    <div
+      id="interview-list-container"
+      className="w-[50vw] h-[70vh] flex flex-col justify-center items-center"
+    >
+      <h1 className="text-[4rem]">Scheduled Interviews</h1>
       <div
-        id="interview-list-items"
-        className="w-full h-full flex flex-col justify-center items-center"
+        id="list-item-container"
+        className="w-full h-full overflow-scroll mt-20 flex flex-col items-center"
       >
-        <h1 className="text-[4rem]">Scheduled Interviews</h1>
         {interviews.map((elem, index) => (
-          // console.log(
-          //   pendingStudents[elem.st_id - 1].st_name,
-          //   elem.in_date,
-          //   elem.in_time,
-          // ),
-          <div id="list-item-container" key={index} className="w-full h-[50vh]">
-            <div className="w-full h-full flex flex-col justify-center items-center m-[10px]">
+          <div id="list-item" key={index} className="w-1/2">
+            <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
               <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
-              <h1>{elem.in_date.slice("T")}</h1>
-              <h1>{elem.in_time}</h1>
+              <h1>{elem.in_date.split("T")[0]}</h1>
+              <h1>
+                {elem.in_time.split(":")[0]}: {elem.in_time.split(":")[0]}
+              </h1>
             </div>
           </div>
         ))}
