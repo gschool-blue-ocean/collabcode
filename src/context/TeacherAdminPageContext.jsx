@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, createContext } from "react";
@@ -6,6 +7,7 @@ const TeacherAdminPageContext = createContext();
 
 export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
+  const [currentStudent, setCurrentStudent] = useState({});
 
   //Displays the Students in the Drop Down
   useEffect(() => {
@@ -19,13 +21,12 @@ export const TeacherAdminPageProvider = ({ children }) => {
     getStudents();
   }, []);
 
-  
   useEffect(() => {
     const getTeacherData = async () => {
       try {
         // Using the refresh token to get an access token
         const verifyRefresh = await fetch(
-          "https://collabcode.onrender.com/api/auth/refresh_token/teacher",
+          "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
           {
             method: "POST",
             headers: {
@@ -43,7 +44,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
         } else {
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
-            "https://collabcode.onrender.com/api/auth/protected/teacher",
+            "https://collab-code.onrender.com/api/auth/protected/teacher",
             {
               method: "GET",
               headers: {
@@ -62,11 +63,18 @@ export const TeacherAdminPageProvider = ({ children }) => {
     };
 
     getTeacherData();
-  }, []);
+  }, [])
+ 
+  // }, []);
 
   return (
     <TeacherAdminPageContext.Provider
-      value={{ pendingStudents, setPendingStudents }}
+      value={{
+        pendingStudents,
+        setPendingStudents,
+        currentStudent,
+        setCurrentStudent,
+      }}
     >
       {children}
     </TeacherAdminPageContext.Provider>
