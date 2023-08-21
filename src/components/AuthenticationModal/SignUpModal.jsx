@@ -30,8 +30,8 @@ const SignUpModal = () => {
   if (loginTeacher === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/teacher" />;
   }
-  
-    //REROUTE TO THE STUDENT PAGE
+
+  //REROUTE TO THE STUDENT PAGE
   if (loginStudent === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/student" />;
   }

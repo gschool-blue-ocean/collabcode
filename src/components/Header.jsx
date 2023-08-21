@@ -22,9 +22,8 @@ const Header = () => {
   return (
     <header
       id="Navbar"
-      className={`flex h-20 md:h-2 lg:h-28 w-full items-center justify-between mt-0 px-8 lg:px-16 ${
-        isSticky ? "fixed top-0 bg-white shadow-md" : ""
-      }`} // the header will be fixed to the top of the screen when the user scrolls past the landing page
+      className={`flex h-20 md:h-2 lg:h-28 w-full items-center justify-between mt-0 px-8 lg:px-16 ${isSticky ? "fixed top-0 bg-white shadow-md" : ""
+        }`} // the header will be fixed to the top of the screen when the user scrolls past the landing page
     >
       <a href="/" className="text-4xl md:text-3xl lg:text-4xl font-semibold">
         CollabCode

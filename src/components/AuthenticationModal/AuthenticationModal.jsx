@@ -11,7 +11,7 @@ const AuthenticationModal = () => {
   } else {
     return <SignUpModal />;
   }
-  
+
 };
 
 export default AuthenticationModal;

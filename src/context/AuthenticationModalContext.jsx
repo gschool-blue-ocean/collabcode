@@ -16,10 +16,10 @@ export const AuthenticationModalProvider = ({ children }) => {
         setModalRole("student");
     }
 
-  const toggleSignInState = () => {
-    setSignIn(!signIn);
-  };
-  
+    const toggleSignInState = () => {
+        setSignIn(!signIn);
+    };
+
     return (
         <AuthenticationModalContext.Provider value={{
             signIn,

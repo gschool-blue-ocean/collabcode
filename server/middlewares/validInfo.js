@@ -22,28 +22,6 @@ const validStudentInfo = async (req, res, next) => {
   next();
 };
 
-// const validAdminInfo = async (req, res, next) => {
-//   const { ad_email, ad_name, ad_password } = req.body;
-//   function validEmail(userEmail) {
-//     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail);
-//   }
-//   if (req.path === "/register") {
-//     console.log(!email.length);
-//     if (![ad_email, ad_name, ad_password].every(Boolean)) {
-//       return res.json("Missing Credentials");
-//     } else if (!validEmail(ad_email)) {
-//       return res.json("Invalid Email");
-//     }
-//   } else if (req.path === "/signIn") {
-//     if (![ad_email, ad_password].every(Boolean)) {
-//       return res.json("Missing Credentials");
-//     } else if (!validEmail(ad_email)) {
-//       return res.json("Invalid Email");
-//     }
-//   }
-//   next();
-// };
-
 const validTeacherInfo = async (req, res, next) => {
   const { ta_email, ta_name, ta_password } = req.body;
   function validEmail(userEmail) {
@@ -66,4 +44,4 @@ const validTeacherInfo = async (req, res, next) => {
 };
 
 export default validStudentInfo;
-export { validTeacherInfo, validStudentInfo }; //Took validAdminInfo out
+export { validTeacherInfo, validStudentInfo };

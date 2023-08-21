@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Socket } from "socket.io-client";
 
-const Timer = ({socket}) => {
+const Timer = ({ socket }) => {
 
     const [minutes, setMinutes] = useState(45);
     const [seconds, setSeconds] = useState(0);
@@ -25,7 +24,7 @@ const Timer = ({socket}) => {
                     setSeconds(seconds - 1);
                 }
                 if (seconds === 0 && minutes === inputMinutes) {
-                    socket.send(JSON.stringify({action: "startTimer"}));
+                    socket.send(JSON.stringify({ action: "startTimer" }));
                 }
             }, 1000);
         }//
@@ -71,9 +70,8 @@ const Timer = ({socket}) => {
 
             <div className="flex justify-center space-x-4 mb-4 ml-4"> {/* Add mb-4 to create margin at the bottom */}
                 <button
-                    className={`px-6 py-2 rounded-lg ${
-                        isRunning ? "bg-red-500 hover:bg-red-300" : "bg-green-500 hover:bg-green-300"
-                    } text-white font-semibold`}
+                    className={`px-6 py-2 rounded-lg ${isRunning ? "bg-red-500 hover:bg-red-300" : "bg-green-500 hover:bg-green-300"
+                        } text-white font-semibold`}
                     onClick={toggleTimer}
                 >
                     {isRunning ? "Pause" : "Start"}

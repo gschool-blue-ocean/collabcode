@@ -41,28 +41,25 @@ export const TeacherAdminPageProvider = ({ children }) => {
 
         const verifyRefreshData = await verifyRefresh.json();
 
-          // Using the refreshed access token to fetch protected data
-          const verifyAccess = await fetch(
-            "https://collab-code.onrender.com/api/auth/protected/teacher",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Token: verifyRefreshData.accessToken, // Corrected header name
-              },
-            }
-          );
-
-          // console.log(verifyAccess) //Expecting the Request from the successful refreshtoken
-          // console.log(verifyAccessData) //Expecting teacher object
-
-          if (verifyAccess.status !== 200 ) {
-            const errorData = await verifyAccess.json();
-            console.log(errorData)
-          } else {
-            const verifyAccessData = await verifyAccess.json();
-            setCurrentTeacher(verifyAccessData);
+        // Using the refreshed access token to fetch protected data
+        const verifyAccess = await fetch(
+          "https://collab-code.onrender.com/api/auth/protected/teacher",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Token: verifyRefreshData.accessToken, // Corrected header name
+            },
           }
+        );
+
+        if (verifyAccess.status !== 200) {
+          const errorData = await verifyAccess.json();
+          console.log(errorData)
+        } else {
+          const verifyAccessData = await verifyAccess.json();
+          setCurrentTeacher(verifyAccessData);
+        }
       } catch (error) {
         console.error("An error occurred:", error);
       }

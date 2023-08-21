@@ -5,7 +5,7 @@ import { InterviewDetailsProvider } from "../../context/InterviewDetailsContext"
 const StudentPage = () => {
     return (
         <InterviewDetailsProvider>
-        <InterviewDetails/>
+            <InterviewDetails />
         </InterviewDetailsProvider>
     )
 }

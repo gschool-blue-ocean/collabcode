@@ -1,8 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
-import { WebrtcProvider } from "y-webrtc";
-import * as Y from "yjs";
-import { MonacoBinding } from "y-monaco";
 
 const Runtime = () => {
   // create state for 'input' (left runtime)
@@ -17,8 +14,7 @@ const Runtime = () => {
   const establishConnection = () => {
     try {
       // create the web socket
-      // let newSocket = new WebSocket('ws://localhost:8000/'); // local
-      let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
+      let newSocket = new WebSocket('wss://collab-code.onrender.com/socket');
 
       // when the connection is established
       newSocket.onopen = (e) => console.log("[socket] Connection established");
@@ -26,7 +22,6 @@ const Runtime = () => {
       // incoming messages set the 'input' state to whatever the server sent out
       newSocket.onmessage = (e) => {
         const receivedMessage = e.data.split("::::");
-        console.log(receivedMessage);
         if (receivedMessage[1]) {
           setInput(receivedMessage[0]);
         } else {

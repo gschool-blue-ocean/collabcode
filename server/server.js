@@ -7,7 +7,6 @@ import { param, body, query, validationResult } from "express-validator";
 import jwtAuthRouter from "../server/Routes/jwtAuth.js";
 import cookieParser from "cookie-parser";
 import http from "http";
-// import ws from 'ws'
 import { WebSocketServer } from "ws";
 
 // initialize app by invoking express
@@ -24,8 +23,6 @@ const corsOptions = {
   credentials: true, // This is important for allowing credentials
 };
 
-//middleware for the local environment
-app.use(cors(corsOptions));
 // configure environment variables
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -47,206 +44,6 @@ const server = http.createServer(app);
 
 // forward any ‘/api/auth’ to our ./routes/jwtAuth.js file
 app.use("/api/auth", jwtAuthRouter);
-// /*----- 'admins' table routes -----*/
-
-// // GET ALL - secured by not reading request object
-// app.get("/admins", async (req, res) => {
-//   try {
-//     const results = await pool.query("SELECT * FROM admins;");
-//     if (results.rowCount < 1) {
-//       res.status(404).send("Resource not found");
-//       return;
-//     } else {
-//       res.status(200).json(results.rows);
-//       return;
-//     }
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("Server caught the following error: " + error.message);
-//     return;
-//   }
-// });
-
-// // GET ONE - secured by validating id
-// app.get("/admins/:id", param("id").isInt(), async (req, res) => {
-//   // validation result
-//   if (!validationResult(req).isEmpty) {
-//     res
-//       .status(400)
-//       .send(
-//         "Validator caught the following error(s): " +
-//           validationResult(req).array()
-//       );
-//     return;
-//   }
-
-//   // destruct required info
-//   const { id } = req.params;
-
-//   // attempt pool query
-//   try {
-//     const results = await pool.query("SELECT * FROM admins WHERE ad_id = $1", [
-//       id,
-//     ]);
-//     if (results.rowCount < 1) {
-//       res.status(404).send("Resource not found");
-//       return;
-//     } else {
-//       res.status(200).json(results.rows);
-//       return;
-//     }
-//   } catch (error) {
-//     // error handling
-//     console.error(error.message);
-//     res.status(500).send("Server caught the following error: " + error.message);
-//     return;
-//   }
-// });
-
-// // POST ONE - secured by sanitizing body
-// app.post(
-//   "/admins",
-//   body("ad_email").blacklist(";").escape(),
-//   body("ad_password").blacklist(";").escape(),
-//   body("ad_name").blacklist(";").escape(),
-//   async (req, res) => {
-//     // validation result
-//     if (!validationResult(req).isEmpty) {
-//       res
-//         .status(400)
-//         .send(
-//           "Validator caught the following error(s): " +
-//             validationResult(req).array()
-//         );
-//       return;
-//     }
-
-//     // destruct required info
-//     const { ad_email, ad_password, ad_name } = req.body;
-
-//     // remove null values
-//     if (!ad_email || !ad_password || !ad_name) {
-//       res
-//         .status(400)
-//         .send("PUT request requires ad_email, ad_password, ad_name");
-//       return;
-//     }
-
-//     // attempt pool query
-//     try {
-//       const results = await pool.query(
-//         "INSERT INTO admins (ad_email, ad_password, ad_name) VALUES ($1, $2, $3) RETURNING *",
-//         [ad_email, ad_password, ad_name]
-//       );
-//       if (results.rowCount < 1) {
-//         res.status(500).send("Unable to POST to /admins");
-//         return;
-//       } else {
-//         res.status(201).json(results.rows);
-//         return;
-//       }
-//     } catch (error) {
-//       // error handling
-//       console.error(error.message);
-//       res
-//         .status(500)
-//         .send("Server caught the following error: " + error.message);
-//       return;
-//     }
-//   }
-// );
-
-// // PUT ONE - secured by validating id and sanitizing body
-// app.put(
-//   "/admins/:id",
-//   param("id").isInt(),
-//   body("ad_email").blacklist(";").escape(),
-//   body("ad_password").blacklist(";").escape(),
-//   body("ad_name").blacklist(";").escape(),
-//   async (req, res) => {
-//     // validation result
-//     if (!validationResult(req).isEmpty) {
-//       res
-//         .status(400)
-//         .send(
-//           "Validator caught the following error(s): " +
-//             validationResult(req).array()
-//         );
-//       return;
-//     }
-
-//     // destruct required info
-//     const { ad_email, ad_password, ad_name } = req.body;
-//     const { id } = req.params;
-
-//     // remove null values
-//     if (!ad_email || !ad_password || !ad_name) {
-//       res
-//         .status(400)
-//         .send("PUT request requires ad_email, ad_password, ad_name");
-//       return;
-//     }
-
-//     // attempt pool query
-//     try {
-//       const results = await pool.query(
-//         "UPDATE admins SET ad_email = $1, ad_password = $2, ad_name = $3 WHERE ad_id = $4 RETURNING *",
-//         [ad_email, ad_password, ad_name, id]
-//       );
-//       if (results.rowCount < 1) {
-//         res.status(404).send("Resource not found");
-//         return;
-//       } else {
-//         res.status(200).json(results.rows);
-//         return;
-//       }
-//     } catch (error) {
-//       // error handling
-//       console.error(error.message);
-//       res
-//         .status(500)
-//         .send("Server caught the following error: " + error.message);
-//       return;
-//     }
-//   }
-// );
-
-// // DELETE ONE - secured by validating id
-// app.delete("/admins/:id", param("id").isInt(), async (req, res) => {
-//   // validation result
-//   if (!validationResult(req).isEmpty) {
-//     res
-//       .status(400)
-//       .send(
-//         "Validator caught the following error(s): " +
-//           validationResult(req).array()
-//       );
-//     return;
-//   }
-
-//   // destruct required info
-//   const { id } = req.params;
-
-//   // attempt pool query
-//   try {
-//     const results = await pool.query(
-//       "DELETE FROM admins WHERE ad_id = $1 RETURNING *",
-//       [id]
-//     );
-//     if (results.rowCount < 1) {
-//       res.status(404).send("Resource not found");
-//       return;
-//     } else {
-//       res.status(200).json(results.rows);
-//       return;
-//     }
-//   } catch (error) {
-//     // error handling
-//     console.error(error.message);
-//     res.status(500).send("Server caught the following error: " + error.message);
-//     return;
-//   }
-// });
 
 /*----- 'teachers' table routes -----*/
 
@@ -276,8 +73,8 @@ app.get("/teachers/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -319,8 +116,8 @@ app.post(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
+          "Validator caught the following error(s): " +
+          validationResult(req).array()
         );
       return;
     }
@@ -374,8 +171,8 @@ app.put(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
+          "Validator caught the following error(s): " +
+          validationResult(req).array()
         );
       return;
     }
@@ -424,8 +221,8 @@ app.delete("/teachers/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -482,8 +279,8 @@ app.get("/students/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -525,8 +322,8 @@ app.post(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
+          "Validator caught the following error(s): " +
+          validationResult(req).array()
         );
       return;
     }
@@ -581,7 +378,7 @@ app.put(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            validationResult(req).array()
+          validationResult(req).array()
         );
       return;
     }
@@ -628,8 +425,8 @@ app.delete("/students/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -672,8 +469,8 @@ app.get(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
+          "Validator caught the following error(s): " +
+          validationResult(req).array()
         );
       return;
     }
@@ -754,8 +551,8 @@ app.get("/interviews/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -799,7 +596,7 @@ app.post(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            validationResult(req).array()
+          validationResult(req).array()
         );
       return;
     }
@@ -864,8 +661,8 @@ app.put(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
+          "Validator caught the following error(s): " +
+          validationResult(req).array()
         );
       return;
     }
@@ -923,8 +720,8 @@ app.delete("/interviews/:id", param("id").isInt(), async (req, res) => {
       .status(400)
       .send(
         "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
+        "Validator caught the following error(s): " +
+        validationResult(req).array()
       );
     return;
   }
@@ -936,415 +733,6 @@ app.delete("/interviews/:id", param("id").isInt(), async (req, res) => {
   try {
     const results = await pool.query(
       "DELETE FROM interviews WHERE in_id = $1 RETURNING *",
-      [id]
-    );
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    // error handling
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-/*----- 'chat' table routes -----*/
-
-// GET ALL - secured by not reading request object
-app.get("/chat", async (req, res) => {
-  try {
-    const results = await pool.query("SELECT * FROM chat;");
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-// GET ONE - secured by validating id
-app.get("/chat/:id", param("id").isInt(), async (req, res) => {
-  // validation result
-  if (!validationResult(req).isEmpty) {
-    res
-      .status(400)
-      .send(
-        "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
-      );
-    return;
-  }
-
-  // destruct required info
-  const { id } = req.params;
-
-  // attempt pool query
-  try {
-    const results = await pool.query("SELECT * FROM chat WHERE chat_id = $1", [
-      id,
-    ]);
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    // error handling
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-// POST ONE - secured by validating body numeric values and sanitizing body text
-app.post(
-  "/chat",
-  body("chat_sender_name").blacklist(";").escape(),
-  body("chat_time").isTime(),
-  body("chat_message").blacklist(";").escape(),
-  async (req, res) => {
-    // validation result
-    if (!validationResult(req).isEmpty) {
-      res
-        .status(400)
-        .send(
-          "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
-        );
-      return;
-    }
-
-    // destruct required info
-    const { chat_sender_name, chat_time, chat_message } = req.body;
-
-    // remove null values
-    if (!chat_sender_name || !chat_time || !chat_message) {
-      res
-        .status(400)
-        .send(
-          "POST request requires chat_sender_name, chat_time, chat_message"
-        );
-      return;
-    }
-
-    // attempt pool query
-    try {
-      const results = await pool.query(
-        "INSERT INTO chat (chat_sender_name, chat_time, chat_message) VALUES ($1, $2, $3) RETURNING *",
-        [chat_sender_name, chat_time, chat_message]
-      );
-      if (results.rowCount < 1) {
-        res.status(500).send("Unable to POST to /chat");
-        return;
-      } else {
-        res.status(201).json(results.rows);
-        return;
-      }
-    } catch (error) {
-      // error handling
-      console.error(error.message);
-      res
-        .status(500)
-        .send("Server caught the following error: " + error.message);
-      return;
-    }
-  }
-);
-
-// PUT ONE - secured by validating id, validating body numeric values and sanitizing body text
-app.put(
-  "/chat/:id",
-  param("id").isInt(),
-  body("chat_sender_name").blacklist(";").escape(),
-  body("chat_time").isTime(),
-  body("chat_message").blacklist(";").escape(),
-  async (req, res) => {
-    // validation result
-    if (!validationResult(req).isEmpty) {
-      res
-        .status(400)
-        .send(
-          "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
-        );
-      return;
-    }
-
-    // destruct required info
-    const { chat_sender_name, chat_time, chat_message } = req.body;
-    const { id } = req.params;
-
-    // remove null values
-    if (!chat_sender_name || !chat_time || !chat_message) {
-      res
-        .status(400)
-        .send("PUT request requires chat_sender_name, chat_time, chat_message");
-      return;
-    }
-
-    // attempt pool query
-    try {
-      const results = await pool.query(
-        "UPDATE chat SET chat_sender_name = $1, chat_time = $2, chat_message = $3 WHERE chat_id = $4 RETURNING *",
-        [chat_sender_name, chat_time, chat_message, id]
-      );
-      if (results.rowCount < 1) {
-        res.status(404).send("Resource not found");
-        return;
-      } else {
-        res.status(200).json(results.rows);
-        return;
-      }
-    } catch (error) {
-      // error handling
-      console.error(error.message);
-      res
-        .status(500)
-        .send("Server caught the following error: " + error.message);
-      return;
-    }
-  }
-);
-
-// DELETE ONE - secured by validating id
-app.delete("/chat/:id", param("id").isInt(), async (req, res) => {
-  // validation result
-  if (!validationResult(req).isEmpty) {
-    res
-      .status(400)
-      .send(
-        "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
-      );
-    return;
-  }
-
-  // destruct required info
-  const { id } = req.params;
-
-  // attempt pool query
-  try {
-    const results = await pool.query(
-      "DELETE FROM chat WHERE chat_id = $1 RETURNING *",
-      [id]
-    );
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    // error handling
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-/*----- 'runtime' table routes -----*/
-
-// GET ALL - secured by not reading request object
-app.get("/runtime", async (req, res) => {
-  try {
-    const results = await pool.query("SELECT * FROM runtime;");
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-// GET ONE - secured by validating id
-app.get("/runtime", param("id").isInt(), async (req, res) => {
-  // validation result
-  if (!validationResult(req).isEmpty) {
-    res
-      .status(400)
-      .send(
-        "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
-      );
-    return;
-  }
-
-  // destruct required info
-  const { id } = req.params;
-
-  // attempt pool query
-  try {
-    const results = await pool.query(
-      "SELECT * FROM runtime WHERE runtime_id = $1",
-      [id]
-    );
-    if (results.rowCount < 1) {
-      res.status(404).send("Resource not found");
-      return;
-    } else {
-      res.status(200).json(results.rows);
-      return;
-    }
-  } catch (error) {
-    // error handling
-    console.error(error.message);
-    res.status(500).send("Server caught the following error: " + error.message);
-    return;
-  }
-});
-
-// POST ONE - secured by using escape() on body text components
-app.post(
-  "/runtime",
-  body("in_id").isInt(),
-  body("runtime_input").escape(),
-  body("runtime_output").escape(),
-  async (req, res) => {
-    // validation result
-    if (!validationResult(req).isEmpty) {
-      res
-        .status(400)
-        .send(
-          "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
-        );
-      return;
-    }
-
-    // destruct required info
-    const { in_id, runtime_input, runtime_output } = req.body;
-
-    // remove null values
-    if (!in_id) {
-      res.status(400).send("POST request requires in_id");
-      return;
-    }
-
-    // attempt pool query
-    try {
-      const results = await pool.query(
-        "INSERT INTO runtime (in_id, runtime_input, runtime_output) VALUES ($1, $2, $3)",
-        [in_id, runtime_input, runtime_output]
-      );
-      if (results.rowCount < 1) {
-        res.status(500).send("Unable to POST to /runtime");
-        return;
-      } else {
-        res.status(201).json(results.rows);
-        return;
-      }
-    } catch (error) {
-      // error handling
-      console.error(error.message);
-      res
-        .status(500)
-        .send("Server caught the following error: " + error.message);
-      return;
-    }
-  }
-);
-
-// PUT ONE - secured by validating incoming id and using escape() on body text components
-app.put(
-  "/runtime/:id",
-  param("id").isInt(),
-  body("in_id").isInt(),
-  body("runtime_input").escape(),
-  body("runtime_output").escape(),
-  async (req, res) => {
-    // validation result
-    if (!validationResult(req).isEmpty) {
-      res
-        .status(400)
-        .send(
-          "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
-            validationResult(req).array()
-        );
-      return;
-    }
-
-    // destruct required info
-    const { in_id, runtime_input, runtime_output } = req.body;
-    const { id } = req.params;
-
-    // remove null values
-    if (!in_id) {
-      res.status(400).send("POST request requires in_id");
-      return;
-    }
-
-    // attempt pool query
-    try {
-      const results = await pool.query(
-        "UPDATE runtime SET in_id = $1, runtime_input = $2, runtime_output = $3 WHERE runtime_id = $4 RETURNING *",
-        [in_id, runtime_input, runtime_output, id]
-      );
-      if (results.rowCount < 1) {
-        res.status(404).send("Resource not found");
-        return;
-      } else {
-        res.status(200).json(results.rows);
-        return;
-      }
-    } catch (error) {
-      // error handling
-      console.error(error.message);
-      res
-        .status(500)
-        .send("Server caught the following error: " + error.message);
-      return;
-    }
-  }
-);
-
-// DELETE ONE - secured by validating id
-app.delete("/runtime", param("id").isInt(), async (req, res) => {
-  // validation result
-  if (!validationResult(req).isEmpty) {
-    res
-      .status(400)
-      .send(
-        "Validator caught the following error(s): " +
-          "Validator caught the following error(s): " +
-          validationResult(req).array()
-      );
-    return;
-  }
-
-  // destruct required info
-  const { id } = req.params;
-
-  // attempt pool query
-  try {
-    const results = await pool.query(
-      "DELETE FROM runtime WHERE runtime_id = $1 RETURNING *",
       [id]
     );
     if (results.rowCount < 1) {

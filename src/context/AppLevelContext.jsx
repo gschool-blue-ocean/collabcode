@@ -160,11 +160,11 @@ export const AppLevelProvider = ({ children }) => {
               },
             }
           );
-          
+
           if (responseUserData.status != 200) {
             console.log(
               "Got an error getting the user object it is " +
-                responseUserData.statusText
+              responseUserData.statusText
             );
           } else {
             const Data2 = await responseUserData.json();

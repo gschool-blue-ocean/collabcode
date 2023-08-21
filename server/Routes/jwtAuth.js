@@ -8,13 +8,11 @@ import dotenv from "dotenv";
 //IMPORTING MIDDLEWARE FOR VALIDATION
 import {
   validStudentInfo,
-  // validAdminInfo,
   validTeacherInfo,
 } from "../middlewares/validInfo.js";
 //IMPORTING PROTECTED FROM PROTECTED
 import {
   studentUser,
-  // adminUser,
   teacherUser,
 } from "../middlewares/protected.js";
 //IMPORTING TOKEN CREATION
@@ -316,74 +314,6 @@ router.post("/refresh_token/teacher", async (req, res) => {
   }
 });
 
-// // Refresh Token request for admin
-// router.post("/refresh_token/admin", async (req, res) => {
-//   try {
-//     const { refreshtoken } = req.cookies;
-//     // if we don't have a refresh token, return error
-//     if (!refreshtoken)
-//       return res.status(500).json({
-//         message: "No refresh token! 🤔",
-//         type: "error",
-//       });
-//     // if we have a refresh token, you have to verify it
-//     let id;
-//     try {
-//       id = verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET).id;
-//     } catch (error) {
-//       return res.status(500).json({
-//         message: "Invalid refresh token!",
-//         type: "error",
-//       });
-//     }
-//     // if the refresh token is invalid, return error
-//     if (!id)
-//       return res.status(500).json({
-//         message: "Invalid refresh token!",
-//         type: "error",
-//       });
-//     // if the refresh token is valid, check if the user exists
-//     const user = await pool.query("SELECT * FROM admins WHERE ad_id = $1;", [
-//       id,
-//     ]);
-//     // if the user doesn't exist, return error
-//     if (!user)
-//       return res.status(500).json({
-//         message: "User doesn't exist! 😢",
-//         type: "error",
-//       });
-//     // if the user exists, check if the refresh token is correct. return error if it is incorrect.
-//     if (user.rows[0].ad_refreshtoken !== refreshtoken) {
-//       return res.status(500).json({
-//         message: "Invalid refresh token!",
-//         type: "error",
-//       });
-//     }
-//     // if the refresh token is correct, create the new tokens
-//     const accessToken = createAccessToken(user.rows[0].ad_id);
-//     const refreshToken = createRefreshToken(user.rows[0].ad_id);
-//     // update the refresh token in the database
-//     const insertToken = await pool.query(
-//       `UPDATE admins SET ad_refreshToken = $1 WHERE ad_email = $2;`,
-//       [refreshToken, user.rows[0].ad_email]
-//     );
-//     // send the new tokes as response
-//     sendRefreshToken(res, refreshToken);
-
-//     return res.json({
-//       message: "Refreshed successfully! 🤗",
-//       type: "success",
-//       accessToken,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       type: "error",
-//       message: "Error refreshing token!",
-//       error,
-//     });
-//   }
-// });
-
 router.get("/protected/student", studentUser, async (req, res) => {
   try {
     // if user exists in the request, send the data
@@ -408,30 +338,6 @@ router.get("/protected/student", studentUser, async (req, res) => {
     });
   }
 });
-
-// router.get("/protected/admin", adminUser, async (req, res) => {
-//   try {
-//     // if user exists in the request, send the data
-//     if (req.user) {
-//       return res.json({
-//         message: "You are logged in! 🤗",
-//         type: "success",
-//         user: req.user,
-//       });
-//     }
-//     // if user doesn't exist, return error
-//     return res.status(500).json({
-//       message: "You are not logged in! 😢",
-//       type: "error",
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       type: "error",
-//       message: "Error getting protected route!",
-//       error,
-//     });
-//   }
-// });
 
 router.get("/protected/teacher", teacherUser, async (req, res) => {
   try {
