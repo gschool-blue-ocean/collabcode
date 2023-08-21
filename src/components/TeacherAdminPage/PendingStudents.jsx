@@ -21,7 +21,6 @@ const PendingStudents = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log(currentTeacher.user.ta_id)
     try {
       const formObj = {
         ta_id: currentTeacher.user.ta_id,
