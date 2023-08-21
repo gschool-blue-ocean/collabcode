@@ -31,6 +31,8 @@ const sendAccessToken = (req, res, accesstoken) => {
 const sendRefreshToken = (res, refreshtoken) => {
   res.cookie("refreshtoken", refreshtoken, {
     httpOnly: true,
+    sameSite: "none",
+    secure: true,
   });
 };
 
