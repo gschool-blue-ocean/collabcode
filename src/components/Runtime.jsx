@@ -24,7 +24,15 @@ const Runtime = () => {
       newSocket.onopen = (e) => console.log("[socket] Connection established");
 
       // incoming messages set the 'input' state to whatever the server sent out
-      newSocket.onmessage = (e) => setInput(e.data);
+      newSocket.onmessage = (e) => {
+        const receivedMessage = e.data.split("::::");
+        console.log(receivedMessage);
+        if (receivedMessage[1]) {
+          setInput(receivedMessage[0]);
+        } else {
+          setOutput(receivedMessage[0]);
+        }
+      };
 
       // when the connection is lost
       newSocket.onclose = (e) => {
@@ -45,7 +53,7 @@ const Runtime = () => {
   useEffect(() => { establishConnection() }, []);
 
   // on change, send the changes via the socket
-  const handleChange = (e) => socket.send(e);
+  const handleChange = (e) => socket.send(`${e}::::input`);
 
   // on 'run code' click, set the output to the (evaluated) input
   const handleRun = (e) => {
