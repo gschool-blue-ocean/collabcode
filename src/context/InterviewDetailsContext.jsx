@@ -57,4 +57,4 @@ export const InterviewDetailsProvider = ({ children }) => {
     )
 }
 
-export default InterviewDetailsContext
+export default InterviewDetailsContext;

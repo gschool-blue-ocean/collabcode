@@ -9,7 +9,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
   const [currentTeacher, setCurrentTeacher] = useState({});
-
+  
   //Displays the Students in the Drop Down
   useEffect(() => {
     const getStudents = async () => {
@@ -19,11 +19,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
       const studentData = await studentRes.json();
       setPendingStudents(studentData);
     };
-    getStudents();
-  }, []);
 
-  useEffect(() => {
-    const getTeacherData = async () => {
+    const getTeachers = async () => {
       try {
         // Using the refresh token to get an access token
         const verifyRefresh = await fetch(
@@ -38,9 +35,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
         );
 
         const verifyRefreshData = await verifyRefresh.json();
-        // if (verifyRefreshData.status !== 200) {
-        //   alert("Error refreshing token...");
-        // } else {
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
             "https://collab-code.onrender.com/api/auth/protected/teacher",
@@ -64,10 +58,9 @@ export const TeacherAdminPageProvider = ({ children }) => {
       }
     };
 
-    getTeacherData();
-  }, [])
- 
-  // }, []);
+    getTeachers();
+    getStudents();
+  }, []);
 
   return (
     <TeacherAdminPageContext.Provider
