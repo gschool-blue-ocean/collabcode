@@ -792,7 +792,6 @@ app.post(
   body("in_date").isDate(),
   body("in_time").isTime(),
   body("in_completed").isBoolean(),
-  body("in_comments").blacklist(";").escape(),
   async (req, res) => {
     // validation result
     if (!validationResult(req).isEmpty) {
@@ -800,15 +799,13 @@ app.post(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
     }
 
     // destruct required info
-    const { ta_id, st_id, in_date, in_time, in_completed, in_comments } =
-      req.body;
+    const { ta_id, st_id, in_date, in_time, in_completed } = req.body;
 
     // remove null values
     if (
@@ -829,8 +826,8 @@ app.post(
     // attempt pool query
     try {
       const results = await pool.query(
-        "INSERT INTO interviews (ta_id, st_id, in_date, in_time, in_completed, in_comments) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-        [ta_id, st_id, in_date, in_time, in_completed, in_comments]
+        "INSERT INTO interviews (ta_id, st_id, in_date, in_time, in_completed) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        [ta_id, st_id, in_date, in_time, in_completed]
       );
       if (results.rowCount < 1) {
         res.status(500).send("Unable to POST to /interviews");
