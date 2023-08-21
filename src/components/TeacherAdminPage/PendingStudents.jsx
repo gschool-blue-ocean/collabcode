@@ -5,7 +5,7 @@ import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const PendingStudents = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents } = useContext(TeacherAdminPageContext);
+  const { pendingStudents, currentTeacher } = useContext(TeacherAdminPageContext);
 
   const [formInputs, setFormInputs] = useState({
     date: "",
@@ -27,7 +27,7 @@ const PendingStudents = () => {
 
     try {
       const formObj = {
-        ta_id: userData.user.ta_id,
+        ta_id: currentTeacher.user.ta_id,
         st_id: Number(formInputs.students),
         in_date: formInputs.date,
         in_time: formInputs.time,

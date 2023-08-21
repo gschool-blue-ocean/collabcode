@@ -8,6 +8,7 @@ const TeacherAdminPageContext = createContext();
 export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
+  const [currentTeacher, setCurrentTeacher] = useState({});
 
   //Displays the Students in the Drop Down
   useEffect(() => {
@@ -37,11 +38,9 @@ export const TeacherAdminPageProvider = ({ children }) => {
         );
 
         const verifyRefreshData = await verifyRefresh.json();
-        console.log(verifyRefreshData);
-
-        if (verifyRefreshData.status !== 200) {
-          alert("Error refreshing token...");
-        } else {
+        // if (verifyRefreshData.status !== 200) {
+        //   alert("Error refreshing token...");
+        // } else {
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
             "https://collab-code.onrender.com/api/auth/protected/teacher",
@@ -49,14 +48,17 @@ export const TeacherAdminPageProvider = ({ children }) => {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                Token: verifyRefreshData.accessToken, // Corrected header name
+                token: verifyRefreshData.accessToken, // Corrected header name
               },
             }
           );
-
-          const verifyAccessData = await verifyAccess.json();
-          console.log(verifyAccessData); // User Information
-        }
+          if (verifyAccess.status !== 200) {
+            const errorData = await verifyAccess.json();
+            console.log("Error fetching protected data:", errorData);
+          } else {
+            const verifyAccessData = await verifyAccess.json();
+            setCurrentTeacher(verifyAccessData)
+          }
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -74,6 +76,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
         setPendingStudents,
         currentStudent,
         setCurrentStudent,
+        currentTeacher,
+        setCurrentTeacher
       }}
     >
       {children}
