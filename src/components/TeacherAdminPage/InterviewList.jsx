@@ -5,14 +5,13 @@ import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const InterviewList = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents, setInterviews, interviews } = useContext(
-    TeacherAdminPageContext
-  );
+  const { pendingStudents, currentTeacher } = useContext(TeacherAdminPageContext);
+  const [interviews, setInterviews] = useState([]);
 
   useEffect(() => {
     const getInterviews = async () => {
       const interviewsRes = await fetch(
-        `https://collab-code.onrender.com/interviews?ta_id=${userData.user.ta_id}`,
+        `https://collab-code.onrender.com/interviews?ta_id=${currentTeacher.user.ta_id}`,
         {
           method: "GET",
           headers: {
@@ -24,7 +23,8 @@ const InterviewList = () => {
       setInterviews(interviewsData);
     };
     getInterviews();
-  }, [userData.user.ta_id, setInterviews]);
+  }, [currentTeacher]);
+
 
   return (
     <div
