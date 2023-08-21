@@ -17,8 +17,8 @@ const Runtime = () => {
   const establishConnection = () => {
     try {
       // create the web socket
-      let newSocket = new WebSocket('ws://localhost:8000/'); // local
-      // let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
+      // let newSocket = new WebSocket('ws://localhost:8000/'); // local
+      let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
 
       // when the connection is established
       newSocket.onopen = (e) => console.log("[socket] Connection established");

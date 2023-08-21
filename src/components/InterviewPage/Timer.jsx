@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
 
-const Timer = () => {
+const Timer = ({socket}) => {
 
     const [minutes, setMinutes] = useState(45);
     const [seconds, setSeconds] = useState(0);
@@ -10,7 +11,7 @@ const Timer = () => {
     let timer;
 
     useEffect(() => {
-        if (isRunning) {//if the timer is running
+        if (isRunning && socket) {//if the timer is running
             timer = setInterval(() => {
                 if (seconds === 0) {
                     if (minutes === 0) {
@@ -22,6 +23,9 @@ const Timer = () => {
                     }
                 } else {
                     setSeconds(seconds - 1);
+                }
+                if (seconds === 0 && minutes === inputMinutes) {
+                    socket.send(JSON.stringify({action: "startTimer"}));
                 }
             }, 1000);
         }//

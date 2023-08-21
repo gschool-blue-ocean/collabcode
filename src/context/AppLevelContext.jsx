@@ -66,6 +66,7 @@ export const AppLevelProvider = ({ children }) => {
               "Content-Type": "application/json",
               token: accesstoken,
             },
+            credentials: 'include',
           }
         );
 
@@ -158,6 +159,7 @@ export const AppLevelProvider = ({ children }) => {
               },
             }
           );
+          
           if (responseUserData.status != 200) {
             console.log(
               "Got an error getting the user object it is " +
