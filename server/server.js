@@ -826,7 +826,7 @@ app.post(
     // attempt pool query
     try {
       const results = await pool.query(
-        "INSERT INTO interviews (ta_id, st_id, in_date, in_time, in_completed) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        "INSERT INTO interviews (ta_id, st_id, in_date, in_time, in_completed) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [ta_id, st_id, in_date, in_time, in_completed]
       );
       if (results.rowCount < 1) {
