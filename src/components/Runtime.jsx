@@ -17,8 +17,8 @@ const Runtime = () => {
   const establishConnection = () => {
     try {
       // create the web socket
-      // let newSocket = new WebSocket('ws://localhost:8000/'); // local
-      let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
+      let newSocket = new WebSocket('ws://localhost:8000/'); // local
+      // let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
 
       // when the connection is established
       newSocket.onopen = (e) => console.log("[socket] Connection established");
@@ -26,12 +26,10 @@ const Runtime = () => {
       // incoming messages set the 'input' state to whatever the server sent out
       newSocket.onmessage = (e) => {
         const receivedMessage = e.data.split("::::");
-        console.log(receivedMessage);
-        if (receivedMessage[1]) {
-          setInput(receivedMessage[0]);
-        } else {
-          setOutput(receivedMessage[0]);
-        }
+
+        if (receivedMessage[1] == "input") { setInput(receivedMessage[0]); }
+
+        if (receivedMessage[1] == "output") { setOutput(receivedMessage[0]); }
       };
 
       // when the connection is lost
@@ -64,16 +62,12 @@ const Runtime = () => {
         consoleMessages.push(message);
         originalConsoleLog(message);
       };
-
       const result = eval(input);
-
       const outputText = consoleMessages.join("\n") + "\n" + result;
-
-      setOutput(outputText);
-
+      socket.send(`${outputText}::::output`);
     } catch (error) {
       const errorOutput = "Error: " + error.message + "\n";
-      setOutput(errorOutput);
+      socket.send(`${errorOutput}::::output`);
     }
   }
 
