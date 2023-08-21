@@ -5,61 +5,77 @@ import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 
 const Runtime = () => {
-  //   //set refs for editor and console
-  const editorRef = useRef(null);
-  const outputRef = useRef(null);
-  //   //set states for global access
+  // create state for 'input' (left runtime)
   const [input, setInput] = useState('');
+
+  // create state for 'output' (right runtime)
+  const [output, setOutput] = useState('');
+
+  // create state for the socket (object)
   const [socket, setSocket] = useState({});
 
   const establishConnection = () => {
     try {
-      // let newSocket = new WebSocket(`ws://localhost:8000/`);
-      let newSocket = new WebSocket(`wss://collab-code.onrender.com/socket`);
+      // create the web socket
+      // let newSocket = new WebSocket('ws://localhost:8000/'); // local
+      let newSocket = new WebSocket('wss://collab-code.onrender.com/socket'); // Render
 
       // when the connection is established
-      newSocket.onopen = (e) => {
-        console.log("[socket] Connection established");
-        socket.send("Connection opened");
-      };
+      newSocket.onopen = (e) => console.log("[socket] Connection established");
 
-      //listen for incoming messages
+      // incoming messages set the 'input' state to whatever the server sent out
       newSocket.onmessage = (e) => {
-        // debug
-        console.log("[socket] Received:", e.data);
-        setInput(e.data);
+        const receivedMessage = e.data.split("::::");
+        console.log(receivedMessage);
+        if (receivedMessage[1]) {
+          setInput(receivedMessage[0]);
+        } else {
+          setOutput(receivedMessage[0]);
+        }
       };
 
       // when the connection is lost
       newSocket.onclose = (e) => {
-        if (e.wasClean) {
-          console.log(
-            `[socket] Connection closed cleanly, code=${e.code} reason=${e.reason}`
-          );
-        } else {
-          console.log("[socket] Connection died");
-        }
+        e.wasClean ? console.log(`[socket] Connection closed cleanly, code=${e.code} reason=${e.reason}`)
+          : console.log("[socket] Connection died");
       };
 
-      newSocket.onerror = (error) => {
-        console.log('[socket] Error:', error.message);
-      };
+      // log any errors to the console
+      newSocket.onerror = (error) => console.log('[socket] Error:', error.message);
 
+      // after configuring newSocket, set it to the 'socket' state
       setSocket(newSocket);
     }
-    catch (err) {
-      console.error(err.message);
-    }
+    catch (err) { console.error(err.message) }
   }
 
+  // as soon as the element is rendered, establish the connection ONCE
   useEffect(() => { establishConnection() }, []);
 
-  //handle inputs
-  const handleChange = (e) => {
-    // debug
-    // console.log("[socket] Sending:", e);
-    socket.send(e);
-  };
+  // on change, send the changes via the socket
+  const handleChange = (e) => socket.send(`${e}::::input`);
+
+  // on 'run code' click, set the output to the (evaluated) input
+  const handleRun = (e) => {
+    try {
+      const consoleMessages = [];
+      const originalConsoleLog = console.log;
+      console.log = (message) => {
+        consoleMessages.push(message);
+        originalConsoleLog(message);
+      };
+
+      const result = eval(input);
+
+      const outputText = consoleMessages.join("\n") + "\n" + result;
+
+      setOutput(outputText);
+
+    } catch (error) {
+      const errorOutput = "Error: " + error.message + "\n";
+      setOutput(errorOutput);
+    }
+  }
 
   return (
     <>
@@ -71,7 +87,11 @@ const Runtime = () => {
           id="runtime-content"
           className="h-[80vh] flex w-[80vw] flex-col items-center justify-center"
         >
-          <button id="runtimeSubmit" className="border-2">
+          <button
+            id="runtimeSubmit"
+            className="border-2"
+            onClick={handleRun}
+          >
             Run Code
           </button>
           <div
@@ -91,7 +111,12 @@ const Runtime = () => {
               id="runtimeRight"
               className="w-1/2 h-full flex flex-col bg-[#353839]"
             >
-              <Editor height="100%" width="100%" theme="vs-dark" />
+              <Editor
+                height="100%"
+                width="100%"
+                theme="vs-dark"
+                value={output}
+              />
             </div>
           </div>
         </div>

@@ -8,7 +8,8 @@ const TeacherAdminPageContext = createContext();
 export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
-  const [interviews, setInterviews] = useState([]);
+  const [currentTeacher, setCurrentTeacher] = useState({});
+  
   //Displays the Students in the Drop Down
   useEffect(() => {
     const getStudents = async () => {
@@ -19,46 +20,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
       setPendingStudents(studentData);
     };
 
-    const getTeachers = async () => {
-      try {
-        // Using the refresh token to get an access token
-        const verifyRefresh = await fetch(
-          "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-
-        const verifyRefreshData = await verifyRefresh.json();
-
-        if (verifyRefreshData.status !== 200) {
-          console.log(verifyRefreshData.message);
-        } else {
-          // Using the refreshed access token to fetch protected data
-          const verifyAccess = await fetch(
-            "https://collab-code.onrender.com/api/auth/protected/teacher",
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Token: verifyRefreshData.accessToken, // Corrected header name
-              },
-            }
-          );
-
-          const verifyAccessData = await verifyAccess.json();
-          console.log(verifyAccessData); // User Information
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    };
-
-    getTeachers();
     getStudents();
   }, []);
 
@@ -78,11 +39,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
         );
 
         const verifyRefreshData = await verifyRefresh.json();
-        console.log(verifyRefreshData);
 
-        if (verifyRefreshData.status !== 200) {
-          alert("Error refreshing token...");
-        } else {
           // Using the refreshed access token to fetch protected data
           const verifyAccess = await fetch(
             "https://collab-code.onrender.com/api/auth/protected/teacher",
@@ -94,10 +51,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
               },
             }
           );
-
           const verifyAccessData = await verifyAccess.json();
-          console.log(verifyAccessData); // User Information
-        }
+          setCurrentTeacher(verifyAccessData);
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -115,8 +70,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
         setPendingStudents,
         currentStudent,
         setCurrentStudent,
-        interviews,
-        setInterviews,
+        currentTeacher,
+        setCurrentTeacher
       }}
     >
       {children}
