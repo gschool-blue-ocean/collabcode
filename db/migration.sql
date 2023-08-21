@@ -1,6 +1,4 @@
 -- Resets all the tables 
-DROP TABLE IF EXISTS runtime;
-DROP TABLE IF EXISTS chat;
 DROP TABLE IF EXISTS interviews;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS teachers;
@@ -18,7 +16,9 @@ CREATE TABLE students (
     st_email TEXT,
     st_password TEXT,
     st_name TEXT,
-    st_refreshToken TEXT
+    st_refreshToken TEXT,
+    st_comments TEXT,
+    st_scheduled BOOL
 );
 
 CREATE TABLE interviews (
@@ -27,20 +27,5 @@ CREATE TABLE interviews (
     st_id INT REFERENCES students(st_id),
     in_date DATE,
     in_time TIME,
-    in_completed BOOL,
-    in_comments TEXT
-);
-
-CREATE TABLE chat (
-    chat_id SERIAL PRIMARY KEY,
-    chat_sender_name TEXT,
-    chat_time TIME,
-    chat_message TEXT
-);
-
-CREATE TABLE runtime (
-    runtime_id SERIAL PRIMARY KEY,
-    in_id INT REFERENCES interviews(in_id),
-    runtime_input TEXT,
-    runtime_output TEXT
+    in_completed BOOL
 );

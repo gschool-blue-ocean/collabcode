@@ -9,8 +9,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
   const [currentTeacher, setCurrentTeacher] = useState({});
-  
-  //Displays the Students in the Drop Down
+
+  //LOADS ALL THE STUDENTS FROM THE DATABASE
   useEffect(() => {
     const getStudents = async () => {
       const studentRes = await fetch(
@@ -23,6 +23,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
     getStudents();
   }, []);
 
+  //VERIFIES THE TEACHER REFRESH TOKENS FROM THE COOKIES IN THE BROWSER
   useEffect(() => {
     const getTeacherData = async () => {
       try {
@@ -60,8 +61,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
 
     getTeacherData();
   }, [])
- 
-  // }, []);
 
   return (
     <TeacherAdminPageContext.Provider
