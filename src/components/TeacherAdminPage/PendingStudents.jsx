@@ -7,7 +7,6 @@ const PendingStudents = () => {
   const { userData } = useContext(AppLevelContext);
   const { pendingStudents, currentTeacher } = useContext(TeacherAdminPageContext);
 
-
   const [formInputs, setFormInputs] = useState({});
 
   const { date, time } = formInputs;
@@ -22,7 +21,6 @@ const PendingStudents = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     try {
       const formObj = {
         ta_id: currentTeacher.user.ta_id,
@@ -30,7 +28,7 @@ const PendingStudents = () => {
         in_date: formInputs.date,
         in_time: formInputs.time,
         in_completed: false,
-        in_comments: null,
+        st_scheduled: true
       };
       //Send the formObj back
       const response = await fetch(
@@ -44,13 +42,19 @@ const PendingStudents = () => {
         }
       );
       //If the response is successful
-      if (response.status === 200) {
-        //Remove Student from List if there is a scheuled interview
-        //Needing to add column into the students table to complete this
+      if (response.status === 201) {
+        await fetch(`https://collab-code.onrender.com/students/${formObj.st_id}`, 
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({st_scheduled: formObj.st_scheduled}),
+        }) 
+        
         //Reset the Form Data
         setFormInputs({});
       }
-      console.log;
     } catch (error) {
       console.log(error);
     }
@@ -73,17 +77,15 @@ const PendingStudents = () => {
             onChange={handleChange}
           >
             <option value="">Select A Student</option>
-            {pendingStudents.length !== 0 ? (
-              pendingStudents.map((elem, index) => (
+            {pendingStudents.map((elem, index) => (
+              (elem.st_scheduled === false) ? (
                 <option value={elem.st_id} key={index}>
                   {elem.st_name}
                 </option>
-              ))
-            ) : (
-              <option value="" key="">
-                Loading Students
-              </option>
-            )}
+              ) : (
+                console.log(`${elem.st_name} is scheduled already`)
+              )
+            ))}
           </select>
           <input
             type="date"

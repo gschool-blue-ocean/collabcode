@@ -52,8 +52,17 @@ export const TeacherAdminPageProvider = ({ children }) => {
               },
             }
           );
-          const verifyAccessData = await verifyAccess.json();
-          setCurrentTeacher(verifyAccessData);
+
+          // console.log(verifyAccess) //Expecting the Request from the successful refreshtoken
+          // console.log(verifyAccessData) //Expecting teacher object
+
+          if (verifyAccess.status !== 200 ) {
+            const errorData = await verifyAccess.json();
+            console.log(errorData)
+          } else {
+            const verifyAccessData = await verifyAccess.json();
+            setCurrentTeacher(verifyAccessData);
+          }
       } catch (error) {
         console.error("An error occurred:", error);
       }
