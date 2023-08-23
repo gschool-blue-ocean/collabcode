@@ -5,7 +5,7 @@ import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const PendingStudents = () => {
   const { userData } = useContext(AppLevelContext);
-  const { pendingStudents, currentTeacher } = useContext(
+  const { pendingStudents, currentTeacher, setShowStudents } = useContext(
     TeacherAdminPageContext
   );
 
@@ -62,6 +62,7 @@ const PendingStudents = () => {
     } catch (error) {
       console.log(error);
     }
+    setShowStudents(true);
   }
 
   return (

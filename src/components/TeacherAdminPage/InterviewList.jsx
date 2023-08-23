@@ -47,32 +47,36 @@ const InterviewList = () => {
           id="list-item-container"
           className="w-full h-full overflow-y-scroll flex flex-col items-center justify-center"
         >
-          {interviews.map(
-            (elem, index) => (
-              // forward loop over pendingStudents
-              pendingStudents.forEach((curr) => {
-                if (elem.st_id === curr.st_id) {
-                  elem.st_name = curr.st_name;
-                }
-              }),
-              (
-                <div
-                  id={elem.st_id}
-                  key={index}
-                  className="w-1/2"
-                  onClick={handleClick}
-                >
-                  <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
-                    <h1>{elem.st_name}</h1>
-                    <h1>{elem.in_date.split("T")[0]}</h1>
-                    <h1>
-                      {elem.in_time.split(":")[0]} :{" "}
-                      {elem.in_time.split(":")[1]}
-                    </h1>
+          {interviews.length !== 0 ? (
+            interviews.map(
+              (elem, index) => (
+                // forward loop over pendingStudents
+                pendingStudents.forEach((curr) => {
+                  if (elem.st_id === curr.st_id) {
+                    elem.st_name = curr.st_name;
+                  }
+                }),
+                (
+                  <div
+                    id={elem.st_id}
+                    key={index}
+                    className="w-1/2"
+                    onClick={handleClick}
+                  >
+                    <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
+                      <h1>{elem.st_name}</h1>
+                      <h1>{elem.in_date.split("T")[0]}</h1>
+                      <h1>
+                        {elem.in_time.split(":")[0]} :{" "}
+                        {elem.in_time.split(":")[1]}
+                      </h1>
+                    </div>
                   </div>
-                </div>
+                )
               )
             )
+          ) : (
+            <h1>No Interviews Scheduled</h1>
           )}
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const StudentInfo = () => {
@@ -9,6 +8,7 @@ const StudentInfo = () => {
     currentInterview,
     setInterviews,
     currentTeacher,
+    setShowStudents
   } = useContext(TeacherAdminPageContext);
 
   const [editing, setEditing] = useState(false);
@@ -18,6 +18,7 @@ const StudentInfo = () => {
       ":" +
       currentInterview[0].in_time.split(":")[1]
   );
+  
   const [notes, setNotes] = useState(currentInterview[0].in_comments || "");
 
   const handleEdit = async (e) => {
@@ -47,35 +48,23 @@ const StudentInfo = () => {
     if (confirm("Delete interview?")) {
       try {
         await fetch(
-          "https://collab-code-static.onrender.com/interviews/" +
+          "https://collab-code.onrender.com/interviews/" +
             currentInterview[0].in_id,
           {
             method: "DELETE",
           }
         );
         const interviewsRes = await fetch(
-          `https://collab-code-static.onrender.com/interviews?ta_id=${currentTeacher.user.ta_id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          `https://collab-code.onrender.com/interviews?ta_id=${currentTeacher.user.ta_id}`
         );
         const interviewsData = await interviewsRes.json();
         setInterviews(interviewsData);
       } catch (err) {
         console.error(err.message);
       }
-      setEditing(false);
     }
+    setShowStudents(true);
   };
-
-  const handleDateChange = (e) => setDate(e.currentTarget.value);
-
-  const handleTimeChange = (e) => setTime(e.currentTarget.value);
-
-  const handleNotesChange = (e) => setNotes(e.currentTarget.value);
 
   if (editing) {
     return (
@@ -95,19 +84,19 @@ const StudentInfo = () => {
               type="time"
               placeholder="Enter Time"
               value={time}
-              onChange={handleTimeChange}
+              onChange={(e) => setTime(e.currentTarget.value)}
             ></input>
             <input
               type="date"
               placeholder="Enter Date"
               value={date}
-              onChange={handleDateChange}
+              onChange={(e) => setDate(e.currentTarget.value)}
             ></input>
             <input
               type="text"
               placeholder="Enter Notes"
               value={notes}
-              onChange={handleNotesChange}
+              onChange={(e) => setNotes(e.currentTarget.value)}
             ></input>
             <div className="flex justify-evenly w-full">
               <button onClick={handleEdit}>Submit</button>
@@ -131,23 +120,36 @@ const StudentInfo = () => {
           id="list-item-container"
           className="w-full h-full overflow-y-scroll flex flex-col items-center justify-center"
         >
-          <form className="flex flex-col justify-center items-center ">
-            <h1>{time}</h1>
-            <h1>{date}</h1>
-            <h1>{notes}</h1>
+          <form className="flex flex-col h-[30vh] w-1/5 justify-between items-center ">
+            <h1 className="text-[2rem]">{time}</h1>
+            <h1 className="text-[2rem]">{date}</h1>
+            <h1 className="text-[1rem]">{notes}</h1>
             <div className="flex justify-between w-full">
-              <button className="cursor-pointer" onClick={handleEdit}>
+              <button
+                className="cursor-pointer border-2 p-2 rounded-lg"
+                onClick={handleEdit}
+              >
                 Edit
               </button>
-              <button className="cursor-pointer" onClick={handleDelete}>
+              <button
+                className="cursor-pointer border-2 p-2 rounded-lg"
+                onClick={handleDelete}
+              >
                 Delete
               </button>
             </div>
+            <a href="https://collab-code-static.onrender.com/interview">
+              <h1 className="cursor-pointer border-2 p-2 rounded-lg">
+                Join Interview Room
+              </h1>
+            </a>
+            <button
+              className="cursor-pointer border-2 p-2 rounded-lg"
+              onClick={handleClick}
+            >
+              Return to List
+            </button>
           </form>
-          <a href="https://collab-code-static.onrender.com/interview">
-            <h1>Join Interview Room</h1>
-          </a>
-          <button onClick={handleClick}>Return to List</button>
         </div>
       </div>
     );
