@@ -48,7 +48,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                Token: verifyRefreshData.accessToken, // Corrected header name
+                Token: verifyRefreshData.accessToken, // Corrected header name 
               },
             }
           );

@@ -34,10 +34,10 @@ function App() {
             <Route path="/api/auth/signIn/student" element={<StudentPage />} />
 
             {/* TEACHER INTERVIEW PAGE */}
-            <Route path="/interview" element={<InterviewPage />} />
+            <Route path="/api/auth/signIn/teacher/interview" element={<InterviewPage />} />
 
             {/* STUDENT INTERVIEW PAGE */}
-            <Route path="/interviewStudent" element={<InterviewPage2 />} />
+            <Route path="/api/auth/signIn/student/interviewStudent" element={<InterviewPage2 />} />
           </Routes>
         </Router>
       </AuthenticationModalProvider>

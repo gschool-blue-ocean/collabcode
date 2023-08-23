@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
+import { Navigate } from "react-router-dom";
 
 const InterviewList = () => {
   const { userData } = useContext(AppLevelContext);
@@ -25,6 +26,10 @@ const InterviewList = () => {
     getInterviews();
   }, [currentTeacher]);
 
+  
+  function handleJoin() {
+    return <Navigate to="/interview"/>;
+  }
 
 
   return (
@@ -38,8 +43,12 @@ const InterviewList = () => {
         className="w-full h-full overflow-scroll flex flex-col items-center justify-center"
       >
         {interviews.map((elem, index) => (
+<<<<<<< Updated upstream
           <a href="/interview" className="w-[30vw]">
           <div id="list-item" key={index} className="w-full">
+=======
+          <div id="list-item" key={index} className="w-1/2" onClick={handleJoin()}>
+>>>>>>> Stashed changes
             <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
               <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
               <h1>{elem.in_date.split("T")[0]}</h1>

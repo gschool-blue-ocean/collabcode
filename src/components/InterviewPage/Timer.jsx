@@ -1,17 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 
-const Timer = ({socket}) => {
+const Timer = () => {
 
     const [minutes, setMinutes] = useState(45);
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [inputMinutes, setInputMinutes] = useState(45); // State for input field
+    const [socket, setSocket] = useState(null);
+
 
     let timer;
 
+    const establishConnection = () => {
+        try {
+          let newSocket = new WebSocket(`ws://localhost:8000/`);
+          // let newSocket = new WebSocket(`wss://collab-code.onrender.com/socket`);
+    
+          // when the connection is established
+          newSocket.onopen = (e) => {
+            console.log("[socket] Connection established");
+            socket.send("Connection opened");
+          };
+    
+          //listen for incoming messages
+          newSocket.onmessage = (e) => {
+            // debug
+            console.log("[socket] Received:", e.data);
+            setInput(e.data);
+          };
+    
+          // when the connection is lost
+          newSocket.onclose = (e) => {
+            if (e.wasClean) {
+              console.log(
+                `[socket] Connection closed cleanly, code=${e.code} reason=${e.reason}`
+              );
+            } else {
+              console.log("[socket] Connection died");
+            }
+          };
+    
+          newSocket.onerror = (error) => {
+            console.log('[socket] Error:', error.message);
+          };
+    
+          setSocket(newSocket);
+        }
+        catch (err) {
+          console.error(err.message);
+        }
+      }
+
+      useEffect(() => { establishConnection() }, []);
+
     useEffect(() => {
-        if (isRunning && socket) {//if the timer is running
+        if (isRunning) {//if the timer is running
             timer = setInterval(() => {
                 if (seconds === 0) {
                     if (minutes === 0) {
@@ -25,7 +69,7 @@ const Timer = ({socket}) => {
                     setSeconds(seconds - 1);
                 }
                 if (seconds === 0 && minutes === inputMinutes) {
-                    socket.send(JSON.stringify({action: "startTimer"}));
+                    socket.send("Start::::timer");
                 }
             }, 1000);
         }//
