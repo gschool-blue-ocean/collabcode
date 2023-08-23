@@ -10,36 +10,45 @@ import StudentPage from "./components/StudentPage/StudentPage";
 import InterviewPage from "./components/InterviewPage/InterviewPage";
 import AuthenticationModal from "./components/AuthenticationModal/AuthenticationModal";
 import InterviewPage2 from "./components/InterviewPage2/InterviewPage2";
+import { TeacherAdminPageProvider } from "./context/TeacherAdminPageContext";
+import { InterviewDetailsProvider } from "./context/InterviewDetailsContext";
 
 function App() {
   return (
     <AppLevelProvider>
       <AuthenticationModalProvider>
-        <Router>
-          <Header />
-          <Routes>
-            {/* HOME PATH */}
-            <Route exact path="/" element={<LandingPage />} />
+        <TeacherAdminPageProvider>
+          <InterviewDetailsProvider>
+            <Router>
+              <Header />
+              <Routes>
+                {/* HOME PATH */}
+                <Route exact path="/" element={<LandingPage />} />
 
-            {/* AUTHENTICATION PATH */}
-            <Route path="/signIn" element={<AuthenticationModal />} />
+                {/* AUTHENTICATION PATH */}
+                <Route path="/signIn" element={<AuthenticationModal />} />
 
-            {/* TEACHER PAGE */}
-            <Route
-              path="/api/auth/signIn/teacher"
-              element={<TeacherAdminPage />}
-            />
+                {/* TEACHER PAGE */}
+                <Route
+                  path="/api/auth/signIn/teacher"
+                  element={<TeacherAdminPage />}
+                />
 
-            {/* STUDENT PAGE */}
-            <Route path="/api/auth/signIn/student" element={<StudentPage />} />
+                {/* STUDENT PAGE */}
+                <Route
+                  path="/api/auth/signIn/student"
+                  element={<StudentPage />}
+                />
 
-            {/* TEACHER INTERVIEW PAGE */}
-            <Route path="/interview" element={<InterviewPage />} />
+                {/* TEACHER INTERVIEW PAGE */}
+                <Route path="/interview" element={<InterviewPage />} />
 
-            {/* STUDENT INTERVIEW PAGE */}
-            <Route path="/interviewStudent" element={<InterviewPage2 />} />
-          </Routes>
-        </Router>
+                {/* STUDENT INTERVIEW PAGE */}
+                <Route path="/interviewStudent" element={<InterviewPage2 />} />
+              </Routes>
+            </Router>
+          </InterviewDetailsProvider>
+        </TeacherAdminPageProvider>
       </AuthenticationModalProvider>
     </AppLevelProvider>
   );

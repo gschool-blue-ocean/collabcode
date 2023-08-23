@@ -58,7 +58,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
 
           if (verifyAccess.status !== 200 ) {
             const errorData = await verifyAccess.json();
-            console.log(errorData)
           } else {
             const verifyAccessData = await verifyAccess.json();
             setCurrentTeacher(verifyAccessData);

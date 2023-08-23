@@ -1,13 +1,8 @@
 // import { Button } from "bootstrap"
-import InterviewDetails from "./InterviewDetails"
-import { InterviewDetailsProvider } from "../../context/InterviewDetailsContext"
+import InterviewDetails from "./InterviewDetails";
 
 const StudentPage = () => {
-    return (
-        <InterviewDetailsProvider>
-        <InterviewDetails/>
-        </InterviewDetailsProvider>
-    )
-}
+  return <InterviewDetails />;
+};
 
-export default StudentPage
+export default StudentPage;
