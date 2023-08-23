@@ -51,7 +51,7 @@ export const InterviewDetailsProvider = ({ children }) => {
       }, [])
 
     return (
-        <InterviewDetailsContext.Provider value={{ currentStudent }}>
+        <InterviewDetailsContext.Provider value={{ currentStudent, setCurrentStudent }}>
             {children}
         </InterviewDetailsContext.Provider>
     )
