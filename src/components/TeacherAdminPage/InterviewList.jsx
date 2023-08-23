@@ -1,13 +1,23 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect, useState } from "react";
-import AppLevelContext from "../../context/AppLevelContext";
+import { useContext, useEffect } from "react";
+// import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
-const InterviewList = () => {
-  const { userData } = useContext(AppLevelContext);
-  const { pendingStudents, currentTeacher } = useContext(TeacherAdminPageContext);
-  const [interviews, setInterviews] = useState([]);
+import StudentInfo from "./Student Info";
 
+const InterviewList = () => {
+  // const { userData } = useContext(AppLevelContext);
+  const {
+    pendingStudents,
+    currentTeacher,
+    interviews,
+    setInterviews,
+    showStudents,
+    setCurrentStudent,
+    handleClick,
+  } = useContext(TeacherAdminPageContext);
+
+  //SET THE CURRENT TEACHER AND INTERVIEWS FOR THAT TEACHER
   useEffect(() => {
     const getInterviews = async () => {
       const interviewsRes = await fetch(
@@ -23,36 +33,61 @@ const InterviewList = () => {
       setInterviews(interviewsData);
     };
     getInterviews();
-  }, [currentTeacher]);
+  }, [currentTeacher, setInterviews]);
 
-
-
-  return (
-    <div
-      id="interview-list-container"
-      className="w-[50vw] h-[70vh] flex flex-col justify-center items-center"
-    >
-      <h1 className="text-[4rem]">Scheduled Interviews</h1>
+  //Conditional Rendering
+  if (showStudents) {
+    return (
       <div
-        id="list-item-container"
-        className="w-full h-full overflow-scroll flex flex-col items-center justify-center"
+        id="interview-list-container"
+        className="w-[50vw] h-[70vh] flex flex-col justify-center items-center"
       >
-        {interviews.map((elem, index) => (
-          <a href="/interview" className="w-[30vw]">
-          <div id="list-item" key={index} className="w-full">
-            <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
-              <h1>{pendingStudents[elem.st_id - 1].st_name}</h1>
-              <h1>{elem.in_date.split("T")[0]}</h1>
-              <h1>
-                {elem.in_time.split(":")[0]}: {elem.in_time.split(":")[0]}
-              </h1>
-            </div>
-          </div>
-          </a>
-        ))}
+        <h1 className="text-[4rem]">Scheduled Interviews</h1>
+        <div
+          id="list-item-container"
+          className="w-full h-full overflow-y-scroll flex flex-col items-center justify-center"
+        >
+          {interviews.length !== 0 ? (
+            interviews.map(
+              (elem, index) => (
+                // forward loop over pendingStudents
+                pendingStudents.forEach((curr) => {
+                  if (elem.st_id === curr.st_id) {
+                    elem.st_name = curr.st_name;
+                  }
+                }),
+                (
+                  <div
+                    id={elem.st_id}
+                    key={index}
+                    className="w-1/2"
+                    onClick={handleClick}
+                  >
+                    <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
+                      <h1>{elem.st_name}</h1>
+                      <h1>{elem.in_date.split("T")[0]}</h1>
+                      <h1>
+                        {elem.in_time.split(":")[0]} :{" "}
+                        {elem.in_time.split(":")[1]}
+                      </h1>
+                    </div>
+                  </div>
+                )
+              )
+            )
+          ) : (
+            <h1>No Interviews Scheduled</h1>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <>
+        <StudentInfo />
+      </>
+    );
+  }
 };
 
 export default InterviewList;

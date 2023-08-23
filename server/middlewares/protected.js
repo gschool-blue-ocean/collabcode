@@ -8,7 +8,6 @@ dotenv.config();
 const studentUser = async (req, res, next) => {
   // get the token from the header
   const token = req.headers.token;
-  console.log(token);
   // if we don't have a token, return error
   if (!token) {
     return res.status(500).json({
