@@ -53,9 +53,6 @@ export const TeacherAdminPageProvider = ({ children }) => {
             }
           );
 
-          // console.log(verifyAccess) //Expecting the Request from the successful refreshtoken
-          // console.log(verifyAccessData) //Expecting teacher object
-
           if (verifyAccess.status !== 200 ) {
             const errorData = await verifyAccess.json();
             console.log(errorData)
