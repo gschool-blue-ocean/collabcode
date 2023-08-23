@@ -20,9 +20,15 @@ const StudentInfo = () => {
         id="list-item-container"
         className="w-full h-full overflow-y-scroll flex flex-col items-center justify-center"
       >
-        <h1>{currentInterview[0].in_time}</h1>
-        <h1>{currentInterview[0].in_date.split("T")[0]}</h1>
-        <button onClick={handleClick}>Return to List</button>
+        <form className="flex flex-col justify-center items-center ">
+          <h1>
+            {currentInterview[0].in_time.split(":")[0]} :{" "}
+            {currentInterview[0].in_time.split(":")[1]}
+          </h1>
+          <h1>{currentInterview[0].in_date.split("T")[0]}</h1>
+          <input type="text" placeholder="Enter Notes" value="" />
+          <button onClick={handleClick}>Return to List</button>
+        </form>
       </div>
     </div>
   );
