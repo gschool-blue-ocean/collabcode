@@ -5,9 +5,12 @@ const InterviewDetailsContext = createContext();
 export const InterviewDetailsProvider = ({ children }) => {
     const [currentStudent, setCurrentStudent] = useState({});
 
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
     useEffect(() => {
         const getTeacherData = async () => {
           try {
+            if (isLoggedIn) {
             // Using the refresh token to get an access token
             const verifyRefresh = await fetch(
               "https://collab-code.onrender.com/api/auth/refresh_token/student",
@@ -42,6 +45,7 @@ export const InterviewDetailsProvider = ({ children }) => {
                 const verifyAccessData = await verifyAccess.json();
                 setCurrentStudent(verifyAccessData)
               }
+            }
           } catch (error) {
             console.error("An error occurred:", error);
           }

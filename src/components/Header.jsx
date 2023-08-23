@@ -23,6 +23,7 @@ const Header = () => {
       if (response.status === 200) {
         setCurrentStudent({});
         setCurrentTeacher({});
+        localStorage.removeItem("isLoggedIn");
         navigate("/");
       }
     } catch (error) {
