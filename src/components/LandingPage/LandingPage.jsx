@@ -1,5 +1,5 @@
 import Information from './Information';
-import Runtime from '../Runtime';
+import RuntimeDemo from './RuntimeDemo';
 
 import { InformationProvider } from '../../context/InformationContext';
 
@@ -13,7 +13,7 @@ const LandingPage = () => {
         <InformationProvider>
           <Information />
         </InformationProvider>
-        <Runtime />
+        <RuntimeDemo />
       </div>
     </>
   );
