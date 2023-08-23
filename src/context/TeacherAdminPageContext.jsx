@@ -9,6 +9,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState({});
   const [currentTeacher, setCurrentTeacher] = useState({});
+  const [currentInterview, setCurrentInterview] = useState(null);
   const [interviews, setInterviews] = useState([]);
   const [showStudents, setShowStudents] = useState(true);
 
@@ -71,11 +72,28 @@ export const TeacherAdminPageProvider = ({ children }) => {
   }, []);
 
   //CONDITIONAL RENDERING FOR THE INTERVIEW LIST
-  function handleClick(e) {
-    console.log(interviews);
-    console.log(e.currentTarget.id);
+  const handleClick = async (e) => {
+    const id = e.currentTarget.id;
+    // query the students table for the student information
+    const st_results = await fetch(
+      "https://collab-code.onrender.com/students/" + id
+    );
+    const st_data = await st_results.json();
+
+    // query the interviews table for the student's interview information
+    const in_results = await fetch(
+      "https://collab-code.onrender.com/interviews?st_id=" + id
+    );
+    const in_data = await in_results.json();
+    // set the current interview to the data fetched from the table
+
+    // set the current student to the data fetched from the table, THEN
+    setCurrentInterview(in_data);
+    setCurrentStudent(st_data);
+
+    // toggle showStudents
     setShowStudents(!showStudents);
-  }
+  };
 
   return (
     <TeacherAdminPageContext.Provider
@@ -90,6 +108,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
         setInterviews,
         showStudents,
         setShowStudents,
+        currentInterview,
+        setCurrentInterview,
         handleClick,
       }}
     >
