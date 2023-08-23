@@ -13,7 +13,6 @@ const InterviewList = () => {
     interviews,
     setInterviews,
     showStudents,
-    setShowStudents,
     setCurrentStudent,
     handleClick,
   } = useContext(TeacherAdminPageContext);

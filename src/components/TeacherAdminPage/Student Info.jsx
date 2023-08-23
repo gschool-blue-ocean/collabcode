@@ -2,8 +2,9 @@ import { useContext } from "react";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
 const StudentInfo = () => {
-  const { handleClick } = useContext(TeacherAdminPageContext);
+  const { handleClick, currentStudent } = useContext(TeacherAdminPageContext);
 
+  console.log(currentStudent);
   return (
     <div
       id="interview-list-container"

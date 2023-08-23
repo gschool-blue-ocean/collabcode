@@ -69,9 +69,11 @@ export const TeacherAdminPageProvider = ({ children }) => {
 
     getTeacherData();
   }, []);
-  
+
   //CONDITIONAL RENDERING FOR THE INTERVIEW LIST
-  function handleClick() {
+  function handleClick(e) {
+    console.log(interviews);
+    console.log(e.currentTarget.id);
     setShowStudents(!showStudents);
   }
 
@@ -88,7 +90,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
         setInterviews,
         showStudents,
         setShowStudents,
-        handleClick
+        handleClick,
       }}
     >
       {children}

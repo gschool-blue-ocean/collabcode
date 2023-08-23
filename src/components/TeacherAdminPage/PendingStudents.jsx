@@ -87,7 +87,9 @@ const PendingStudents = () => {
                   {elem.st_name}
                 </option>
               ) : (
-                console.log(`${elem.st_name} is scheduled already`)
+                <option hidden value={elem.st_id} key={index}>
+                  {elem.st_name}
+                </option>
               )
             )}
           </select>
