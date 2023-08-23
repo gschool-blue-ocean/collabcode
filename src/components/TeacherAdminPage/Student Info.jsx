@@ -21,7 +21,7 @@ const StudentInfo = () => {
         className="w-full h-full overflow-y-scroll flex flex-col items-center justify-center"
       >
         <h1>{currentInterview[0].in_time}</h1>
-        <h1>{currentInterview[0].in_date}</h1>
+        <h1>{currentInterview[0].in_date.split("T")[0]}</h1>
         <button onClick={handleClick}>Return to List</button>
       </div>
     </div>

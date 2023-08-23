@@ -66,7 +66,8 @@ const InterviewList = () => {
                     <h1>{elem.st_name}</h1>
                     <h1>{elem.in_date.split("T")[0]}</h1>
                     <h1>
-                      {elem.in_time.split(":")[0]}: {elem.in_time.split(":")[1]}
+                      {elem.in_time.split(":")[0]} :{" "}
+                      {elem.in_time.split(":")[1]}
                     </h1>
                   </div>
                 </div>
