@@ -31,7 +31,7 @@ const StudentInfo = () => {
       if (confirm("Update interview with input information?")) {
         const formData = new FormData(e.currentTarget);
         const requestBody = Object.fromEntries(formData.entries());
-        console.log(requestBody.in_completed);
+        console.log(requestBody);
         await fetch(
           "https://collab-code.onrender.com/interviews/" +
             currentInterview[0].in_id,
