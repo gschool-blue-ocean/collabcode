@@ -102,7 +102,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
     // toggle showStudents
     setShowStudents(!showStudents);
     localStorage.setItem("currentName", st_data[0].st_name);
-    console.log(localStorage.getItem("currentName"));
+    // console.log(localStorage.getItem("currentName"));
   };
 
   return (

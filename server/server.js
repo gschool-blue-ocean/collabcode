@@ -593,10 +593,6 @@ app.put(
     let { st_scheduled, st_comments } = req.body;
     const { id } = req.params;
 
-    if (!st_comments) {
-      st_comments = "";
-    }
-
     // attempt pool query
     try {
       const results = await pool.query(
