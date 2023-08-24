@@ -13,6 +13,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [interviews, setInterviews] = useState([]);
   const [showStudents, setShowStudents] = useState(true);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+
   //LOADS ALL THE STUDENTS FROM THE DATABASE
   useEffect(() => {
     const getStudents = async () => {
@@ -30,6 +32,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
   useEffect(() => {
     const getTeacherData = async () => {
       try {
+        if (isLoggedIn) {
         // Using the refresh token to get an access token
         const verifyRefresh = await fetch(
           "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
@@ -57,12 +60,16 @@ export const TeacherAdminPageProvider = ({ children }) => {
           }
         );
 
-        if (verifyAccess.status !== 200) {
-          const errorData = await verifyAccess.json();
-          // console.log(errorData);
-        } else {
-          const verifyAccessData = await verifyAccess.json();
-          setCurrentTeacher(verifyAccessData);
+          // console.log(verifyAccess) //Expecting the Request from the successful refreshtoken
+          // console.log(verifyAccessData) //Expecting teacher object
+
+          if (verifyAccess.status !== 200 ) {
+            const errorData = await verifyAccess.json();
+          } else {
+            const verifyAccessData = await verifyAccess.json();
+            setCurrentTeacher(verifyAccessData);
+            localStorage.setItem("teacherLoggedIn", "true")
+          }
         }
       } catch (error) {
         console.error("An error occurred:", error);
