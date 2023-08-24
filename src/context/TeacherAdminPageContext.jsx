@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, createContext } from "react";
+import { CLOSING } from "ws";
 
 const TeacherAdminPageContext = createContext();
 
@@ -12,6 +13,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [currentInterview, setCurrentInterview] = useState(null);
   const [interviews, setInterviews] = useState([]);
   const [showStudents, setShowStudents] = useState(true);
+  const [studentName, setStudentName] = useState('');
 
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
@@ -29,6 +31,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
 
     getStudents();
   }, []);
+
+  
 
   //VERIFIES THE TEACHER REFRESH TOKENS FROM THE COOKIES IN THE BROWSER
   useEffect(() => {
@@ -88,20 +92,24 @@ export const TeacherAdminPageProvider = ({ children }) => {
       "https://collab-code.onrender.com/students/" + id
     );
     const st_data = await st_results.json();
-
+    // setStudentName(st_data[0].st_name);
+    // console.log(studentName);
+    
     // query the interviews table for the student's interview information
     const in_results = await fetch(
       "https://collab-code.onrender.com/interviews?st_id=" + id
-    );
-    const in_data = await in_results.json();
-    // set the current interview to the data fetched from the table
-
-    // set the current student to the data fetched from the table, THEN
-    setCurrentInterview(in_data);
-    setCurrentStudent(st_data);
-
-    // toggle showStudents
+      );
+      const in_data = await in_results.json();
+      // set the current interview to the data fetched from the table
+      
+      // set the current student to the data fetched from the table, THEN
+      setCurrentInterview(in_data);
+      setCurrentStudent(st_data);
+      // toggle showStudents
     setShowStudents(!showStudents);
+    localStorage.setItem('currentName', st_data[0].st_name)
+    console.log(localStorage.getItem('currentName'))
+  
   };
 
   return (
@@ -120,6 +128,8 @@ export const TeacherAdminPageProvider = ({ children }) => {
         currentInterview,
         setCurrentInterview,
         handleClick,
+        studentName,
+        setStudentName,
       }}
     >
       {children}

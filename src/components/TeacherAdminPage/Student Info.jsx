@@ -9,8 +9,9 @@ const StudentInfo = () => {
     setInterviews,
     currentTeacher,
     setShowStudents,
+    setStudentName,
   } = useContext(TeacherAdminPageContext);
-
+  
   const [editing, setEditing] = useState(false);
   const [date, setDate] = useState(currentInterview[0].in_date.split("T")[0]);
   const [time, setTime] = useState(
