@@ -9,9 +9,8 @@ const StudentInfo = () => {
     setInterviews,
     currentTeacher,
     setShowStudents,
-    setStudentName,
   } = useContext(TeacherAdminPageContext);
-  
+
   const [editing, setEditing] = useState(false);
   const [date, setDate] = useState(currentInterview[0].in_date.split("T")[0]);
   const [time, setTime] = useState(
@@ -39,7 +38,7 @@ const StudentInfo = () => {
           {
             method: "PUT",
             headers: {
-              "Content-Type" : "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               st_id: currentStudent[0].st_id,
@@ -57,7 +56,7 @@ const StudentInfo = () => {
           {
             method: "PUT",
             header: {
-              "Content-Type": "spplication/json"
+              "Content-Type": "spplication/json",
             },
             body: JSON.stringify({
               st_id: currentStudent[0].st_id,
