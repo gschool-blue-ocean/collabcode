@@ -32,6 +32,7 @@ const StudentInfo = () => {
       if (confirm("Update interview with input information?")) {
         const formData = new FormData(e.currentTarget);
         const requestBody = Object.fromEntries(formData.entries());
+        console.log(requestBody);
         await fetch(
           "https://collab-code.onrender.com/interviews/" +
             currentInterview[0].in_id,
@@ -56,13 +57,12 @@ const StudentInfo = () => {
           {
             method: "PUT",
             headers: {
-              "Content-Type": "spplication/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              st_id: currentStudent[0].st_id,
               st_comments: requestBody.st_comments,
               st_scheduled:
-                requestBody.st_scheduled === undefined ? false : true,
+                requestBody.st_scheduled === undefined ? true : false,
             }),
           }
         );
