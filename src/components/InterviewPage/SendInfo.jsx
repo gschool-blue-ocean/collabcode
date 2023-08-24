@@ -22,7 +22,7 @@ const SendInfo = ({ input, notes }) => {
     };
 
     const sendIt = async (obj) => {
-      await fetch("https://collab-code.onrender.com//api/auth/sendEmail", {
+      await fetch("https://collab-code.onrender.com/api/auth/sendEmail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
