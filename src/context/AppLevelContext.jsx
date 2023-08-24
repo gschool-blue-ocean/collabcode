@@ -170,6 +170,7 @@ export const AppLevelProvider = ({ children }) => {
           } else {
             const Data2 = await responseUserData.json();
             setUserData(Data2);
+            localStorage.setItem("isLoggedIn", "true");
             alert(Data2.message);
             if (role === "teacher") {
               toggleTeacher();
