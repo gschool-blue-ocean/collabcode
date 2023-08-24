@@ -566,10 +566,63 @@ app.post(
   }
 );
 
-// PUT ONE - secured by validating id and sanitizing body
-//USING TO UPDATE THE SCHEDULED INTERVIEWS COLUMN
+// PUT ONE -
+// USING TO UPDATE STUDENT FROM TEACHER COMPONENT
 app.put(
-  "/students/:id",
+  "/students/comments/:id",
+  param("id").isInt(),
+  // body("st_email").blacklist(";").escape(),
+  // body("st_password").blacklist(";").escape(),
+  // body("st_name").blacklist(";").escape(),
+  body("st_comments").blacklist(";").escape(),
+  body("st_scheduled").blacklist(";").escape(),
+
+  async (req, res) => {
+    // validation result
+    if (!validationResult(req).isEmpty) {
+      res
+        .status(400)
+        .send(
+          "Validator caught the following error(s): " +
+            validationResult(req).array()
+        );
+      return;
+    }
+
+    // destruct required info
+    let { st_scheduled, st_comments } = req.body;
+    const { id } = req.params;
+
+    // attempt pool query
+    try {
+      const results = await pool.query(
+        "UPDATE students SET st_scheduled = $1::boolean, st_comments = $2 WHERE st_id = $3 RETURNING *",
+        [st_scheduled, st_comments, id]
+      );
+      console.log(results);
+
+      if (results.rowCount < 1) {
+        res.status(404).send("Resource not found");
+        return;
+      } else {
+        res.status(200).json(results.rows);
+        return;
+      }
+    } catch (error) {
+      // error handling
+      console.error(error.message);
+      res
+        .status(500)
+        .send("Server caught the following error: " + error.message);
+      return;
+    }
+  }
+);
+
+// PUT ONE - secured by validating id and sanitizing body
+//USING TO UPDATE STUDENT FROM PENDING COMPONENT
+app.put(
+  "/students/scheduled/:id",
   param("id").isInt(),
   // body("st_email").blacklist(";").escape(),
   // body("st_password").blacklist(";").escape(),
@@ -851,12 +904,11 @@ app.post(
 app.put(
   "/interviews/:id",
   param("id").isInt(),
-  body("ta_id").isInt(),
   body("st_id").isInt(),
   body("in_date").isDate(),
   body("in_time").isTime(),
   body("in_completed").isBoolean(),
-  body("in_comments").blacklist(";").escape(),
+
   async (req, res) => {
     // validation result
     if (!validationResult(req).isEmpty) {
@@ -864,38 +916,28 @@ app.put(
         .status(400)
         .send(
           "Validator caught the following error(s): " +
-            "Validator caught the following error(s): " +
             validationResult(req).array()
         );
       return;
     }
 
     // destruct required info
-    const { ta_id, st_id, in_date, in_time, in_completed, in_comments } =
-      req.body;
+    const { st_id, in_date, in_time, in_completed } = req.body;
     const { id } = req.params;
 
     // remove null values
-    if (
-      !ta_id ||
-      !st_id ||
-      !in_date ||
-      !in_time ||
-      in_completed === undefined
-    ) {
+    if (!st_id || !in_date || !in_time || in_completed === undefined) {
       res
         .status(400)
-        .send(
-          "PUT request requires ta_id, st_id, in_date, in_time, in_completed"
-        );
+        .send("PUT request requires st_id, in_date, in_time, in_completed");
       return;
     }
 
     // attempt pool query
     try {
       const results = await pool.query(
-        "UPDATE interviews SET ta_id = $1, st_id = $2, in_date = $3, in_time = $4, in_completed = $5, in_comments = $6 WHERE in_id = $7 RETURNING *",
-        [ta_id, st_id, in_date, in_time, in_completed, in_comments, id]
+        "UPDATE interviews SET  st_id = $1, in_date = $2, in_time = $3, in_completed = $4 WHERE in_id = $5 RETURNING *",
+        [st_id, in_date, in_time, in_completed, id]
       );
       if (results.rowCount < 1) {
         res.status(404).send("Resource not found");

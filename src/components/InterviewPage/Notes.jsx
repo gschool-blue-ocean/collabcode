@@ -1,6 +1,13 @@
+// import transporter, { NotesTemplate } from "../../../server/Utility/email";
 
+import SendInfo from "./SendInfo";
+const Notes = ({ notes, setNotes, input }) => {
+    
+   const handleChange = (e) => {
+    //this id for the textarea is notes
+       setNotes(e.target.value);
+}
 
-const Notes = () => {
     return (
         //I need to place somewhere for users to add notes
         //if(studentid) then show notes
@@ -9,10 +16,11 @@ const Notes = () => {
             <h1 className="text-2xl font-bold mb-0 -mt-1">Notes</h1>
             <div className="formholder">
                 <form>
-                    <textarea name="notes" id="notes" cols="30" rows="10" className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-300 focus:border-indigo-300"></textarea>
-                    <button type="submit"
+                        <textarea onChange={handleChange} name="notes" id="notes" cols="30" rows="10" className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-indigo-300 focus:border-indigo-300"></textarea>
+                    {/* <button
                     className="px-4 py-1 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-300 hover:text-gray-800 transition-all duration-300 ease-in-out"
-                    onClick={""}>Submit</button>
+                    onClick={handl}>Submit</button> */}
+                        <SendInfo  input={input} notes={notes} />
                 </form>
             </div>
         </div>

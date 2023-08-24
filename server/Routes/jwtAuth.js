@@ -5,6 +5,8 @@ import pool from "../db.js";
 import pkg from "jsonwebtoken";
 const { verify } = pkg;
 import dotenv from "dotenv";
+import transporter from "../Utility/email.js";
+import { NotesTemplate } from "../Utility/email.js";
 //IMPORTING MIDDLEWARE FOR VALIDATION
 import {
   validStudentInfo,
@@ -455,5 +457,20 @@ router.get("/protected/teacher", teacherUser, async (req, res) => {
     });
   }
 });
+
+
+router.post("/sendEmail", async (req, res) => {
+  const { email, name, input, notes } = req.body
+
+  const mainlOptions = NotesTemplate(email, name, input, notes);
+  transporter.sendMail(mainlOptions, (err) => {
+    if(err) {
+      return res.status(500).json({
+        message: "Error Sending email!",
+        type: "error",
+      })
+    }
+  })
+})
 
 export default router;

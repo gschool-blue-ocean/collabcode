@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 // import AppLevelContext from "../../context/AppLevelContext";
 import TeacherAdminPageContext from "../../context/TeacherAdminPageContext";
 
@@ -14,12 +14,16 @@ const InterviewList = () => {
     setInterviews,
     showStudents,
     setCurrentStudent,
+    setStudentName,
     handleClick,
   } = useContext(TeacherAdminPageContext);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
 
   //SET THE CURRENT TEACHER AND INTERVIEWS FOR THAT TEACHER
   useEffect(() => {
     const getInterviews = async () => {
+      if (isLoggedIn) {
       const interviewsRes = await fetch(
         `https://collab-code.onrender.com/interviews?ta_id=${currentTeacher.user.ta_id}`,
         {
@@ -31,9 +35,10 @@ const InterviewList = () => {
       );
       const interviewsData = await interviewsRes.json();
       setInterviews(interviewsData);
-    };
+    }
+  }
     getInterviews();
-  }, [currentTeacher, setInterviews]);
+  }, [currentTeacher, setInterviews, isLoggedIn]);
 
   //Conditional Rendering
   if (showStudents) {
