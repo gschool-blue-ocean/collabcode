@@ -600,9 +600,11 @@ app.put(
     // attempt pool query
     try {
       const results = await pool.query(
-        "UPDATE students SET st_scheduled = $1, st_comments = $2 WHERE st_id = $3 RETURNING *",
+        "UPDATE students SET st_scheduled = $1::boolean, st_comments = $2 WHERE st_id = $3 RETURNING *",
         [st_scheduled, st_comments, id]
       );
+      console.log(results);
+
       if (results.rowCount < 1) {
         res.status(404).send("Resource not found");
         return;
