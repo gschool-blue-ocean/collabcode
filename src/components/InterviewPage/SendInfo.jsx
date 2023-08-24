@@ -11,14 +11,14 @@ const SendInfo = ({ input, notes }) => {
     console.log(localStorage.getItem("currentName"));
     console.log(input);
     console.log(notes);
-    const email = "Dw.gordon2@gmail.com";
+    const email = currentTeacher.user.ta_email;
     const name = localStorage.getItem("currentName");
 
     const mailObj = {
-      email: email,
-      name: name,
-      input: input,
-      notes: notes,
+      "email": email,
+      "name": name,
+      "input": input,
+      "notes": notes,
     };
 
     const sendIt = async (obj) => {
