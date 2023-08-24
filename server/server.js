@@ -575,6 +575,7 @@ app.put(
   // body("st_password").blacklist(";").escape(),
   // body("st_name").blacklist(";").escape(),
   body("st_comments").blacklist(";").escape(),
+  body("st_scheduled").blacklist(";").escape(),
 
   async (req, res) => {
     // validation result
@@ -933,17 +934,10 @@ app.put(
     const { id } = req.params;
 
     // remove null values
-    if (
-      !st_id ||
-      !in_date ||
-      !in_time ||
-      in_completed === undefined
-    ) {
+    if (!st_id || !in_date || !in_time || in_completed === undefined) {
       res
         .status(400)
-        .send(
-          "PUT request requires st_id, in_date, in_time, in_completed"
-        );
+        .send("PUT request requires st_id, in_date, in_time, in_completed");
       return;
     }
 
