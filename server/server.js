@@ -599,7 +599,7 @@ app.put(
         "UPDATE students SET st_scheduled = $1, st_comments = $2 WHERE st_id = $3 RETURNING *",
         [st_scheduled, st_comments, id]
       );
-      console.log(results);
+      console.log(results.rows);
 
       if (results.rowCount < 1) {
         res.status(404).send("Resource not found");

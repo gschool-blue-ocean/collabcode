@@ -19,7 +19,8 @@ const StudentInfo = () => {
       currentInterview[0].in_time.split(":")[1]
   );
 
-  const [notes, setNotes] = useState(currentInterview[0].in_comments || "");
+  console.log(currentStudent);
+  const [notes, setNotes] = useState(currentStudent[0].st_comments || "");
 
   const handleEdit = async (e) => {
     // prevent the page from reloading
@@ -31,7 +32,6 @@ const StudentInfo = () => {
       if (confirm("Update interview with input information?")) {
         const formData = new FormData(e.currentTarget);
         const requestBody = Object.fromEntries(formData.entries());
-        console.log(requestBody);
         await fetch(
           "https://collab-code.onrender.com/interviews/" +
             currentInterview[0].in_id,
@@ -55,7 +55,7 @@ const StudentInfo = () => {
             currentStudent[0].st_id,
           {
             method: "PUT",
-            header: {
+            headers: {
               "Content-Type": "spplication/json",
             },
             body: JSON.stringify({
