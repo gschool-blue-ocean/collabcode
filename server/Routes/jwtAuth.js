@@ -459,7 +459,7 @@ router.get("/protected/teacher", teacherUser, async (req, res) => {
 });
 
 
-router.post =("/sendEmail", async (req, res) => {
+router.post("/sendEmail", async (req, res) => {
   const { email, name, input, notes } = req.body
 
   const mainlOptions = NotesTemplate(email, name, input, notes);
