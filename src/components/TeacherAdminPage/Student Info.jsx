@@ -138,7 +138,7 @@ const StudentInfo = () => {
                 Delete
               </button>
             </div>
-            <a href="https://collab-code-static.onrender.com/interview">
+            <a href="/interview">
               <h1 className="cursor-pointer border-2 p-2 rounded-lg">
                 Join Interview Room
               </h1>
