@@ -46,7 +46,7 @@ const PendingStudents = () => {
       //If the response is successful
       if (response.status === 201) {
         await fetch(
-          `https://collab-code.onrender.com/students/${formObj.st_id}`,
+          `https://collab-code.onrender.com/students/scheduled/${formObj.st_id}`,
           {
             method: "PUT",
             headers: {
