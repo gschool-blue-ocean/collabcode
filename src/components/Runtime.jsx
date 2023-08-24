@@ -4,9 +4,9 @@ import { WebrtcProvider } from "y-webrtc";
 import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 
-const Runtime = () => {
+const Runtime = ({input, setInput}) => {
   // create state for 'input' (left runtime)
-  const [input, setInput] = useState('');
+
 
   // create state for 'output' (right runtime)
   const [output, setOutput] = useState('');
