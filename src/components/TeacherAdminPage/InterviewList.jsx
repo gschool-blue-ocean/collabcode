@@ -8,8 +8,11 @@ const InterviewList = () => {
   const { pendingStudents, currentTeacher } = useContext(TeacherAdminPageContext);
   const [interviews, setInterviews] = useState([]);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+
   useEffect(() => {
     const getInterviews = async () => {
+      if (isLoggedIn) {
       const interviewsRes = await fetch(
         `https://collab-code.onrender.com/interviews?ta_id=${currentTeacher.user.ta_id}`,
         {
@@ -22,6 +25,7 @@ const InterviewList = () => {
       const interviewsData = await interviewsRes.json();
       setInterviews(interviewsData);
     };
+  }
     getInterviews();
   }, [currentTeacher]);
 

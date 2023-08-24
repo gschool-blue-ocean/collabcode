@@ -1,9 +1,12 @@
 import Timer from "./Timer";
 import Notes from "./Notes";
 import Runtime from "../Runtime";
+import Header from "../Header";
 
 const InterviewPage = () => {
     return (
+        <div>
+            <Header/>
         <div className="relative flex flex-col justify-center items-center w-full h-screen">
             <div className='bg-gray-200 h-full w-full flex flex-row'>         
                 <div id='body' className='h-full w-4/5'>
@@ -18,6 +21,7 @@ const InterviewPage = () => {
                 </div>
             
             </div>             
+        </div>
         </div>
     );
 }

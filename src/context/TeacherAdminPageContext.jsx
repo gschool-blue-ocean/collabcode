@@ -10,7 +10,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [currentStudent, setCurrentStudent] = useState({});
   const [currentTeacher, setCurrentTeacher] = useState({});
 
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
 
   //LOADS ALL THE STUDENTS FROM THE DATABASE
   useEffect(() => {
@@ -64,6 +64,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
           } else {
             const verifyAccessData = await verifyAccess.json();
             setCurrentTeacher(verifyAccessData);
+            localStorage.setItem("teacherLoggedIn", "true")
           }
         }
       } catch (error) {

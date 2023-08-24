@@ -44,6 +44,7 @@ export const InterviewDetailsProvider = ({ children }) => {
               } else {
                 const verifyAccessData = await verifyAccess.json();
                 setCurrentStudent(verifyAccessData)
+                localStorage.setItem("studentLoggedIn", 'true')
               }
             }
           } catch (error) {

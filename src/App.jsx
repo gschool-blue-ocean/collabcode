@@ -10,17 +10,13 @@ import StudentPage from "./components/StudentPage/StudentPage";
 import InterviewPage from "./components/InterviewPage/InterviewPage";
 import AuthenticationModal from "./components/AuthenticationModal/AuthenticationModal";
 import InterviewPage2 from "./components/InterviewPage2/InterviewPage2";
-import { TeacherAdminPageProvider } from "./context/TeacherAdminPageContext";
-import { InterviewDetailsProvider } from "./context/InterviewDetailsContext";
 
 function App() {
   return (
     <AppLevelProvider>
       <AuthenticationModalProvider>
-        <TeacherAdminPageProvider>
-          <InterviewDetailsProvider>
             <Router>
-              <Header />
+              {/* <Header /> */}
               <Routes>
                 {/* HOME PATH */}
                 <Route exact path="/" element={<LandingPage />} />
@@ -47,8 +43,6 @@ function App() {
                 <Route path="/interviewStudent" element={<InterviewPage2 />} />
               </Routes>
             </Router>
-          </InterviewDetailsProvider>
-        </TeacherAdminPageProvider>
       </AuthenticationModalProvider>
     </AppLevelProvider>
   );
