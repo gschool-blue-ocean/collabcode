@@ -10,7 +10,7 @@ const SignUpModal = () => {
     signUpEmail: "",
     signUpPassword: "",
     confirmPassword: "",
-    teacherCode: "",
+    teacherCode: "teacher123",
   });
 
   const { handleAcctCreation, loginTeacher, loginStudent, userData } =
@@ -129,14 +129,15 @@ const SignUpModal = () => {
                   boxShadow: "0px 0px 3px 0px inset",
                 }}
               />
-              <label htmlFor="signup-teacher-code" className="pt-4">
+              {/* <label htmlFor="signup-teacher-code" className="pt-4">
                 Code:{" "}
-              </label>
+              </label> */}
               <input
                 type="password"
                 id="teacherCode"
                 name="teacherCode"
                 required
+                hidden
                 className="bg-gray-200 p-2"
                 value={teacherCode}
                 onChange={(e) => handleChange(e)}
