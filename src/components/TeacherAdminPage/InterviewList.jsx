@@ -34,10 +34,10 @@ const InterviewList = () => {
       );
       const interviewsData = await interviewsRes.json();
       setInterviews(interviewsData);
-    };
+    }
   }
     getInterviews();
-  }, [currentTeacher, setInterviews]);
+  }, [currentTeacher, setInterviews, isLoggedIn]);
 
   //Conditional Rendering
   if (showStudents) {

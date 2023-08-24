@@ -10,15 +10,22 @@ const SignUpModal = () => {
     signUpEmail: "",
     signUpPassword: "",
     confirmPassword: "",
-    teacherCode: ""
+    teacherCode: "",
   });
 
-  const { handleAcctCreation, loginTeacher, loginStudent, userData } = useContext(AppLevelContext)
+  const { handleAcctCreation, loginTeacher, loginStudent, userData } =
+    useContext(AppLevelContext);
 
   const { toggleSignInState, modalRole } = useContext(
     AuthenticationModalContext
   );
-  const { signUpName, signUpEmail, signUpPassword, confirmPassword, teacherCode } = signUpInputs;
+  const {
+    signUpName,
+    signUpEmail,
+    signUpPassword,
+    confirmPassword,
+    teacherCode,
+  } = signUpInputs;
 
   const handleChange = (e) => {
     setSignUpInputs({
@@ -30,8 +37,8 @@ const SignUpModal = () => {
   if (loginTeacher === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/teacher" />;
   }
-  
-    //REROUTE TO THE STUDENT PAGE
+
+  //REROUTE TO THE STUDENT PAGE
   if (loginStudent === true && userData.type === "success") {
     return <Navigate to="/api/auth/signIn/student" />;
   }
