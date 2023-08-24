@@ -681,7 +681,7 @@ app.get(
     // destruct teacher id and student id from query
     const { ta_id, st_id } = req.query;
     // if a teacher id exists, but not a student id, GET ALL interviews by teacher id
-    if (ta_id) {
+    if (ta_id != "") {
       try {
         const results = await pool.query(
           "SELECT * FROM interviews WHERE ta_id = $1;",
@@ -703,7 +703,7 @@ app.get(
       }
     }
     // if a student id exists, but not a teacher id, GET ALL interviews by student id
-    else if (st_id) {
+    else if (st_id != "") {
       try {
         const results = await pool.query(
           "SELECT * FROM interviews WHERE st_id = $1;",

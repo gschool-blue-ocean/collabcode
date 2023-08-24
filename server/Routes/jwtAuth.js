@@ -124,7 +124,7 @@ router.post("/signIn/teacher", validTeacherInfo, async (req, res) => {
           sendRefreshToken(res, refreshToken);
           sendAccessToken(req, res, accessToken);
         } else {
-          console.log(err);
+          console.error(err);
           return res.status(500).send("Incorrect password");
         }
       }
@@ -160,7 +160,7 @@ router.post("/signIn/student", validStudentInfo, async (req, res) => {
           sendRefreshToken(res, refreshToken);
           sendAccessToken(req, res, accessToken);
         } else {
-          console.log(err);
+          console.error(err);
           return res.status(500).send("Incorrect password");
         }
       }
@@ -387,7 +387,6 @@ router.post("/refresh_token/teacher", async (req, res) => {
 router.get("/protected/student", studentUser, async (req, res) => {
   try {
     // if user exists in the request, send the data
-    console.log(studentUser);
     if (req.user) {
       return res.json({
         message: "You are logged in! 🤗",
