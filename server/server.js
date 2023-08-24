@@ -911,7 +911,6 @@ app.post(
 app.put(
   "/interviews/:id",
   param("id").isInt(),
-  body("ta_id").isInt(),
   body("st_id").isInt(),
   body("in_date").isDate(),
   body("in_time").isTime(),
@@ -930,12 +929,11 @@ app.put(
     }
 
     // destruct required info
-    const { ta_id, st_id, in_date, in_time, in_completed } = req.body;
+    const { st_id, in_date, in_time, in_completed } = req.body;
     const { id } = req.params;
 
     // remove null values
     if (
-      !ta_id ||
       !st_id ||
       !in_date ||
       !in_time ||
@@ -944,7 +942,7 @@ app.put(
       res
         .status(400)
         .send(
-          "PUT request requires ta_id, st_id, in_date, in_time, in_completed"
+          "PUT request requires st_id, in_date, in_time, in_completed"
         );
       return;
     }
@@ -952,8 +950,8 @@ app.put(
     // attempt pool query
     try {
       const results = await pool.query(
-        "UPDATE interviews SET ta_id = $1, st_id = $2, in_date = $3, in_time = $4, in_completed = $5 WHERE in_id = $6 RETURNING *",
-        [ta_id, st_id, in_date, in_time, in_completed, id]
+        "UPDATE interviews SET  st_id = $1, in_date = $2, in_time = $3, in_completed = $4 WHERE in_id = $5 RETURNING *",
+        [st_id, in_date, in_time, in_completed, id]
       );
       if (results.rowCount < 1) {
         res.status(404).send("Resource not found");

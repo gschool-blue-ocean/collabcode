@@ -31,18 +31,22 @@ const StudentInfo = () => {
       if (confirm("Update interview with input information?")) {
         const formData = new FormData(e.currentTarget);
         const requestBody = Object.fromEntries(formData.entries());
+        console.log(requestBody.in_completed);
         await fetch(
           "https://collab-code.onrender.com/interviews/" +
             currentInterview[0].in_id,
           {
             method: "PUT",
-            body: {
-              ta_id: currentTeacher.user.id,
+            headers: {
+              "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({
               st_id: currentStudent[0].st_id,
               in_date: requestBody.in_date,
               in_time: requestBody.in_time,
-              in_completed: requestBody.in_completed === "on",
-            },
+              in_completed:
+                requestBody.in_completed === undefined ? false : true,
+            }),
           }
         );
         //Updating Students Notes
@@ -51,11 +55,15 @@ const StudentInfo = () => {
             currentStudent[0].st_id,
           {
             method: "PUT",
-            body: {
+            header: {
+              "Content-Type": "spplication/json"
+            },
+            body: JSON.stringify({
               st_id: currentStudent[0].st_id,
               st_comments: requestBody.st_comments,
-              st_scheduled: requestBody.st_scheduled === "on",
-            },
+              st_scheduled:
+                requestBody.st_scheduled === undefined ? false : true,
+            }),
           }
         );
         //Create a request body to mark interview as complete
