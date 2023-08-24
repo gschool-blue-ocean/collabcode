@@ -8,6 +8,7 @@ const PendingStudents = () => {
   const { pendingStudents, currentTeacher, setShowStudents } = useContext(
     TeacherAdminPageContext
   );
+  console.log(pendingStudents)
 
   const [formInputs, setFormInputs] = useState({});
 

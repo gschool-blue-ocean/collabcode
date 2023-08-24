@@ -571,12 +571,8 @@ app.post(
 app.put(
   "/students/comments/:id",
   param("id").isInt(),
-  // body("st_email").blacklist(";").escape(),
-  // body("st_password").blacklist(";").escape(),
-  // body("st_name").blacklist(";").escape(),
   body("st_comments").blacklist(";").escape(),
   body("st_scheduled").isBoolean(),
-
   async (req, res) => {
     // validation result
     if (!validationResult(req).isEmpty) {
@@ -590,7 +586,7 @@ app.put(
     }
 
     // destruct required info
-    let { st_scheduled, st_comments } = req.body;
+    const { st_scheduled, st_comments } = req.body;
     const { id } = req.params;
 
     // attempt pool query
