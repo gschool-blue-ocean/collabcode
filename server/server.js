@@ -593,12 +593,6 @@ app.put(
     let { st_scheduled, st_comments } = req.body;
     const { id } = req.params;
 
-    // remove null values
-    if (!st_scheduled) {
-      res.status(400).send("PUT request requires st_scheduled");
-      return;
-    }
-
     if (!st_comments) {
       st_comments = "";
     }

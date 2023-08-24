@@ -13,7 +13,9 @@ export const TeacherAdminPageProvider = ({ children }) => {
   const [interviews, setInterviews] = useState([]);
   const [showStudents, setShowStudents] = useState(true);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
 
   //LOADS ALL THE STUDENTS FROM THE DATABASE
   useEffect(() => {
@@ -33,42 +35,41 @@ export const TeacherAdminPageProvider = ({ children }) => {
     const getTeacherData = async () => {
       try {
         if (isLoggedIn) {
-        // Using the refresh token to get an access token
-        const verifyRefresh = await fetch(
-          "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
+          // Using the refresh token to get an access token
+          const verifyRefresh = await fetch(
+            "https://collab-code.onrender.com/api/auth/refresh_token/teacher",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            }
+          );
 
-        const verifyRefreshData = await verifyRefresh.json();
+          const verifyRefreshData = await verifyRefresh.json();
 
-        // Using the refreshed access token to fetch protected data
-        const verifyAccess = await fetch(
-          "https://collab-code.onrender.com/api/auth/protected/teacher",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Token: verifyRefreshData.accessToken, // Corrected header name
-            },
-
-          }
-        );
+          // Using the refreshed access token to fetch protected data
+          const verifyAccess = await fetch(
+            "https://collab-code.onrender.com/api/auth/protected/teacher",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Token: verifyRefreshData.accessToken, // Corrected header name
+              },
+            }
+          );
 
           // console.log(verifyAccess) //Expecting the Request from the successful refreshtoken
           // console.log(verifyAccessData) //Expecting teacher object
 
-          if (verifyAccess.status !== 200 ) {
+          if (verifyAccess.status !== 200) {
             const errorData = await verifyAccess.json();
           } else {
             const verifyAccessData = await verifyAccess.json();
             setCurrentTeacher(verifyAccessData);
-            localStorage.setItem("teacherLoggedIn", "true")
+            localStorage.setItem("teacherLoggedIn", "true");
           }
         }
       } catch (error) {
@@ -77,7 +78,7 @@ export const TeacherAdminPageProvider = ({ children }) => {
     };
 
     getTeacherData();
-  }, []);
+  }, [isLoggedIn]);
 
   //CONDITIONAL RENDERING FOR THE INTERVIEW LIST
   const handleClick = async (e) => {
