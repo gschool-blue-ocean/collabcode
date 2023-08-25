@@ -146,9 +146,14 @@ const StudentInfo = () => {
             <input type="checkbox" name="in_completed" />
             <label>Move back to Main</label>
             <input type="checkbox" name="st_scheduled" />
-            <div className="flex justify-evenly w-full">
-              <input type="submit" />
-              <button onClick={handleCancel}>Cancel</button>
+            <div className="flex justify-evenly w-full mt-4">
+              <input type="submit" className="border-2 p-2 rounded-lg cursor-pointer hover:bg-orange-300"/>
+              <button
+                onClick={handleCancel}
+                className="border-2 p-2 rounded-lg cursor-pointer hover:bg-orange-300"
+              >
+                Cancel
+              </button>
             </div>
           </form>
           <button onClick={handleClick}>Return to List</button>
@@ -172,31 +177,32 @@ const StudentInfo = () => {
             <h1 className="text-[2rem]">{time}</h1>
             <h1 className="text-[2rem]">{date}</h1>
             <h1 className="text-[1rem]">{notes}</h1>
-            <div className="flex justify-between w-full">
-              <button
-                className="cursor-pointer border-2 p-2 rounded-lg"
+            <div className="flex justify-between w-full mt-4">
+            <button
+                className="border-2 p-2 rounded-lg cursor-pointer hover:bg-yellow-300"
                 onClick={handleEdit}
               >
                 Edit
               </button>
               <button
-                className="cursor-pointer border-2 p-2 rounded-lg"
+                className="border-2 p-2 rounded-lg cursor-pointer hover:bg-red-300"
                 onClick={handleDelete}
               >
                 Delete
               </button>
             </div>
-            <a href="/interview">
-              <h1 className="cursor-pointer border-2 p-2 rounded-lg">
+            <a href="/interview" className="mt-4">
+            <h1 className="border-2 p-2 rounded-lg cursor-pointer hover:bg-green-300">
                 Join Interview Room
               </h1>
             </a>
             <button
-              className="cursor-pointer border-2 p-2 rounded-lg"
+              className="border-2 p-2 rounded-lg cursor-pointer hover:bg-yellow-300"
               onClick={handleClick}
             >
               Return to List
             </button>
+
           </div>
         </div>
       </div>

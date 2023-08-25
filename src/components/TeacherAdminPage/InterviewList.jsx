@@ -63,19 +63,16 @@ const InterviewList = () => {
                 }),
                 (
                   <div
-                    id={elem.st_id}
-                    key={index}
-                    className="w-1/2"
-                    onClick={handleClick}
-                  >
-                    <div className="w-full flex flex-col justify-center items-center my-5 border-4 border-[#e6a65c7c] cursor-pointer rounded-2xl">
-                      <h1>{elem.st_name}</h1>
-                      <h1>{elem.in_date.split("T")[0]}</h1>
-                      <h1>
-                        {elem.in_time.split(":")[0]} :{" "}
-                        {elem.in_time.split(":")[1]}
-                      </h1>
-                    </div>
+                id={elem.st_id}
+                key={index}
+                className="w-1/2 interview-item cursor-pointer rounded-2xl overflow-hidden transition duration-300 ease-in-out transform hover:scale-105 hover:bg-orange-300 hover:shadow-md"
+                onClick={handleClick}
+              >
+                <div className="interview-card p-4 border-4 border-[#e6a65c7c]">
+                <h1 className="interview-name text-xl font-semibold">{elem.st_name}</h1>
+                  <h1 className="interview-date text-sm text-gray-500 mt-2">{elem.in_date.split("T")[0]}</h1>
+                  <h1 className="interview-time text-sm text-gray-500">{elem.in_time.split(":")[0]} : {elem.in_time.split(":")[1]}</h1>
+                </div>
                   </div>
                 )
               )
